@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:jms="http://www.springframework.org/schema/jms"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+				        http://www.springframework.org/schema/jms
+				        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+				        http://www.springframework.org/schema/tx
+				        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <context:component-scan base-package="com.bossien"/>
+
+    <context:property-placeholder ignore-unresolvable="true" location="classpath*:mq.properties"/>
+
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+    <!--授权平台使用-->
+    <bean id="targetConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${mq.brokerURL}"/>
+        <property name="userName" value="${mq.userName}"/>
+        <property name="password" value="${mq.password}"/>
+    </bean>
+
+    <!--授权平台使用-->
+    <bean id="pooledConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="targetConnectionFactory"/>
+        <property name="clientId" value="${clientOP.id}"/>
+    </bean>
+    <!--授权平台  事务管理器 -->
+    <bean id="jmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+    </bean>
+
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <description>队列模式模型</description>
+        <constructor-arg ref="pooledConnectionFactory"/>
+        <property name="receiveTimeout" value="${mq.receiveTimeout}"/>
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+        <property name="pubSubDomain" value="false"/>
+        <!--  <property name="messageConverter" ref="messageConverter"/>-->
+    </bean>
+
+
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <description>发布/订阅模式模型</description>
+        <constructor-arg ref="pooledConnectionFactory"/>
+        <property name="receiveTimeout" value="${mq.receiveTimeout}"/>
+        <!-- pub/sub模型（发布/订阅） -->
+        <property name="pubSubDomain" value="true"/>
+    </bean>
+
+
+    <!--定义主题-->
+
+    <!--单位课程-->
+    <bean id="apTxCourseTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程关联-->
+    <bean id="apTxCompanyAndCourseTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyAndCourseQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程课件-->
+    <bean id="apTxAttachmentTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxAttachmentQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程课件关联-->
+    <bean id="apTxCourseAndAttachmentTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseAndAttachmentQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程题库关联-->
+    <bean id="apTxCourseAndQuestionTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseAndQuestionQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程题库-->
+    <bean id="apTxQuestionTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxQuestionQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位课程类型-->
+    <bean id="apTxCourseTypeTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseTypeQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--删除单位课程类型-->
+    <bean id="apTxCourseTypeDelTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseTypeDelQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--授权角色-->
+    <bean id="apTxTrainRoleTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxTrainRoleQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--授权角色和单位关联关系-->
+    <bean id="apTxCompanyTrainRoleTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyTrainRoleQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--授权主题-->
+    <bean id="apTxTrainSubjectTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxTrainSubjectQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--主题和单位关联关系-->
+    <bean id="apTxCompanyTrainSubjectTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyTrainSubjectQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--主题和课程关联关系-->
+    <bean id="apTxTrainSubjectCourseTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxTrainSubjectCourseQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位管理员-->
+    <bean id="apTxCompanyUserTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyUserQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位消息-->
+    <bean id="apTxCompanyTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--单位类型消息-->
+    <bean id="apTxCompanyTypeTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCompanyTypeQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--课程类型-->
+    <bean id="apTxCourseTypeTableTopic" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.apTxCourseTypeTableQueue}</value>
+        </constructor-arg>
+    </bean>
+    <!--注册公司消息-->
+    <bean id="apTxCompanyMessageListener" class="org.apache.activemq.command.ActiveMQQueue">
+        <constructor-arg>
+            <value>${queue.queueCompanyMessageListener}</value>
+        </constructor-arg>
+    </bean>
+    <!--消息监听器 -->
+    <bean id="topicCourseListener" class="com.bossien.train.listener.TopicCourseListener"/>
+    <bean id="topicCompanyCourseListener" class="com.bossien.train.listener.TopicCompanyCourseListener"/>
+    <bean id="topicAttachmentListener" class="com.bossien.train.listener.TopicAttachmentListener"/>
+    <bean id="topicCourseAttachmentListener" class="com.bossien.train.listener.TopicCourseAttachmentListener"/>
+    <bean id="topicCourseQuestionListener" class="com.bossien.train.listener.TopicCourseQuestionListener"/>
+    <bean id="topicQuestionListener" class="com.bossien.train.listener.TopicQuestionListener"/>
+    <bean id="topicCompanyCourseTypeListener" class="com.bossien.train.listener.TopicCompanyCourseTypeListener"/>
+    <bean id="topicRoleListener" class="com.bossien.train.listener.TopicRoleListener"/>
+    <bean id="topicCompanyTrainRoleListener" class="com.bossien.train.listener.TopicCompanyTrainRoleListener"/>
+    <bean id="topicSubjectListener" class="com.bossien.train.listener.TopicSubjectListener"/>
+    <bean id="topicCompanyTrainSubjectListener" class="com.bossien.train.listener.TopicCompanyTrainSubjectListener"/>
+    <bean id="topicSubjectCourseListener" class="com.bossien.train.listener.TopicSubjectCourseListener"/>
+    <bean id="topicCompanyUserListener" class="com.bossien.train.listener.TopicCompanyUserListener"/>
+    <bean id="topicCompanyListener" class="com.bossien.train.listener.TopicCompanyListener"/>
+    <bean id="topicCompanyTypeListener" class="com.bossien.train.listener.TopicCompanyTypeListener"/>
+    <bean id="topicCourseTypeListener" class="com.bossien.train.listener.TopicCourseTypeListener"/>
+    <bean id="topicCompanyCourseTypeDelListener" class="com.bossien.train.listener.TopicCompanyCourseTypeDelListener"/>
+
+    <!-- 监听容器 -->
+    <!--课程-->
+    <bean id="apTxCourseTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseTopic"/>
+        <property name="messageListener" ref="topicCourseListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseQueue}"/>
+    </bean>
+    <!--公司课程关联关系-->
+    <bean id="apTxCompanyAndCourseTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyAndCourseTopic"/>
+        <property name="messageListener" ref="topicCompanyCourseListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyAndCourseQueue}"/>
+    </bean>
+    <!--课程附件-->
+    <bean id="apTxAttachmentTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxAttachmentTopic"/>
+        <property name="messageListener" ref="topicAttachmentListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxAttachmentQueue}"/>
+    </bean>
+    <!--课程和附件的关联关系-->
+    <bean id="apTxCourseAndAttachmentTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseAndAttachmentTopic"/>
+        <property name="messageListener" ref="topicCourseAttachmentListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseAndAttachmentQueue}"/>
+    </bean>
+    <!--课程和题库的关联关系-->
+    <bean id="apTxCourseAndQuestionTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseAndQuestionTopic"/>
+        <property name="messageListener" ref="topicCourseQuestionListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseAndQuestionQueue}"/>
+    </bean>
+    <!--题库-->
+    <bean id="apTxQuestionTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxQuestionTopic"/>
+        <property name="messageListener" ref="topicQuestionListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxQuestionQueue}"/>
+    </bean>
+    <!--授权公司课程类型-->
+    <bean id="apTxCompanyCourseTypeTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseTypeTopic"/>
+        <property name="messageListener" ref="topicCompanyCourseTypeListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseTypeQueue}"/>
+    </bean>
+    <!--受训角色-->
+    <bean id="apTxTrainRoleTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxTrainRoleTopic"/>
+        <property name="messageListener" ref="topicRoleListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxTrainRoleQueue}"/>
+    </bean>
+    <!--公司受训角色关联-->
+    <bean id="apTxCompanyTrainRoleTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyTrainRoleTopic"/>
+        <property name="messageListener" ref="topicCompanyTrainRoleListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyTrainRoleQueue}"/>
+    </bean>
+    <!--主题-->
+    <bean id="apTxTrainSubjectTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxTrainSubjectTopic"/>
+        <property name="messageListener" ref="topicSubjectListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxTrainSubjectQueue}"/>
+    </bean>
+    <!--公司和主题关联关系-->
+    <bean id="apTxCompanyTrainSubjectTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyTrainSubjectTopic"/>
+        <property name="messageListener" ref="topicCompanyTrainSubjectListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyTrainSubjectQueue}"/>
+    </bean>
+    <!--主题和课程关联关系-->
+    <bean id="apTxTrainSubjectCourseTopicContainer"
+        class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxTrainSubjectCourseTopic"/>
+        <property name="messageListener" ref="topicSubjectCourseListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxTrainSubjectCourseQueue}"/>
+    </bean>
+    <!--管理员-->
+    <bean id="apTxCompanyUserTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyUserTopic"/>
+        <property name="messageListener" ref="topicCompanyUserListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyUserQueue}"/>
+    </bean>
+    <!--公司-->
+    <bean id="apTxCompanyTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyTopic"/>
+        <property name="messageListener" ref="topicCompanyListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyQueue}"/>
+    </bean>
+    <!--公司类型-->
+    <bean id="apTxCompanyTypeTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyTypeTopic"/>
+        <property name="messageListener" ref="topicCompanyTypeListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCompanyTypeQueue}"/>
+    </bean>
+    <!--课程类型-->
+    <bean id="apTxCourseTypeTableTopicContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseTypeTableTopic"/>
+        <property name="messageListener" ref="topicCourseTypeListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseTypeTableQueue}"/>
+    </bean>
+    <!--删除课程类型-->
+    <bean id="topicCompanyCourseTypeDelContainer" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCourseTypeDelTopic"/>
+        <property name="messageListener" ref="topicCompanyCourseTypeDelListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.apTxCourseTypeDelQueue}"/>
+    </bean>
+    <!--注册公司消息-->
+    <bean id="topicQueueCompanyMessageListener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="connectionFactory" ref="pooledConnectionFactory"/>
+        <property name="destination" ref="apTxCompanyMessageListener"/>
+        <property name="messageListener" ref="queueCompanyMessageListener"/>
+        <property name="subscriptionDurable" value="true"/>
+        <property name="clientId" value="${clientOP.id}"/>
+        <property name="durableSubscriptionName" value="${client.name.queueCompanyMessageListener}"/>
+    </bean>
+    <!--==================================================================================================================================-->
+    <!--培训平台自己生产自己接收的消息工厂-->
+    <!-- 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供-->
+    <bean id="ptConnectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="${tp.brokerURL}"/>
+        <property name="userName" value="${tp.userName}"/>
+        <property name="password" value="${tp.password}"/>
+    </bean>
+    <!--培训平台使用-->
+    <bean id="ptPooledConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="ptConnectionFactory"/>
+        <property name="clientId" value="${clientTP.id}"/>
+    </bean>
+    <!-- 培训平台使用  事务管理器 -->
+    <bean id="ptJmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+        <property name="connectionFactory" ref="ptPooledConnectionFactory"/>
+    </bean>
+
+
+    <bean id="ptJmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <description>队列模式模型</description>
+        <constructor-arg ref="ptPooledConnectionFactory"/>
+        <property name="receiveTimeout" value="${mq.receiveTimeout}"/>
+        <!-- 非pub/sub模型（发布/订阅），即队列模式 -->
+        <property name="pubSubDomain" value="false"/>
+        <!--  <property name="messageConverter" ref="messageConverter"/>-->
+    </bean>
+
+
+    <bean id="ptJmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <description>发布/订阅模式模型</description>
+        <constructor-arg ref="ptPooledConnectionFactory"/>
+        <property name="receiveTimeout" value="${mq.receiveTimeout}"/>
+        <!-- pub/sub模型（发布/订阅） -->
+        <property name="pubSubDomain" value="true"/>
+    </bean>
+
+    <!-- 定义Queue监听器 container-type 类型可以决定线程数 默认即可 acknowledge 为消息确认模式 没有事务的时候 选择auto  有事务采用transacted -->
+    <jms:listener-container destination-type="queue" container-type="default"
+        transaction-manager="ptJmsTransactionManager" connection-factory="ptPooledConnectionFactory"
+        acknowledge="transacted">
+        <jms:listener destination="tp.signin.queue" ref="queueSignInListener"/>
+        <!-- <jms:listener destination="signout.queue" ref="queueSignOutListener"/>-->
+        <jms:listener destination="tp.video.queue" ref="queueVideoListener"/>
+        <jms:listener destination="tp.exercise.queue" ref="queueExerciseListener"/>
+        <jms:listener destination="tp.exam.queue" ref="queueExamListener"/>
+        <jms:listener destination="tp.collection.queue" ref="queueCollectionListener"/>
+        <jms:listener destination="tp.wrong.queue" ref="queueWrongListener"/>
+        <jms:listener destination="tp.cppub.queue" ref="queueCPPubListener"/>
+        <jms:listener destination="tp.cppri.queue" ref="queueCPPriListener"/>
+        <jms:listener destination="tp.projectCourse.queue" ref="queueProjectCourseListener"/>
+        <jms:listener destination="tp.projectUser.queue" ref="queueProjectUserListener"/>
+        <jms:listener destination="tp.tj.queue" ref="queueTJListener"/>
+        <jms:listener destination="tp.udp.queue" ref="queueUpdateAndDeleteProjectListener"/>
+        <jms:listener destination="tp.personDossier.queue" ref="queuePersonDossierListener"/>
+        <jms:listener destination="tp.pr.queue" ref="queuePRListener"/>
+        <jms:listener destination="tp.paper.queue" ref="queuePaperListener"/>
+        <jms:listener destination="tp.studySelfVideo.queue" ref="queueStudySelfVideoListener"/>
+        <jms:listener destination="tp.studySelfExercise.queue" ref="queueStudentStudyExerciseListener"/>
+        <jms:listener destination="tp.projectPublish.queue" ref="queueProjectPublishListener"/>
+        <jms:listener destination="tp.registerCompany.queue" ref="queueRegisterCompanyListener"/>
+    </jms:listener-container>
+
+
+
+    <tx:annotation-driven proxy-target-class="true"/>
+
+</beans>

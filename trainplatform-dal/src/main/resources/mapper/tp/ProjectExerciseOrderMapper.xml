@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ProjectExerciseOrderMapper">
+	<resultMap id="projectExerciseOrderMap" type="com.bossien.train.domain.ProjectExerciseOrder">
+		<id column="id" property="id"></id>
+		<result column="project_Id" property="projectId"></result>
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="role_id" property="roleId"></result>
+		<result column="role_name" property="roleName"></result>
+		<result column="dept_name" property="deptName"></result>
+		<result column="total_question" property="totalQuestion"></result>
+		<result column="yet_answered" property="yetAnswered"></result>
+		<result column="not_answered" property="notAnswered"></result>
+		<result column="correct_answered" property="correctAnswered"></result>
+		<result column="fail_answered" property="failAnswered"></result>
+		<result column="correct_rate" property="correctRate"></result>
+		<result column="answer_studytime" property="answerStudyTime"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+	<sql id="getProjectExerciseOrder">
+		id, project_Id, user_id, user_name, role_name, dept_name, total_question, yet_answered, not_answered, correct_answered, fail_answered, correct_rate, answer_studytime
+	</sql>
+
+	<sql id="getProjectExercise">
+		e.id, e.project_Id, e.user_id, e.user_name, e.role_name, e.dept_name, e.total_question, e.yet_answered, e.not_answered, e.correct_answered, e.fail_answered, e.correct_rate, e.answer_studytime
+	</sql>
+
+	<sql id="getParams">
+		p.id, p.project_Id AS projectId, p.user_id AS userId, p.user_name AS userName, p.role_name AS roleName, p.dept_name AS deptName, p.total_question AS totalQuestion, p.yet_answered AS yetAnswered, p.not_answered AS notAnswered, p.correct_answered AS correctAnswered, p.fail_answered AS failAnswered, p.correct_rate AS correctRate, p.answer_studytime AS answerStudyTime
+	</sql>
+
+	<select id="selectProjectExerciseOrderList" parameterType="java.util.Map" resultType="java.util.Map">
+		SELECT
+		p.rownum,
+		<include refid="getParams"/>
+		FROM
+		(SELECT
+		@rownum := @rownum + 1 AS rownum,
+		<include refid="getProjectExercise"/>
+		FROM
+		project_exercise_order e,
+		(SELECT @rownum := 0) r
+		where e.project_id = #{projectId}
+		<if test="orderType == 2">
+			order by e.yet_answered desc
+		</if>
+		<if test="orderType == 3">
+			order by e.correct_rate desc
+		</if>
+		<if test="orderType == 1">
+			order by e.answer_studytime desc
+		</if>) p
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userId !=null and userId  !=''">
+				AND p.user_id = #{userId}
+			</if>
+			<if test="userName !=null and userName !=''">
+				AND p.user_name like #{userName}
+			</if>
+			<if test="user_id !=null and user_id  !=''">
+				AND p.user_id != #{user_id}
+			</if>
+		</trim>
+		<include refid="CommonMapper.mysqlPage" />
+	</select>
+
+	<!-- 批量添加学员练习统计信息 -->
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into project_exercise_order (
+		id, project_id, user_id, user_name, role_id, role_name, dept_name, total_question,
+		yet_answered, not_answered, correct_answered, fail_answered, correct_rate,
+		answer_studytime, create_user, create_time, oper_user, oper_time
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+				(
+				#{item.id}, #{item.projectId}, #{item.userId}, #{item.userName}, #{item.roleId}, #{item.roleName}, #{item.deptName}, #{item.totalQuestion},
+				#{item.yetAnswered}, #{item.notAnswered}, #{item.correctAnswered}, #{item.failAnswered}, #{item.correctRate},
+				#{item.answerStudytime}, #{item.createUser}, #{item.createTime}, #{item.operUser}, #{item.operTime}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<select id="selectProjectExerciseOrderCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM
+		project_exercise_order
+		<trim prefix="WHERE" prefixOverrides="AND">
+		<if test="projectId !=null and projectId  !=''">
+			AND project_id = #{projectId}
+		</if>
+		<if test="userId !=null and userId  !=''">
+			AND user_id = #{userId}
+		</if>
+		<if test="userName !=null and userName  !=''">
+			AND user_name like #{userName}
+		</if>
+		</trim>
+	</select>
+
+	<!-- 根据项目id查询人员练习统计信息集合 -->
+	<select id="selectExerciseInfoList" parameterType="java.util.Map" resultType="java.util.Map">
+		select user_id AS userId, user_name AS userName, dept_name AS deptName FROM project_exercise_order WHERE project_id = #{projectId}
+		<if test="roleId != null and roleId != ''">
+			and role_id = #{roleId}
+		</if>
+	</select>
+
+	<select id="selectOne" parameterType="java.util.Map" resultMap="projectExerciseOrderMap">
+		select
+		<include refid="getProjectExerciseOrder"/>
+		from project_exercise_order
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId != null and projectId != ''">
+				AND	project_id = #{projectId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND	user_id = #{userId}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<update id="update" parameterType="com.bossien.train.domain.ProjectExerciseOrder">
+		update project_exercise_order
+		<trim prefix="set" prefixOverrides=",">
+			<if test="totalQuestion !=null"> ,total_question = #{totalQuestion} </if>
+			<if test="yetAnswered !=null"> ,yet_answered = #{yetAnswered} </if>
+			<if test="notAnswered !=null"> ,not_answered = #{notAnswered} </if>
+			<if test="roleId !=null and roleId !=''"> ,role_id = #{roleId} </if>
+			<if test="roleName !=null and roleName !=''"> ,role_name = #{roleName} </if>
+			<if test="correctAnswered !=null"> ,correct_answered = #{correctAnswered} </if>
+			<if test="failAnswered !=null"> ,fail_answered = #{failAnswered} </if>
+			<if test="correctRate !=null"> ,correct_rate = #{correctRate} </if>
+			<if test="answerStudyTime !=null"> ,answer_studytime = #{answerStudyTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime} </if>
+		</trim>
+		where project_id=#{projectId}
+		<if test="userId != null and userId !=''">
+		   and user_id=#{userId}
+		</if>
+		<if test="roleId != null and roleId !=''">
+			and role_id=#{roleId}
+		</if>
+	</update>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete FROM  project_exercise_order
+		<trim prefix="WHERE" prefixOverrides="AND">
+		<if test="ids != null and ids.size>0">
+			AND id IN
+			<foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+				#{ids}
+			</foreach>
+		</if>
+		<if test="projectId != null and projectId !=''">
+			AND project_id = #{projectId}
+		</if>
+		<if test="userIds != null and userIds.size>0">
+			AND user_id IN
+			<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+				#{userIds}
+			</foreach>
+		</if>
+		</trim>
+	</delete>
+
+	<!--根据项目Id和角色Ids查询id集合-->
+	<select id="selectIdList" parameterType="java.util.Map" resultType="java.lang.String">
+		select id from project_exercise_order where
+		project_id= #{projectId}
+		<if test="roleIds != null and roleIds.size>0">
+			and role_id not in
+			<foreach item="roleId" index="index" collection="roleIds" open="(" separator="," close=")">
+				#{roleId}
+			</foreach>
+		</if>
+	</select>
+
+	<!-- 高级设置中修改项目个人练习详细信息 -->
+	<update id="updateInfo" parameterType="java.util.Map">
+		update project_exercise_order
+		<trim prefix="set" prefixOverrides=",">
+			<if test="totalQuestion !=null"> ,total_question = #{totalQuestion} </if>
+			<if test="roleId !=null and roleId !=''"> ,role_id = #{roleId} </if>
+			<if test="roleName !=null and roleName !=''"> ,role_name = #{roleName} </if>
+			<if test="deptName !=null and deptName !=''"> ,dept_name = #{deptName} </if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime} </if>
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId != null and projectId != ''">
+				AND project_id=#{projectId}
+			</if>
+			<if test="userIds != null and userIds.size>0">
+				AND user_id in
+				<foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+			</if>
+		</trim>
+	</update>
+
+
+	<!--批量更新-->
+	<update id="updateBatch" parameterType="java.util.List">
+			<foreach item="item" index="index" collection="list" separator=";">
+				update project_exercise_order
+				<set>
+					<if test="item.totalQuestion != null">
+						total_question = #{item.totalQuestion},
+					</if>
+				</set>
+				<trim prefix="WHERE" prefixOverrides="AND">
+					<if test="item.project_id != null and item.project_id != ''">
+						AND project_id = #{item.project_id}
+					</if>
+					<if test="item.role_id != null and item.role_id != ''">
+						AND role_id = #{item.role_id}
+					</if>
+				</trim>
+			</foreach>
+	</update>
+
+</mapper>

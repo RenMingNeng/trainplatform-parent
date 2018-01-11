@@ -1,0 +1,52 @@
+.lk-group {
+    width: 149px;
+}
+
+.lk-btn-radius {
+    border-radius: 4px;
+}
+
+.lk-btn {
+    display: inline-block;
+    // width: 100%;
+    height: 32px;
+    text-align: center;
+    border-radius: 4px;
+    background-color: $while;
+    padding: 0 12px;
+    color: $while;
+    line-height: 32px;
+    border: none;
+    text-decoration: none !important;
+    cursor: pointer;
+    outline: none;
+}
+
+.lk-btn:hover,
+.lk-btn:focus {
+    color: $while;
+    @include transparent(0.9);
+}
+
+.lk-btn-default {
+    color: $aia-color;
+    background-color: #fff;
+    border: 1px solid #ccc;
+}
+
+.lk-btn-default:hover,
+.lk-btn-default:focus {
+    background-color: #e7e8e9;
+    border-color: #ccc;
+    color: $aia-color;
+    @include transition(0.95);
+}
+
+.lk-btn-blue {
+    background-color: $blue;
+    color: $while;
+}
+
+.lk-btn-green {
+    background-color: $green;
+}

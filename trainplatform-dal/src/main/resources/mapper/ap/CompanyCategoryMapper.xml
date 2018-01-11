@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.CompanyCategoryMapper">
+
+    <resultMap id="courseMap" type="com.bossien.train.domain.CompanyCategory">
+      <id column="intId" property="intId"></id>
+      <result column="varName" property="varName"></result>
+      <result column="intPid" property="intPid"></result>
+      <result column="intOrder" property="intOrder"></result>
+      <result column="varCreateUser" property="varCreateUser"></result>
+      <result column="datCreateDate" property="datCreateDate"></result>
+      <result column="varOperUser" property="varOperUser"></result>
+      <result column="datOperDate" property="datOperDate"></result>
+    </resultMap>
+
+  <select id="selectAll" resultType="com.bossien.train.domain.CompanyCategory">
+      SELECT intId, varName, intPid, intOrder FROM ap_company_category order by intOrder
+  </select>
+
+</mapper>

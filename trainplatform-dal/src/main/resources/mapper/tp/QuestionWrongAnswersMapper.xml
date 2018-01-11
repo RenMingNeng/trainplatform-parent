@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.QuestionWrongAnswersMapper">
+
+	<resultMap id="QuestionCollectionMap" type="com.bossien.train.domain.QuestionWrongAnswers">
+		<id column="id" property="id"></id>
+		<result column="project_id" property="project_id"></result>
+		<result column="question_id" property="question_id"></result>
+		<result column="user_id" property="user_id"></result>
+		<result column="create_user" property="create_user"></result>
+		<result column="create_time" property="create_time"></result>
+		<result column="oper_user" property="oper_user"></result>
+		<result column="oper_time" property="oper_time"></result>
+	</resultMap>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.QuestionWrongAnswers">
+		insert into question_wrong_answers	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="project_id !=null and project_id !=''">,project_id</if>
+			<if test="question_id !=null and question_id !=''">,question_id</if>
+			<if test="user_id !=null and user_id !=''">,user_id</if>
+			<if test="create_user !=null and create_user !=''">,create_user</if>
+			<if test="create_time !=null and create_time !=''">,create_time</if>
+			<if test="oper_user !=null and oper_user !=''"> ,oper_user </if>
+			<if test="oper_time !=null and oper_time !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			<if test="project_id !=null and project_id !=''"> ,#{project_id} </if>
+			<if test="question_id !=null and question_id !=''"> ,#{question_id} </if>
+			<if test="user_id !=null and user_id !=''"> ,#{user_id} </if>
+			<if test="create_user !=null and create_user !=''"> ,#{create_user} </if>
+			<if test="create_time !=null and create_time !=''"> ,#{create_time} </if>
+			<if test="oper_user !=null and oper_user !=''"> ,#{oper_user} </if>
+			<if test="oper_time !=null and oper_time !=''"> ,#{oper_time} </if>
+		</trim>
+		)
+	</insert>
+	<sql id="baseColumn">
+		id, project_id,question_id,user_id,  create_user, create_time,
+		oper_user, oper_time
+	</sql>
+	<select id="selectList" parameterType="com.bossien.train.domain.QuestionWrongAnswers" resultType="java.lang.String">
+		select question_id
+		FROM question_wrong_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+			<if test="question_id !=null and question_id !=''">
+				and question_id = #{question_id}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectEasyWrongList" parameterType="com.bossien.train.domain.QuestionWrongAnswers" resultType="java.lang.String">
+		select question_id
+		FROM question_wrong_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+			<if test="question_id !=null and question_id !=''">
+				and question_id = #{question_id}
+			</if>
+		</trim>
+		GROUP BY question_id HAVING COUNT(1) > 2
+	</select>
+
+	<select id="selectOne" parameterType="com.bossien.train.domain.QuestionWrongAnswers" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM question_wrong_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+			<if test="question_id !=null and question_id !=''">
+				and question_id = #{question_id}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM question_wrong_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+			<if test="question_id !=null and question_id !=''">
+				and question_id = #{question_id}
+			</if>
+		</trim>
+	</select>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from question_wrong_answers where project_id = #{project_id} and question_id = #{question_id}
+	</delete>
+
+</mapper>

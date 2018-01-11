@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.CourseTypeMapper">
+
+
+    <select id="selectByIntIds" parameterType="java.util.List" resultType="com.bossien.train.domain.CourseType">
+        select
+        intId,varName,varDesc,intPid,intOrder,intLevel,chrStatus
+        from ex_course_type
+        <trim prefix="WHERE" prefixOverrides="AND">
+            and intId in
+            <foreach item="intIds" index="index" collection="list" open="(" separator="," close=")">
+                #{intIds}
+            </foreach>
+        </trim>
+        order by intOrder
+    </select>
+
+    <select id="selectAllType" resultType="com.bossien.train.domain.CourseType">
+        select
+        intId,varName,varDesc,intPid,intOrder,intLevel,chrStatus
+        from ex_course_type order by intOrder
+    </select>
+
+    <select id="getCSTChiList" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT getCSTChiList ( #{intTypeId} ) FROM DUAL
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from ex_course_type
+        where intId = #{intId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByAll" >
+        delete from ex_course_type
+    </delete>
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.CourseType" >
+        insert into ex_course_type
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="intId != null" >
+                intId,
+            </if>
+            <if test="varName != null" >
+                varName,
+            </if>
+            <if test="varDesc != null" >
+                varDesc,
+            </if>
+            <if test="intPid != null" >
+                intPid,
+            </if>
+            <if test="intOrder != null" >
+                intOrder,
+            </if>
+            <if test="intLevel != null" >
+                intLevel,
+            </if>
+            <if test="chrStatus != null" >
+                chrStatus,
+            </if>
+            <if test="varCreateUser != null" >
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null" >
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null" >
+                varOperUser,
+            </if>
+            <if test="datOperDate != null" >
+                datOperDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="intId != null" >
+                #{intId,jdbcType=INTEGER},
+            </if>
+            <if test="varName != null" >
+                #{varName,jdbcType=VARCHAR},
+            </if>
+            <if test="varDesc != null" >
+                #{varDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="intPid != null" >
+                #{intPid,jdbcType=INTEGER},
+            </if>
+            <if test="intOrder != null" >
+                #{intOrder,jdbcType=INTEGER},
+            </if>
+            <if test="intLevel != null" >
+                #{intLevel,jdbcType=INTEGER},
+            </if>
+            <if test="chrStatus != null" >
+                #{chrStatus,jdbcType=CHAR},
+            </if>
+            <if test="varCreateUser != null" >
+                #{varCreateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="datCreateDate != null" >
+                #{datCreateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="varOperUser != null" >
+                #{varOperUser,jdbcType=VARCHAR},
+            </if>
+            <if test="datOperDate != null" >
+                #{datOperDate,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ex_course_type (intId, varName, varDesc,
+        intPid, intOrder, intLevel,
+        chrStatus, varCreateUser, datCreateDate,
+        varOperUser, datOperDate)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (
+                #{item.intId}, #{item.varName}, #{item.varDesc},
+                #{item.intPid}, #{item.intOrder},#{item.intLevel},
+                #{item.chrStatus},#{item.varCreateUser},#{item.datCreateDate},
+                #{item.varOperUser},#{item.datOperDate}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+</mapper>

@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.CompanyTjMapper">
+
+	<resultMap id="companyTjMap" type="com.bossien.train.domain.CompanyTj">
+		<id column="company_id" property="companyId"></id>
+		<result column="company_name" property="companyName"></result>
+		<result column="count_project" property="countProject"></result>
+		<result column="count_user" property="countUser"></result>
+		<result column="count_train" property="countTrain"></result>
+		<result column="count_train_complete_yes" property="countTrainCompleteYes"></result>
+		<result column="count_exam" property="countExam"></result>
+		<result column="count_exam_pass_yes" property="countExamPassYes"></result>
+		<result column="percent_train_complete" property="percentTrainComplete"></result>
+
+		<result column="count_train_user" property="countTrainUser"></result>
+		<result column="count_course" property="countCourse"></result>
+		<result column="count_question" property="countQuestion"></result>
+		<result column="total_class_hour" property="totalClassHour"></result>
+		<result column="average_person_class_hour" property="averagePersonClassHour"></result>
+		<result column="total_year_class_hour" property="totalYearClassHour"></result>
+		<result column="average_year_class_hour" property="averageYearClassHour"></result>
+
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+
+	<insert id="insert" parameterType="java.util.Map">
+		insert into company_tj	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="companyId !=null and companyId != ''">,company_id</if>
+			<if test="companyName !=null and companyName !=''">,company_name</if>
+			<if test="countProject !=null and countProject !=''">,count_project</if>
+			<if test="countUser !=null and countUser !=''">,count_user</if>
+			<if test="countTrain !=null and countTrain !=''">,count_train</if>
+			<if test="countTrainCompleteYes !=null and countTrainCompleteYes !=''">,count_train_complete_yes</if>
+			<if test="countExam !=null and countExam !=''"> ,count_exam </if>
+			<if test="countExamPassYes !=null and countExamPassYes != ''">,count_exam_pass_yes</if>
+			<if test="percentTrainComplete !=null and percentTrainComplete !=''">,percent_train_complete</if>
+			<if test="countTrainUser !=null and countTrainUser !=''">,count_train_user</if>
+			<if test="countCourse !=null and countCourse !=''">,count_course</if>
+			<if test="countQuestion !=null and countQuestion !=''">,count_question</if>
+			<if test="totalClassHour !=null and totalClassHour !=''">,total_class_hour</if>
+			<if test="averagePersonClassHour !=null and averagePersonClassHour !=''">,average_person_class_hour</if>
+			<if test="totalYearClassHour !=null and totalYearClassHour !=''">,total_year_class_hour</if>
+			<if test="averageYearClassHour !=null and averageYearClassHour !=''">,average_year_class_hour</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="companyId !=null and companyId !=''"> ,#{companyId} </if>
+			<if test="companyName !=null and companyName !=''"> ,#{companyName} </if>
+			<if test="countProject !=null and countProject !=''"> ,#{countProject} </if>
+			<if test="countUser !=null and countUser !=''"> ,#{countUser} </if>
+			<if test="countTrain !=null and countTrain !=''"> ,#{countTrain} </if>
+			<if test="countTrainCompleteYes !=null and countTrainCompleteYes !=''"> ,#{countTrainCompleteYes} </if>
+			<if test="countExam !=null and countExam !=''"> ,#{countExam} </if>
+			<if test="countExamPassYes !=null and countExamPassYes !=''"> ,#{countExamPassYes} </if>
+			<if test="percentTrainComplete !=null and percentTrainComplete !=''"> ,#{percentTrainComplete} </if>
+			<if test="countTrainUser !=null and countTrainUser !=''">,#{countTrainUser}</if>
+			<if test="countCourse !=null and countCourse !=''">,#{countCourse}</if>
+			<if test="countQuestion !=null and countQuestion !=''">,#{countQuestion}</if>
+			<if test="totalClassHour !=null and totalClassHour !=''">,#{totalClassHour}</if>
+			<if test="averagePersonClassHour !=null and averagePersonClassHour !=''">,#{averagePersonClassHour}</if>
+			<if test="totalYearClassHour !=null and totalYearClassHour !=''">,#{totalYearClassHour}</if>
+			<if test="averageYearClassHour !=null and averageYearClassHour !=''">,#{averageYearClassHour}</if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<update id="update" parameterType="java.util.Map">
+		UPDATE company_tj SET
+		<trim prefix="" prefixOverrides=",">
+			<if test="countProject !=null and countProject !=''"> ,count_project = #{countProject} </if>
+			<if test="countUser !=null and countUser !=''"> ,count_user = #{countUser} </if>
+			<if test="countTrain !=null and countTrain !=''"> ,count_train = #{countTrain} </if>
+			<if test="countTrainCompleteYes !=null and countTrainCompleteYes!=''  "> ,count_train_complete_yes = #{countTrainCompleteYes} </if>
+			<if test="countExam !=null and countExam !=''"> ,count_exam = #{countExam} </if>
+			<if test="countExamPassYes !=null and countExamPassYes !=''"> ,count_exam_pass_yes = #{countExamPassYes} </if>
+			<if test="percentTrainComplete !=null and percentTrainComplete !=''"> ,percent_train_complete = #{percentTrainComplete} </if>
+			<if test="countTrainUser !=null and countTrainUser !=''">,count_train_user = #{countTrainUser}</if>
+			<if test="countCourse !=null and countCourse !=''">,count_course = #{countCourse}</if>
+			<if test="countQuestion !=null and countQuestion !=''">,count_question = #{countQuestion}</if>
+			<if test="totalClassHour !=null and totalClassHour !=''">,total_class_hour = #{totalClassHour}</if>
+			<if test="averagePersonClassHour !=null and averagePersonClassHour !=''">,average_person_class_hour = #{averagePersonClassHour}</if>
+			<if test="totalYearClassHour !=null and totalYearClassHour !=''">,total_year_class_hour = #{totalYearClassHour}</if>
+			<if test="averageYearClassHour !=null and averageYearClassHour !=''">,average_year_class_hour = #{averageYearClassHour}</if>
+			<if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+			<if test="createTime !=null and createTime !=''">,create_time = #{createTime}</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser}</if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime}</if>
+		</trim>
+		WHERE company_id = #{companyId}
+	</update>
+	<!--查询单条记录-->
+   <select id="selectOne" parameterType="java.util.Map" resultMap="companyTjMap">
+	  select
+	    company_id, company_name,count_project, count_user,
+	    count_train,count_train_complete_yes,
+	    count_exam,count_exam_pass_yes,
+	    percent_train_complete,count_train_user ,
+	    count_course,count_question ,
+	    total_class_hour, average_person_class_hour,
+	    total_year_class_hour,average_year_class_hour,
+	    oper_user,oper_time
+	  from company_tj where company_id = #{companyId}
+  </select>
+
+	<sql id="baseColumn">
+		company_id,company_name,count_project,count_user,count_train,count_train_complete_yes,count_exam,count_exam_pass_yes,percent_train_complete,average_year_class_hour,count_train_user,count_course,count_question,total_class_hour,average_person_class_hour,total_year_class_hour,oper_user,oper_time
+	</sql>
+
+	<select id="selectList" parameterType="java.util.Map" resultMap="companyTjMap">
+		select
+		<include refid="baseColumn"/>
+		FROM company_tj
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				and company_name = #{companyName}
+			</if>
+			<if test="companyIds !=null and companyIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="companyIds" separator="or" open="(" close=")">
+					company_id = #{item}
+				</foreach>
+			</if>
+		</trim>
+		order by create_time desc
+		<if test="startNum != null and endNum != null">
+			<include refid="CommonMapper.mysqlPage" />
+		</if>
+	</select>
+
+	<select id="selectTotal" parameterType="java.util.Map" resultMap="companyTjMap">
+		select
+			company_id,company_name,
+			sum(count_project) count_project,
+		sum(count_user) count_user,
+		sum(count_train) count_train,
+		sum(count_train_complete_yes) count_train_complete_yes,
+		sum(count_exam) count_exam,
+		sum(count_exam_pass_yes) count_exam_pass_yes,
+		sum(percent_train_complete) percent_train_complete,
+		average_year_class_hour,
+		sum(count_train_user) count_train_user,
+		sum(count_course) count_course,
+		sum(count_question) count_question,
+		sum(total_class_hour) total_class_hour,
+		average_person_class_hour,
+		sum(total_year_class_hour) total_year_class_hour,
+			oper_user,oper_time
+		FROM company_tj
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				and company_name like #{companyName}
+			</if>
+			<if test="companyIds !=null and companyIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="companyIds" separator="or" open="(" close=")">
+					company_id = #{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM company_tj
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				and company_name = #{companyName}
+			</if>
+			<if test="companyIds !=null and companyIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="companyIds" separator="or" open="(" close=")">
+					company_id = #{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+</mapper>

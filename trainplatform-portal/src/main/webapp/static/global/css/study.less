@@ -1,0 +1,295 @@
+@charset "utf-8";
+@bg:#f5f7fa;
+@main_color:#00b8c7;
+@play_list_color:#999;
+@play_list_pdt:44px;
+@play_list_width:320px;
+*{
+  padding:0;
+  margin:0;
+}
+body,html{
+  height:100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.container{
+  font-size:14px;
+  height:100%;
+  overflow: hidden;
+  position: relative;
+  background: url("../images/courseLearn_bg.jpg") repeat-x center center;
+  background-size:100% 100%;
+  color : #fff;
+  > .header {
+    height:60px;
+    background:@bg;
+    line-height:30px;
+    padding-top:15px;
+    > div,> h1{
+      padding:0 10px;
+    }
+    > h1{
+      font-size:20px;
+      font-weight:normal;
+    }
+    > small{
+      font-size:14px;
+    }
+    > div{
+      color:#999;
+      cursor: default;
+      position: relative;
+      &:hover{
+        color:#fff;
+      }
+      > .intro{
+        z-index:1000;
+        line-height:20px;
+        right:10px;
+        top:30px;
+        padding:10px;
+        width:@play_list_width;
+        display: none;
+        position: absolute;
+        background:#fff;
+        color:#444;
+      }
+    }
+
+  }
+  > .body{
+    position: absolute;
+    z-index:100;
+    top:0;
+    bottom:0;
+    left:0;
+    right:@play_list_width;
+    .video_box{
+      position: absolute;
+      bottom:80px;
+      top:90px;
+      left:20px;
+      right:20px;
+      z-index:101;
+    }
+
+
+  }
+  .play_list{
+    z-index:100;
+    padding-top:@play_list_pdt;
+    -webkit-box-shadow:0px 1px 8px #333;
+    -moz-box-shadow:0px 1px 8px #333;
+    box-shadow:0px 1px 8px #333;
+    position: absolute;
+    right:0;
+    top:0;bottom:0;
+    background:@bg;
+    width:320px;
+    /*方向*/
+    .addr{
+      cursor: pointer;
+      position: absolute;
+      border-radius:2px 0 0 2px;
+      text-align:center;
+      line-height:24px;
+      z-index:102;
+      width:23px;
+      left:-23px;
+      top:10px;
+      background:#d2d5da;
+      > span{
+        font-size: 16px;
+        color: #666;
+      }
+    }
+    > ul{
+      color:@play_list_color;
+      height:@play_list_pdt;
+      line-height:@play_list_pdt;
+      position: absolute;
+      top:0;
+      width:100%;
+      background:url("../images/toolbar_tab_bg.png") repeat-x;
+      li{
+        cursor: pointer;
+        color:#666;
+        &.active span{
+          color:#fff;
+          height:26px;
+          width:57px;
+          display: inline-block;
+          line-height:26px;
+          margin-top:9px;
+          text-align:center;
+          background:url("../images/pos_tab_btn_bg.png") no-repeat;
+        }
+        float: left;
+        width:50%;
+        text-align:center;
+      }
+    }
+  }
+  .show_list{
+    height:100%;
+    background:#f5f7fa;
+    > div{
+      display: none;
+      &.active{
+        display: block;
+      }
+    }
+    .empty{
+      background:url('../images/empty.png') no-repeat center center;
+      color:#666;
+      height: 200px;
+      text-align:center;
+      line-height: 60px;
+    }
+    li{
+      a{
+        transition: 0.1s;
+        color:#666;
+        width:100%;
+        height:100%;
+        padding:10px;
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        -ms-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        &:hover{
+          background: #3a3e4a;
+          color:#fff;
+        }
+      }
+      &.active{
+        a{
+          background: #3a3e4a;
+          color:#fff;
+        }
+      }
+    }
+  }
+}
+/*返回课程主页*/
+.back{
+  background:url('../images/toolbar_tab_bg.png') repeat-x center top;
+  opacity: 0.9;
+  width:66px;
+  height:30px;
+  padding-left:10px;
+  line-height:30px;
+  font-weight:bold;
+  border-radius: 0 3px 3px 0;
+  position: absolute;
+  top:10px;
+  z-index:101;
+  color:#666;
+  &:hover{
+    color:#666;
+    opacity: 1;
+  }
+  span{
+    font-size:16px;
+    margin-right: 5px;
+    font-weight: bold;
+  }
+}
+.head,.foot{
+  position: absolute;
+  left:20px;
+  right:20px;
+ }
+
+/*头部*/
+
+.head{
+  position: absolute;
+  left:20px;
+  right:20px;
+  background:url("../images/courseLearn_bg.jpg") repeat-x;
+  top:50px;
+  line-height:38px;
+  font-size:16px;
+  small{
+    background: #3a3e4a;
+    padding:2px 10px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: 1px 1px rgba(255,255,255,.3);
+    -moz-box-shadow: 1px 1px rgba(255,255,255,.3);
+    box-shadow: 1px 1px rgba(255,255,255,.3);
+    display: inline-block;
+  }
+}
+
+/*尾部*/
+.foot{
+  background:#000;
+  bottom:40px;
+  padding:0 20px;
+  z-index:102;
+  li{
+    float: left;
+    line-height:40px;
+    color:#fff;
+    a{
+      color:#fff;
+      height:100%;
+      padding:0 20px;
+      display: block;
+      &:hover{
+        background:#252525;
+      }
+    }
+    .info{
+      background: #f1f2f3;
+      line-height:22px;
+      color:#1d1d1d;
+      padding:15px;
+      border:1px solid #babecb;
+      width:300px;
+      left:0;
+      bottom:40px;
+      position: absolute;
+      display: none;
+    }
+  }
+}
+.toggle{
+  position: absolute;
+  width:60px;
+  height:32px;
+  left:160px;
+  z-index:101;
+  display: none;
+  &.prev{
+    top:0;
+    background:url(../images/study_next.png) -3px -9px no-repeat;
+    &:hover{
+      background-position:-3px -51px ;
+    }
+  }
+  &.next{
+    bottom:0;
+    background:url(../images/study_next.png) -66px -6px no-repeat;
+    &:hover{
+      background-position:-66px -48px ;
+    }
+  }
+}
+.study_border{
+  height:100%;
+  width:4px;
+  z-index:98;
+  border-right:1px solid #76767a;
+  background:#333746;
+  position: absolute;
+  left:190px;
+  display: none;
+}

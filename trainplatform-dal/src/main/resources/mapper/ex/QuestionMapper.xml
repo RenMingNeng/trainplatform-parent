@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.QuestionMapper">
+
+    <resultMap id="questionMap" type="com.bossien.train.domain.Question">
+        <id column="intId" property="intId"></id>
+        <result column="varNo" property="varNo"></result>
+        <result column="varTitle" property="varTitle"></result>
+        <result column="varContent" property="varContent"></result>
+        <result column="content" property="varContent"></result>
+        <result column="chrCategory" property="chrCategory"></result>
+        <result column="chrType" property="chrType"></result>
+        <result column="intDifficult" property="intDifficult"></result>
+        <result column="chrValid" property="chrValid"></result>
+        <result column="varAnswer" property="varAnswer"></result>
+        <result column="varAnswerDesc" property="varAnswerDesc"></result>
+        <result column="varSource" property="varSource"></result>
+        <result column="varAnalysis" property="varAnalysis"></result>
+        <result column="varExamPoint" property="varExamPoint"></result>
+        <result column="varCreateUser" property="varCreateUser"></result>
+        <result column="datCreateDate" property="datCreateDate"></result>
+        <result column="varOperUser" property="varOperUser"></result>
+        <result column="datOperDate" property="datOperDate"></result>
+    </resultMap>
+    <sql id="baseColumn">
+		intId,varNo,varTitle,varContent,chrCategory,chrType,intDifficult,chrValid,varAnswer,varAnswerDesc,varSource,
+		varAnalysis,varExamPoint,varCreateUser,datCreateDate,varOperUser,datOperDate
+	</sql>
+    <select id="selectList" parameterType="java.util.Map" resultMap="questionMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ex_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intIds !=null and intIds.size() != 0">
+                and intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+            <if test="chrType !=null and chrType !=''">
+                and chrType = #{chrType}
+            </if>
+            <if test="chrValid !=null and chrValid !=''">
+                and chrValid = #{chrValid}
+            </if>
+        </trim>
+        order by chrType
+    </select>
+
+    <select id="selectOne" parameterType="com.bossien.train.domain.Question" resultMap="questionMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ex_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId !=null and intId !=''">
+                intId = #{intId}
+            </if>
+        </trim>
+
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="questionMap">
+        select
+        intId
+        FROM ex_question
+        where intId = #{intId}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(intId) FROM ex_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intIds !=null and intIds !=''">
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="OR" close=")">
+                    intId = #{intIds}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.Question">
+        insert into ex_question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="varNo != null and varNo != ''">
+                varNo,
+            </if>
+            <if test="varTitle != null and varTitle != ''">
+                varTitle,
+            </if>
+            <if test="chrCategory != null and chrCategory != ''">
+                chrCategory,
+            </if>
+            <if test="chrType != null and chrType != ''">
+                chrType,
+            </if>
+            <if test="intDifficult != null and intDifficult != ''">
+                intDifficult,
+            </if>
+            <if test="chrValid != null and chrValid != ''">
+                chrValid,
+            </if>
+            <if test="varAnswer != null and varAnswer != ''">
+                varAnswer,
+            </if>
+            <if test="varAnswerDesc != null and varAnswerDesc != ''">
+                varAnswerDesc,
+            </if>
+            <if test="varSource != null and varSource != ''">
+                varSource,
+            </if>
+            <if test="varExamPoint != null and varExamPoint != ''">
+                varExamPoint,
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser,
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate,
+            </if>
+            <if test="varContent != null and varContent != ''">
+                varContent,
+            </if>
+            <if test="varAnalysis != null and varAnalysis != ''">
+                varAnalysis,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="varNo != null and varNo != ''">
+                #{varNo},
+            </if>
+            <if test="varTitle != null and varTitle != ''">
+                #{varTitle},
+            </if>
+            <if test="chrCategory != null and chrCategory != ''">
+                #{chrCategory},
+            </if>
+            <if test="chrType != null and chrType != ''">
+                #{chrType},
+            </if>
+            <if test="intDifficult != null and intDifficult != ''">
+                #{intDifficult},
+            </if>
+            <if test="chrValid != null and chrValid != ''">
+                #{chrValid},
+            </if>
+            <if test="varAnswer != null and varAnswer != ''">
+                #{varAnswer},
+            </if>
+            <if test="varAnswerDesc != null and varAnswerDesc != ''">
+                #{varAnswerDesc},
+            </if>
+            <if test="varSource != null and varSource != ''">
+                #{varSource},
+            </if>
+            <if test="varExamPoint != null and varExamPoint != ''">
+                #{varExamPoint},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+            <if test="varContent != null and varContent != ''">
+                #{varContent},
+            </if>
+            <if test="varAnalysis != null and varAnalysis != ''">
+                #{varAnalysis},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bossien.train.domain.Question">
+        update ex_question
+        <set>
+            <if test="varNo != null and varNo != ''">
+                varNo = #{varNo},
+            </if>
+            <if test="varTitle != null and varTitle != ''">
+                varTitle = #{varTitle},
+            </if>
+            <if test="chrCategory != null and chrCategory != ''">
+                chrCategory = #{chrCategory},
+            </if>
+            <if test="chrType != null and chrType != ''">
+                chrType = #{chrType},
+            </if>
+            <if test="intDifficult != null and intDifficult != ''">
+                intDifficult = #{intDifficult},
+            </if>
+            <if test="chrValid != null and chrValid != ''">
+                chrValid = #{chrValid},
+            </if>
+            <if test="varAnswer != null and varAnswer != ''">
+                varAnswer = #{varAnswer},
+            </if>
+            <if test="varAnswerDesc != null and varAnswerDesc != ''">
+                varAnswerDesc = #{varAnswerDesc},
+            </if>
+            <if test="varSource != null and varSource != ''">
+                varSource = #{varSource},
+            </if>
+            <if test="varExamPoint != null and varExamPoint != ''">
+                varExamPoint = #{varExamPoint},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate = #{datOperDate},
+            </if>
+            <if test="varContent != null and varContent != ''">
+                varContent = #{varContent},
+            </if>
+            <if test="varAnalysis != null and varAnalysis != ''">
+                varAnalysis = #{varAnalysis},
+            </if>
+        </set>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+    </update>
+    <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ex_question (intId, varNo, varTitle,
+        chrCategory, chrType, intDifficult,
+        intImportant, varIndustry, chrValid,
+        varAnswer, varAnswerDesc, varSource,
+        varExamPoint, varCreateUser, datCreateDate,
+        varOperUser, datOperDate, varContent,
+        varAnalysis)
+        values
+
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+               (#{item.intId,jdbcType=BIGINT},
+                #{item.varNo,jdbcType=VARCHAR},
+                #{item.varTitle,jdbcType=VARCHAR},
+                #{item.chrCategory,jdbcType=CHAR},
+                #{item.chrType,jdbcType=CHAR},
+                #{item.intDifficult,jdbcType=INTEGER},
+                #{item.intImportant,jdbcType=INTEGER},
+                #{item.varIndustry,jdbcType=VARCHAR},
+                #{item.chrValid,jdbcType=CHAR},
+                #{item.varAnswer,jdbcType=VARCHAR},
+                #{item.varAnswerDesc,jdbcType=VARCHAR},
+                #{item.varSource,jdbcType=VARCHAR},
+                #{item.varExamPoint,jdbcType=VARCHAR},
+                #{item.varCreateUser,jdbcType=VARCHAR},
+                #{item.datCreateDate,jdbcType=TIMESTAMP},
+                #{item.varOperUser,jdbcType=VARCHAR},
+                #{item.datOperDate,jdbcType=TIMESTAMP},
+                #{item.varContent,jdbcType=LONGVARCHAR},
+                #{item.varAnalysis,jdbcType=LONGVARCHAR})
+            </foreach>
+        </if>
+    </insert>
+    <!--批量修改-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ex_question
+            <set>
+                <if test="item.varNo != null and item.varNo != ''">
+                    varNo = #{item.varNo},
+                </if>
+                <if test="item.varTitle != null and item.varTitle != ''">
+                    varTitle = #{item.varTitle},
+                </if>
+                <if test="item.chrCategory != null and item.chrCategory != ''">
+                    chrCategory = #{item.chrCategory},
+                </if>
+                <if test="item.chrType != null and item.chrType != ''">
+                    chrType = #{item.chrType},
+                </if>
+                <if test="item.intDifficult != null and item.intDifficult != ''">
+                    intDifficult = #{item.intDifficult},
+                </if>
+                <if test="item.chrValid != null and item.chrValid != ''">
+                    chrValid = #{item.chrValid},
+                </if>
+                <if test="item.varAnswer != null and item.varAnswer != ''">
+                    varAnswer = #{item.varAnswer},
+                </if>
+                <if test="item.varAnswerDesc != null and item.varAnswerDesc != ''">
+                    varAnswerDesc = #{item.varAnswerDesc},
+                </if>
+                <if test="item.varSource != null and item.varSource != ''">
+                    varSource = #{item.varSource},
+                </if>
+                <if test="item.varExamPoint != null and item.varExamPoint != ''">
+                    varExamPoint = #{item.varExamPoint},
+                </if>
+                <if test="item.varCreateUser != null and item.varCreateUser != ''">
+                    varCreateUser = #{item.varCreateUser},
+                </if>
+                <if test="item.datCreateDate != null and item.datCreateDate != ''">
+                    datCreateDate = #{item.datCreateDate},
+                </if>
+                <if test="item.varOperUser != null and item.varOperUser != ''">
+                    varOperUser = #{item.varOperUser},
+                </if>
+                <if test="item.datOperDate != null and item.datOperDate != ''">
+                    datOperDate = #{item.datOperDate},
+                </if>
+                <if test="item.varContent != null and item.varContent != ''">
+                    varContent = #{item.varContent},
+                </if>
+                <if test="item.varAnalysis != null and item.varAnalysis != ''">
+                    varAnalysis = #{item.varAnalysis},
+                </if>
+            </set>
+            where intId = #{item.intId}
+        </foreach>
+
+    </update>
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ex_question
+        where intId =  #{intQuestionId}
+    </delete>
+
+    <!--删除-->
+    <delete id="deleteByBatch" parameterType="java.util.Map">
+        delete from ex_question
+        where intId in
+        <foreach item="intId" index="index" collection="questionId" open="(" separator="," close=")">
+            #{intId}
+        </foreach>
+    </delete>
+    <select id="selectQuestionsTypeCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select
+        IFNULL(COUNT(chrType),0) AS typeCount
+        FROM ex_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="ids !=null and ids.size > 0">
+                AND intId IN
+                <foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+                    #{ids}
+                </foreach>
+            </if>
+        </trim>
+        GROUP BY chrType
+    </select>
+
+    <select id="selectTypeCount" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        IFNULL(SUM(t1.dan), 0) AS singleAllCount,
+        IFNULL(SUM(t1.duo), 0) AS manyAllCount,
+        IFNULL(SUM(t1.pan), 0) AS judgeAllCount
+        FROM
+        (SELECT
+        chrType = '01' AS dan,
+        chrType = '02' AS duo,
+        chrType = '03' AS pan
+        FROM
+        ex_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="ids !=null and ids.size > 0">
+                AND intId IN
+                <foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+                    #{ids}
+                </foreach>
+            </if>
+        </trim>
+        ) t1
+    </select>
+</mapper>

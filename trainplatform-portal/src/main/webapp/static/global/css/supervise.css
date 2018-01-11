@@ -1,0 +1,67 @@
+
+.tree_list {
+    height: auto;
+}
+
+.tree_list .tree {
+    width: 300px;
+    padding-right: 0;
+}
+
+.tree_list .list {
+    margin-left: 310px;
+    overflow: hidden;
+}
+.radio-group {
+    margin:60px 0 30px;
+}
+.radio-group label {
+    margin-right: 15px;
+    padding:9px 17px;
+    color:#666666;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.radio-group label.active{
+    background: #ededed;
+    color:#000000;
+    font-weight:bold;
+}
+.radio-group label span{
+    display: inline-block;
+    margin:0 8px;
+    height:10px;
+    width:20px;
+    border-radius: 3px;
+    background: #30b0f9;
+}
+.radio-group label span.mark-1{
+    background: #43d81b;
+}
+.radio-group label span.mark-2{
+    background: #fed030;
+}
+.loading,.loading body{
+    height:100%;
+}
+.loading .load{
+    display: block;
+}
+input[type="radio"]{
+    height:0;
+    width:0;
+}
+.load{
+    position: fixed;
+    left:0;top:0;height:100%;width:100%;
+    display: none;z-index:10000000;
+    background:url("../js/layer/skin/default/loading-0.gif") no-repeat center center rgba(0,0,0,.3);
+}
+#container{
+    width:800px;
+    margin: 0 auto;
+    padding-top: 30px;
+    background: #fafafa;
+}
+

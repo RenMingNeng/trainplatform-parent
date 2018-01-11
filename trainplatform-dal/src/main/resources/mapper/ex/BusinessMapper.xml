@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.BusinessMapper">
+
+    <resultMap id="courseMap" type="com.bossien.train.domain.Business">
+        <id column="intId" property="intId"></id>
+        <result column="varCode" property="varCode"></result>
+        <result column="varName" property="varName"></result>
+        <result column="intPid" property="intPid"></result>
+        <result column="intOrder" property="intOrder"></result>
+        <result column="intLevel" property="intLevel"></result>
+        <result column="varCreateUser" property="varCreateUser"></result>
+        <result column="datCreateDate" property="datCreateDate"></result>
+        <result column="varOperUser" property="varOperUser"></result>
+        <result column="datOperDate" property="datOperDate"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        intId, varCode, varName, intPid, intOrder, intLevel, varCreateUser, datCreateDate, varOperUser, datOperDate
+    </sql>
+
+    <!-- mysql分页查询 -->
+    <sql id="mysqlPage">
+        <![CDATA[
+		    limit #{startNum},#{endNum}
+        ]]>
+    </sql>
+
+    <select id="selectAll" resultType="com.bossien.train.domain.Business">
+        SELECT intId, varCode, varName, intPid, intOrder, intLevel FROM ex_business order by intOrder
+    </select>
+
+</mapper>

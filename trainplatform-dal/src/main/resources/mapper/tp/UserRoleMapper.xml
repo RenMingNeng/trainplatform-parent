@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.UserRoleMapper">
+
+    <resultMap id="userRoleMap" type="com.bossien.train.domain.UserRole">
+        <id column="id" property="id"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="role_id" property="roleId"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+		id, user_id, role_id
+	</sql>
+
+    <select id="selectOne" parameterType="java.util.Map" resultMap="userRoleMap">
+        select
+        <include refid="baseColumn"/>
+        from user_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userId !=null and userId !='' ">
+                AND user_id = #{userId}
+            </if>
+            <if test="roleId !=null and roleId !='' ">
+                AND role_id = #{roleId}
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <select id="selectList" parameterType="java.util.Map" resultMap="userRoleMap">
+        select
+        <include refid="baseColumn"/>
+        from user_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userId !=null and userId !='' ">
+                AND user_id = #{userId}
+            </if>
+        </trim>
+        limit 4
+    </select>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.UserRole">
+		INSERT INTO user_role (
+		id, user_id, role_id, create_user,
+		create_date, oper_user,
+		oper_date
+		)
+		VALUES
+		(
+		#{id},#{userId},#{roleId},#{createUser},
+		#{createDate},#{operUser},
+		#{operDate}
+		)
+
+	</insert>
+
+    <!--用过用户id修改-->
+    <update id="update" parameterType="com.bossien.train.domain.UserRole">
+        update user_role
+        <trim prefix="set" prefixOverrides=",">
+            <if test="roleId !=null and roleId !=''">,role_id = #{roleId}</if>
+            <if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+            <if test="createDate !=null and createDate !=''">,create_date = #{createDate}</if>
+            <if test="operUser !=null and operUser !=''">,oper_user = #{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,oper_date = #{operDate}</if>
+        </trim>
+        where user_id = #{userId}
+    </update>
+
+
+    <!--根据账号删除和批量删除-->
+    <delete id="deleteByUserRole">
+        delete from user_role
+        where user_id IN
+        <foreach item="id" index="index" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="batchDelUserRole" parameterType="HashMap">
+        delete from user_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userIds !=null and userIds.size() > 0">
+                <foreach item="item" index="index" collection="userIds" open="(" separator="or" close=")">
+                    user_id= #{item}
+                </foreach>
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="delete" parameterType="com.bossien.train.domain.UserRole">
+        delete from user_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            user_id = #{userId}
+        </trim>
+    </delete>
+
+    <delete id="deleteByRoleId" parameterType="java.util.Map">
+        delete from user_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            user_id = #{userId}
+            AND role_id in
+            <foreach collection="roleId" separator="," close=")" open="(" index="index" item="roleId">
+                 #{roleId}
+            </foreach>
+        </trim>
+    </delete>
+
+</mapper>

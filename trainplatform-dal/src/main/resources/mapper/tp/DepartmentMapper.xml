@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.DepartmentMapper">
+
+	<resultMap id="departmentMap" type="com.bossien.train.domain.Department">
+		<id column="id" property="id"></id>
+		<result column="company_id" property="companyId"></result>
+		<result column="dept_name" property="deptName"></result>
+		<result column="director" property="director"></result>
+		<result column="parent_id" property="parentId"></result>
+		<result column="is_valid" property="isValid"></result>
+		<result column="order_num" property="orderNum"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="oper_time" property="operTime"></result>
+		<result column="oper_user" property="operUser"></result>
+	</resultMap>
+
+	<select id="selectByParams" parameterType="java.util.Map" resultType="com.bossien.train.domain.Department">
+		select
+		d.id as id,
+		d.dept_name as deptName,
+		d.director,
+		d.parent_id as parentId,
+		d.company_id as companyId,
+		d.order_num as orderNum,
+		d.is_valid as isValid
+		from department d
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				AND d.company_id = #{companyId}
+			</if>
+			<if test="id!=null and id !=''">
+				AND d.id=#{id}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND d.dept_name = #{deptName}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND d.is_valid = #{isValid}
+			</if>
+			<if test="parentId !=null and parentId !=''">
+				AND d.parent_id = #{parentId}
+			</if>
+		</trim>
+		order by d.create_time desc
+	</select>
+
+
+	<select id="selectCountByParams" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select
+		count(1)
+		from department d
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				AND d.company_id = #{companyId}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND d.dept_name like #{deptName}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND d.is_valid = #{isValid}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectAllDeptList" parameterType="java.util.Map" resultMap="departmentMap">
+		select
+		d.id as deptId,
+		d.dept_name as deptName,
+		d.director,
+		d.parent_id as parentId,
+		d.company_id as companyId
+		from department d
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				AND d.company_id = #{companyId}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND d.dept_name like #{deptName}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND d.is_valid = #{isValid}
+			</if>
+		</trim>
+		order by d.create_time desc
+	</select>
+
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT COUNT(id) FROM department
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="parentId != null and parentId != ''">
+				AND parent_id = #{parentId}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND dept_name like #{deptName}
+			</if>
+			<if test="companyId !=null and companyId !=''">
+				AND company_id = #{companyId}
+			</if>
+			<if test="search !=null and search !=''">
+				AND dept_name like #{search}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND is_valid = #{isValid}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectList" parameterType="java.util.Map" resultMap="departmentMap">
+		select
+		d.id,
+		d.dept_name,
+		d.director,
+		d.parent_id,
+		d.company_id
+		from department d
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="parentId != null and parentId != ''">
+				AND parent_id = #{parentId}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND d.dept_name like #{deptName}
+			</if>
+			<if test="companyId !=null and companyId !=''">
+				AND d.company_id = #{companyId}
+			</if>
+			<if test="search !=null and search !=''">
+				AND d.dept_name like #{search}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND is_valid = #{isValid}
+			</if>
+		</trim>
+		order by order_num asc
+		<if test="startNum != null and endNum != null">
+			<include refid="mysqlPage"/>
+		</if>
+	</select>
+
+	<update id="update" parameterType="com.bossien.train.domain.Department">
+		update department
+		<set>
+			<if test="companyId !=null and companyId !=''">
+				company_id = #{companyId},
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				dept_name = #{deptName},
+			</if>
+			<if test="director !=null and director !=''">
+				director = #{director},
+			</if>
+			<if test="parentId !=null and parentId !=''">
+				parent_id = #{parentId},
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				is_valid = #{isValid},
+			</if>
+			<if test="orderNum !=null and orderNum !=''">
+				order_num = #{orderNum},
+			</if>
+			<if test="createUser !=null and createUser !=''">
+				create_user = #{createUser},
+			</if>
+			<if test="createTime !=null and createTime !=''">
+				create_time = #{createTime},
+			</if>
+			<if test="operUser !=null and operUser !=''">
+				oper_user = #{operUser},
+			</if>
+			<if test="operTime !=null and operTime !=''">
+				oper_time = #{operTime},
+			</if>
+
+		</set>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+		</trim>
+	</update>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.Department">
+		insert into department (
+		id, company_id, dept_name, director, parent_id, is_valid,order_num,create_user, create_time,
+		oper_user, oper_time
+		)
+		values (
+		#{id}, #{companyId}, #{deptName}, #{director}, #{parentId}, #{isValid}, #{orderNum},
+		#{createUser}, #{createTime}, #{operUser}, #{operTime}
+		)
+	</insert>
+
+
+	<!--根据companyId查询部门-->
+	<select id="selectDepartmentByCompanyId" parameterType="java.util.Map" resultMap="departmentMap">
+		select
+			id,
+			dept_name as deptName,
+			parent_id as parentId,
+			company_id as companyId
+		from department
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				AND company_id=#{companyId}
+			</if>
+			<if test="deptName !=null and deptName !=''">
+				AND dept_name like  #{deptName}
+			</if>
+			<if test="parentId !=null and parentId !=''">
+				AND parent_id = #{parentId}
+			</if>
+			<if test="isValid !=null and isValid !=''">
+				AND is_valid = #{isValid}
+			</if>
+		</trim>
+		order by order_num asc
+	</select>
+
+	<!--根据userId查询部门名称-->
+	<select id="selectByUserId" parameterType="java.lang.String" resultType="java.lang.String">
+		select
+		   dept_name as deptName
+		from
+		   department
+	  WHERE
+	  	 id IN (
+	  	   SELECT
+	  	     department_id
+	  	   FROM
+	  	     user
+	  	   WHERE
+	  	     id = #{userId}
+	  	 )
+	</select>
+     <!--根据公司id和主键id查询单条-->
+	<select id="selectOne" parameterType="java.util.Map" resultMap="departmentMap">
+		SELECT
+		id,
+		company_id,dept_name,
+		parent_id,is_valid
+		from department
+		where id=#{id}  AND is_valid = #{isValid}
+	</select>
+
+    <select id="getMaxOrder" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT
+			(IFNULL(MAX(d.order_num), 0)) AS count
+		FROM
+			department d
+		WHERE
+			d.company_id = #{companyId}
+	</select>
+
+	<select id="getPreNode" parameterType="java.util.Map" resultMap="departmentMap">
+		SELECT
+		id,company_id,dept_name,parent_id,is_valid,order_num
+		FROM
+		department
+		WHERE
+		company_id = #{companyId}
+		AND parent_id = #{parentId}
+		AND order_num <![CDATA[<]]> #{orderNum}
+		ORDER BY
+		order_num DESC
+		LIMIT 1
+	</select>
+
+	<select id="getNextNode" parameterType="java.util.Map" resultMap="departmentMap">
+		SELECT
+		id,company_id,dept_name,parent_id,is_valid,order_num
+		FROM
+		department
+		WHERE
+		company_id = #{companyId}
+		AND parent_id = #{parentId}
+		AND order_num <![CDATA[>]]> #{orderNum}
+		ORDER BY
+		order_num
+		LIMIT 1
+	</select>
+
+	<update id="changeOrderNum" parameterType="java.util.Map">
+		update department as d1 join department as d2 on ( d1.id = #{departmentId1} and d2.id = #{departmentId2} ) or ( d1.id	= #{departmentId2} and d2.id = #{departmentId1} ) set d1.order_num = d2.order_num, d2.order_num = d1.order_num
+	</update>
+
+	<select id="getChildById" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT getDChiList ( #{id} ) FROM DUAL
+	</select>
+
+	<!-- mysql分页查询 -->
+	<sql id="mysqlPage">
+		<![CDATA[
+		    limit #{startNum},#{endNum}
+        ]]>
+	</sql>
+</mapper>

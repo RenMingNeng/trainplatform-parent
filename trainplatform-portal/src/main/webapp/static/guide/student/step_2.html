@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>引导页一</title>
+	<link rel="stylesheet" href="css/public.css">
+	<style>
+	body,.container{
+		height:1516px;
+	}
+	.bg{
+		background-image: url(images/index_2.png);
+	}
+	.guide-area{display: none;}
+	/*步骤1*/
+ 	.guide .guide-area1 > img{
+		top: 120px;
+		left: 3px;
+ 	}
+ 	.guide .guide-area1 > div{
+		top: 344px;
+		left: 434px;
+ 	}
+	/*步骤2*/
+	.guide .guide-area2 > img{
+		top: 330px;
+		left: 3px;
+	}
+	.guide .guide-area2 > div{
+		top: 386px;
+		left: 380px;
+	}
+	/*步骤3*/
+	.guide .guide-area3 > img{
+		top: 332px;
+		left: 618px;
+	}
+	.guide .guide-area3 > div{
+		left: 20px;
+		top: 398px;
+	}
+	/*步骤4*/
+	.guide .guide-area4 > img{
+		top: 551px;
+		left: 3px;
+	}
+	.guide .guide-area4 > div{
+		left: 197px;
+		top: 767px;
+	}
+	/*步骤5*/
+	.guide .guide-area5 > img{
+		top: 950px;
+		right: 5px;
+	}
+	.guide .guide-area5 > div{
+		right: 211px;
+		top: 965px;
+	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="bg">
+		</div>
+	</div>
+	<div class="guide">
+		<div class="guide-bg"></div>
+		<!--步骤1-->
+		<div class="guide-area guide-area1">
+			<img src="images/step_2.png"  alt="">
+			<div>
+				<div>
+					<img class="arrow arrow-top" src="images/arrowhead-top.png"  alt="">
+					这里展示的是统计信息
+				</div>
+				<div class="btn-group">
+					<a href="step_2.html" class="close">关闭</a>
+					<a href="step_1.html" class="perv">上一步</a>
+					<a href="javascript:;" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+		<!--步骤2-->
+		<div class="guide-area guide-area2">
+			<img src="images/step_3.png"  alt="">
+			<div>
+				<div>
+					<img class="arrow arrow" src="images/arrowhead.png"  alt="">
+					点击"在线学习"，进入学习界面，通过视频或文档进行学习
+				</div>
+				<div class="btn-group">
+					<a href="step_2.html" class="close">关闭</a>
+					<a href="javascript:;" class="perv">上一步</a>
+					<a href="javascript:;" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+		<!--步骤3-->
+		<div class="guide-area guide-area3">
+			<img src="images/step_4.png"  alt="">
+			<div>
+				<div>
+					点击"模拟考试"、"正式考试"可以进入考试界面，进行考试
+					<img class="arrow" src="images/arrowhead-right.png"  alt="">
+				</div>
+				<div class="btn-group">
+					<a href="step_2.html" class="close">关闭</a>
+					<a href="javascript:;" class="perv">上一步</a>
+					<a href="javascript:;" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+		<!--步骤4-->
+		<div class="guide-area guide-area4">
+			<img src="images/step_5.png"  alt="">
+			<div>
+				<div>
+					<img class="arrow arrow-top" src="images/arrowhead-top.png"  alt="">
+					点击"开始练习"或者专项练习中的一种，进入练习界面进行练习
+				</div>
+				<div class="btn-group">
+					<a href="step_2.html" class="close">关闭</a>
+					<a href="javascript:;" class="perv">上一步</a>
+					<a href="javascript:;" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+		<!--步骤5-->
+		<div class="guide-area guide-area5">
+			<img src="images/step_6.png"  alt="">
+			<div>
+				<div>
+					点击进入单个课程的视频、练习
+					<img class="arrow arrow-right" src="images/arrowhead-right.png"  alt="">
+				</div>
+				<div class="btn-group">
+					<a href="javascript:;" class="perv">上一步</a>
+					<a href="javascript:;" class="finish">完成</a>
+					<!--<label>
+						<input type="checkbox" id="guide"> 不再显示
+					</label>-->
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/public.js"></script>
+	<script>
+	$(function(){
+	    var num = -1;
+	    $('.next').click(next);
+        $('.perv').click(perv);
+        $('.next').eq(0).trigger('click');
+	    function perv(){
+	        num--;
+            var $img = $('.guide-area:eq(' + num + ') > img'),
+                scrollT;
+	        $('.guide-area').eq(num).fadeIn().siblings('.guide-area').hide();
+            scrollT = $img.offset().top;
+            $('html,body').animate({
+                'scrollTop' : scrollT - 100
+            },500);
+		}
+        function next(){
+            num++;
+            var $img = $('.guide-area:eq(' + num + ') > img'),
+                scrollT;
+            $('.guide-area').eq(num).fadeIn().siblings('.guide-area').hide();
+            scrollT = $img.offset().top;
+            $('html,body').animate({
+                  'scrollTop' : scrollT - 100
+		  	},500);
+        }
+		/*$(document.body).animate({
+			'scrollTop' : '500px'
+		},500);*/
+	})
+	</script>
+</body>
+</html>

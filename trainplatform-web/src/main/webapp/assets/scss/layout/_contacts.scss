@@ -1,0 +1,37 @@
+.contacts-content{
+  min-width: 1300px - 220px - 220px - 54px + 220px;
+  margin-right: 27px;
+  .operation{
+    width: 232px!important;
+    float: left!important;
+  }
+  .sms-table .title div:nth-child(1),.sms-table .title div:nth-child(2),.sms-table .title div:nth-child(3),.sms-table .title div:nth-child(4){
+    width: calc(25% - 58px) !important;
+    float: left;
+    padding-top: 0 !important;
+  }
+  .sms-table .title div{
+    line-height: 30px;
+    padding-left: 20px;
+    border-right: 1px solid #eaeaea;
+  }
+  .sms-table .title div:nth-child(5){
+    border-left:none;
+  }
+  .sms-table .tr:hover{
+    background: #ecedf2 !important;
+  }
+}
+.sub-nav-title-contacts{
+  position: relative;
+}
+.sub-nav-title-contacts i{
+  width: 20px;
+  height:20px;
+  display: inline-block;
+  background: url("#{$imgPath}icon_plus.png") center no-repeat;
+  background-size: contain;
+  position: absolute;
+  right: 20px;
+  cursor: pointer;
+}

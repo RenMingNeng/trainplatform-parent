@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-Type" content="text/html;charset=utf-8">
+	<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="highcharts.js"></script>
+	<script type="text/javascript" src="highcharts-3d.js"></script>
+	<script type="text/javascript" src="exporting.js"></script>
+	<style type="text/css">
+		.title{
+			background:RGB(155,234,226);padding:5px 5px;margin: 3px;
+		}
+
+		.testBorder{
+			border:2px solid red;
+		}
+
+		.button{
+			background: RGB(39,212,119);margin: 5px;padding: 5px;
+			width: auto;border-radius:5px;text-align: center;
+		}
+
+	</style>
+	<script>
+	/*
+	 *	隐藏所有内容区
+	 */
+	var hideContent = function(){
+		$(".content").each(function(index){
+			$(this).hide("slow");
+		});
+	}
+	var bindTitle = function(){
+		$(".title").each(function(){
+			$(this).click(function(){
+				hideContent();
+				$(this).next().show("slow");
+			});
+		});
+	}
+	//数据
+	//显示数据
+    var data1 = [{
+	        name: 'Jane',
+	        data: [["一",50.5], ["二",40.8], ["三",64.5],["四",100],["五",10],["六",88],["七",75]]
+	    }];
+    var data2 = [{
+	        name: 'Jane',
+	        data: [["一",50.5], ["二",40.8], 64.5,100,10,88,75]
+	    }, {
+	        name: 'John',
+	        data: [55, 27, 83,70,{name:'',color:'#FF00FF',y:90},67,88]
+	    }];
+	var data = [{
+	        name: 'Jane',
+	        data: [["一",50.5], ["二",40.8], 64.5,100,10,88,75]
+	    }, {
+	        name: 'John',
+	        data: [55, 27, 83,70,{name:'',color:'#FF00FF',y:90},67,88]
+	    },{
+	    	name:'sam',
+	    	data:[68,58,93,78,10,5,44]
+	    }];
+	var data4 = [23, 45, 65, 56,89,23,12];
+	//绘图数据
+	var option={
+		chart:{
+	    	renderTo:'container',
+	    	type:'column',
+	    	zoomType:"xy"			//用鼠标选中一段区域，可对该区域进行
+	    },
+	    title: {
+	        text: "测试图"
+	    },
+	    subtitle:{
+	    	text:"展示用法"
+	    },
+	    xAxis: {
+	        categories: ['一', '二', '三','四','五','六','七'], 
+	        tickWidth:1,//刻度的宽度  
+	        lineWidth :1,//自定义x轴宽度
+	        gridLineWidth :1,//默认是0，即在图上没有纵轴间隔线  
+	        lineColor : '#990000',
+	        oppsite : true
+	    },
+	    yAxis: {
+	        title: {
+	            text: 'something'
+	        },
+	        lineWidth :10,//自定义x轴宽度 
+	    },
+	    credits:{
+	        enabled:false
+	    },
+	    plotOptions:{
+	    	column:{
+	    		pointPadding:0,
+	    		borderWidth:0
+	    	},
+	    	pie: {
+				allowPointSelect: true, //选中某块区域是否允许分离
+				cursor: 'pointer',
+				dataLabels: {
+					enabled: false //是否直接呈现数据 也就是外围显示数据与否
+				},
+				depth: 35,
+				showInLegend: true
+			}
+	    },
+	    tooltip:{
+	    	enabled:true
+	    },
+	    series: data,
+	    dataLabels: {
+	        enabled: true,
+	        formatter: function () {
+	            return Highcharts.numberFormat(this.y / 1000, 0, ',') + 'k';
+	        },
+	        style: {
+	            color: '#FFFFFF',
+	            fontWeight: 'bold',
+	            textShadow: '0px 0px 3px black'
+	        }
+	    },
+	    pointPadding: 0     
+	}
+
+	//图片对象
+	var chartObj;
+
+	//页面加载完成后，执行的方法
+    $(function () {
+    	option.series[2].data = data4;
+    	console.log(option);
+    	//初始化时，默认画出一组数据
+    	drawImage();
+	    //隐藏设置区内容
+		hideContent();
+		//给标题绑定事件
+		bindTitle();
+	    // chartObj.setSeries(data);
+	    // chartObj.series[1].setData([10,23,45,67,89,57,35]);
+	    // chartObj.series[0].hide();
+
+	});
+
+	//绘制图表方法，每次绘制完成后，将绘制的图标存入变量chartObj
+    var drawImage = function(){
+    	chartObj = new Highcharts.Chart(option);
+    }
+
+    //更换图表类型，通过修改json对象option的值来修改图表，修改之后绘制图表
+	var changeType = function(){
+    	var typeName = $("#typeName").val();
+    	option.chart.type = typeName;
+    	drawImage();
+    }
+
+    //更换图表的标题，可以通过修改json对象option来修改，也可以通过highcharts自带的方法修改
+    var changeTitle = function(){
+    	var titleTemp = $("#changeTitle").val();
+    	var subtitleTemp = $("#changeSubTitle").val();
+    	if(titleTemp != "" && titleTemp != null && subtitleTemp != "" && subtitleTemp != null){
+    		chartObj.setTitle({
+    			text:titleTemp
+    		},{
+    			text:subtitleTemp
+    		});
+    	}else {
+    		if(titleTemp != "" && titleTemp != null){
+    			option.title.text = titleTemp;
+    		}else if(subtitleTemp != "" && subtitleTemp != null){
+    			option.subtitle.text = subtitleTemp;
+    		}
+    		drawImage();
+    	}
+    }
+
+    //数据的格式可以参考data对象，在数据中，可以设置各种数据的属性
+    var changeData = function(num){
+    	if(num == 1){
+    		option.series = data1;
+    	}else if(num == 2){
+    		option.series = data2;
+    	}else if(num == 3){
+    		option.series = data;
+    	}
+    	drawImage();
+    }
+
+    //控制标签显隐
+    var legendFlag = true;
+    var showOrHideLegend = function(){
+    	if(!option.legend){
+    		option.legend = {};
+    	}
+    	if(legendFlag){
+    		option.legend.enabled = false;
+    		legendFlag = false;
+    		$("#legend").html("显示标签");
+    	}else{
+    		option.legend.enabled = true;
+    		legendFlag = true;
+    		$("#legend").html("隐藏标签");
+    	}
+    	drawImage();
+    }
+
+    /*
+     * 改变标签的位置
+     */
+    var changeLegend = function(position){
+    	if(!option.legend){
+    		option.legend = {};
+    	}
+    	option.legend.align = position;
+    	drawImage();
+    }
+
+    /*
+     * 控制版本信息显隐
+     */
+    var creditFlag = false;
+    var showOrHideCredits = function(){
+    	if(!option.credits){
+    		option.credits = {}
+    	}
+    	if (creditFlag) {
+    		option.credits.enabled = false;
+    		creditFlag = false;
+    		$("#credits").html("显示版本信息");
+    	}else{
+    		option.credits.enabled = true;
+    		creditFlag = true;
+    		$("#credits").html("隐藏版本信息");
+    	}
+    	drawImage();
+    }
+
+    /*
+     *	控制版本设置
+     */
+     var changeCredits = function(){
+     	if(!option.credits){
+    		option.credits = {}
+    	}
+     	var creditsText = $("#creditsText").val();
+    	var creditsHref = $("#creditsHref").val();
+		if(creditsText != "" && creditsText != null){
+			option.credits.text = creditsText;
+		}else if(creditsHref != "" && creditsHref != null){
+			if (creditsHref.indexOf("www")>=0) {
+				creditsHrefTemp = "http://" +　creditsHref;
+			}
+			option.credits.href = creditsHrefTemp;
+		}
+		drawImage();
+     }
+
+    /*
+     *	修改X轴坐标值
+     */
+    var changeCategories = function(){
+    	var categories = $("#categories").val();
+    	console.log(categories);
+    	var categoriesArray = categories.split(" ");
+    	console.log(categoriesArray);
+    	option.xAxis.categories = categoriesArray;
+    	drawImage();
+    }
+
+  </script>
+</head>
+<body>
+	<div style="width:100%;margin:20px auto;text-align:center;"><b>Highcharts各种图表展示</b></div>
+	<div id="control" style="width:200px;float:left;">
+		<!-- 第一项：更换图表样式 -->
+		<div id="ct1">
+			<div class="title">
+				<span>更换图表样式</span><br/>
+			</div>
+			<div class="content">
+				<select onchange="changeType();" id="typeName">改变图表样式
+					<option value="line">折线图</option>
+					<option value="spline">曲线图</option>
+					<option value="column" selected>柱状图</option>
+					<option value="bar">条形图</option>
+					<option value="scatter">点状图</option>
+					<option value="pie">饼状图</option>
+					<option value="area">面积图</option>
+				</select>
+			</div>
+		</div>
+		<!-- 第二项：更换标题 -->
+		<div id="ct2">
+			<div class="title">
+				<span>更换标题</span><br/>
+			</div>
+			<div class="content">
+				主标题：<br/><input type="text" id="changeTitle"/><br/>
+				副标题：<br/><input type="text" id="changeSubTitle"/><br/>
+				<button onclick="changeTitle();">确定更换标题</button>
+			</div>
+		</div>
+		<!-- 第三项：更换数据 -->
+		<div id="ct3">
+			<div class="title">
+				<span>更换数据</span><br/>
+			</div>
+			<div class="content">
+				<button onclick="changeData(1);">更换为一条数据</button><br/>
+				<button onclick="changeData(2);">更换为两条数据</button><br/>
+				<button onclick="changeData(3);">更换为三条数据</button><br/>
+				<span>ps:可以通过点击图表底部的数据项来控制数据显隐</span><br/>
+				<span>ps:可以通过修改文件中data的值来修改数据</span>
+			</div>
+		</div>
+		<!-- 第四项：更换底部标签 -->
+		<div id="ct4">
+			<div class="title">
+				<span>设置底部标签位置</span><br/>
+			</div>
+			<div class="content">
+				<span>是否显示底部标签：</span><br/>
+				<div class="button" onclick="showOrHideLegend();"><span id="legend">隐藏标签</span></div>
+				<hr style="width:auto;"/>
+				<span>标签放置在图表的位置：</span><br/>
+				<button onclick="changeLegend('left');">图表左侧</button><br/>
+				<button onclick="changeLegend('center');">图表底部</button><br/>
+				<button onclick="changeLegend('right');">图表右侧</button><br/>
+			</div>
+		</div>
+		<!-- 第五项：更换版本设置 -->
+		<div id="ct5">
+			<div class="title">
+				<span>设置版本</span><br/>
+			</div>
+			<div class="content">
+				<span>是否隐藏版本信息：</span><br/>
+				<div class="button" onclick="showOrHideCredits();"><span id="credits">显示版本信息</span></div>
+				<hr style="width:auto;"/>
+				<span>设置内容</span><br/>
+				<input type="text" id="creditsText"/><br/>
+				<span>设置路径</span><br/>
+				<input type="text" id="creditsHref" /><br/>
+				<button onclick="changeCredits();">确定</button><br/>
+			</div>
+		</div>
+		<!-- 第六项：更换X轴标签 -->
+		<div id="ct6">
+			<div class="title">
+				<span>设置X轴</span><br/>
+			</div>
+			<div class="content">
+				<span>设置X轴坐标<br/>以空格（一格）隔开</span><br/>
+				<input type="text" id="categories"/><br/>
+				<button onclick="changeCategories();">确定</button><br/>
+			</div>
+		</div>
+	</div>
+	<div id="content" style="border:3px solid black;margin-left:200px;">
+		<div id="container" style="min-width:700px;height:500px;"></div>	
+	</div>
+</body>
+</html>

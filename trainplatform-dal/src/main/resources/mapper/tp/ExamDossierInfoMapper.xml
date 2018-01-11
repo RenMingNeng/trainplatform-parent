@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExamDossierInfoMapper">
+
+	<resultMap id="examDossierInfoMap" type="com.bossien.train.domain.ExamDossierInfo">
+		<result column="project_id" property="projectId"></result>
+		<result column="yet_exam_count" property="yetExamCount"></result>
+		<result column="not_exam_count" property="notExamCount"></result>
+		<result column="qualified_count" property="qualifiedCount"></result>
+		<result column="unqualified_count" property="unqualifiedCount"></result>
+		<result column="exam_pass_rate" property="examPassRate"></result>
+	</resultMap>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ExamDossierInfo">
+		insert into exam_dossier_info	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="projectId !=null and projectId !=''">,project_id</if>
+			<if test="yetExamCount !=null and yetExamCount !=''">,yet_exam_count</if>
+			<if test="notExamCount !=null and notExamCount !=''">,not_exam_count</if>
+			<if test="qualifiedCount !=null and qualifiedCount !=''">,qualified_count</if>
+			<if test="unqualifiedCount !=null and unqualifiedCount !=''">,unqualified_count</if>
+			<if test="examPassRate !=null and examPassRate !=''">,exam_pass_rate</if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+			<if test="yetExamCount !=null and yetExamCount !=''"> ,#{yetExamCount} </if>
+			<if test="notExamCount !=null and notExamCount !=''"> ,#{notExamCount} </if>
+			<if test="qualifiedCount !=null and qualifiedCount !=''"> ,#{qualifiedCount} </if>
+			<if test="unqualifiedCount !=null and unqualifiedCount !=''"> ,#{unqualifiedCount} </if>
+			<if test="examPassRate !=null and examPassRate !=''"> ,#{examPassRate} </if>
+		</trim>
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into  exam_dossier_info (
+			project_id, not_exam_count,unqualified_count
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+				(
+					#{item.projectId},#{item.notExamCount}, #{item.unqualifiedCount}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE FROM exam_dossier_info WHERE project_id = #{projectId}
+	</delete>
+
+	<sql id="baseColumn">
+	  	project_id,yet_exam_count,not_exam_count,qualified_count,unqualified_count,exam_pass_rate
+	</sql>
+
+	<update id="update" parameterType="com.bossien.train.domain.ExamDossierInfo">
+		update exam_dossier_info
+		<trim prefix="set" prefixOverrides=",">
+			<if test="yetExamCount !=null"> ,yet_exam_count = #{yetExamCount} </if>
+			<if test="notExamCount !=null"> ,not_exam_count = #{notExamCount} </if>
+			<if test="qualifiedCount !=null"> ,qualified_count = #{qualifiedCount} </if>
+			<if test="unqualifiedCount !=null"> ,unqualified_count = #{unqualifiedCount} </if>
+			<if test="examPassRate !=null and examPassRate !=''"> ,exam_pass_rate = #{examPassRate} </if>
+		</trim>
+		where project_id=#{projectId}
+	</update>
+
+	<select id="selectOne" parameterType="java.lang.String" resultMap="examDossierInfoMap">
+		select <include refid="baseColumn"/>
+		FROM exam_dossier_info where project_id = #{projectId}
+		limit 1
+	</select>
+</mapper>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                            http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/cache
+                            http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+    <!-- 开启缓存注解 -->
+    <cache:annotation-driven/>
+
+    <!-- 自定义CacheManager，实现缓存有效期可配置 -->
+    <bean name="cacheManager" class="com.bossien.framework.cache.ExtendedRedisCacheManager">
+        <constructor-arg name="redisOperations" ref="redisTemplate"/>
+        <!-- 默认缓存名字 -->
+        <property name="defaultCacheName" value="cache"/>
+        <!-- 是否在容器启动时初始化 -->
+        <property name="loadRemoteCachesOnStartup" value="true"/>
+        <!-- 是否使用前缀 -->
+        <property name="usePrefix" value="true"/>
+        <!-- 前缀命名，仅当usePrefix为true时才生效 -->
+        <property name="cachePrefix">
+            <bean class="org.springframework.data.redis.cache.DefaultRedisCachePrefix">
+                <constructor-arg name="delimiter" value=":"/>
+            </bean>
+        </property>
+        <!-- 缓存名字和有效期的分隔符 -->
+        <property name="separator" value="#"/>
+        <!-- 默认有效期1h -->
+        <property name="defaultExpiration" value="3600"/>
+    </bean>
+
+</beans>

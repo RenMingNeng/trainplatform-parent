@@ -1,0 +1,807 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.UserMapper">
+
+    <resultMap id="userMap" type="com.bossien.train.domain.User">
+        <id column="id" property="id"></id>
+        <result column="user_account" property="userAccount"></result>
+        <result column="user_passwd" property="userPasswd"></result>
+        <result column="user_name" property="userName"></result>
+        <result column="sex" property="sex"></result>
+        <result column="id_type" property="idType"></result>
+        <result column="id_number" property="idNumber"></result>
+        <result column="supporter" property="supporter"></result>
+        <result column="user_type" property="userType"></result>
+        <result column="mobile_no" property="mobileNo"></result>
+        <result column="company_id" property="companyId"></result>
+        <result column="department_id" property="departmentId"></result>
+        <result column="department_name" property="departmentName"></result>
+        <result column="regist_type" property="registType"></result>
+        <result column="regist_date" property="registDate"></result>
+        <result column="is_valid" property="isValid"></result>
+        <result column="last_login_time" property="lastLoginTime"></result>
+        <result column="open_id" property="openId"></result>
+        <result column="create_user" property="createUser"></result>
+        <result column="create_date" property="createDate"></result>
+        <result column="oper_user" property="operUser"></result>
+        <result column="oper_date" property="operDate"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+		id, user_account, user_passwd, user_name, sex, id_type, id_number, supporter, user_type,
+        mobile_no, company_id, department_id,department_name, regist_type, regist_date, is_valid,last_login_time,
+        open_id,create_user, create_date, oper_user, oper_date
+	</sql>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.User">
+        insert into user (
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id != ''">,id</if>
+            <if test="userAccount !=null and userAccount !=''">,user_account</if>
+            <if test="userPasswd !=null and userPasswd !=''">,user_passwd</if>
+            <if test="userName !=null and userName !=''">,user_name</if>
+            <if test="sex !=null and sex !=''">,sex</if>
+            <if test="idType !=null and idType !=''">,id_type</if>
+            <if test="idNumber !=null and idNumber !=''">,id_number</if>
+            <if test="supporter !=null and supporter !=''">,supporter</if>
+            <if test="userType !=null and userType !=''">,user_type</if>
+            <if test="mobileNo !=null and mobileNo !=''">,mobile_no</if>
+            <if test="companyId !=null and companyId !=''">,company_id</if>
+            <if test="departmentId !=null and departmentId !=''">,department_id</if>
+            <if test="departmentName !=null and departmentName !=''">,department_name</if>
+            <if test="registType !=null and registType !=''">,regist_type</if>
+            <if test="registDate !=null and registDate !=''">,regist_date</if>
+            <if test="isValid !=null and isValid !=''">,is_valid</if>
+            <if test="openId !=null and openId !=''">,open_id</if>
+            <if test="createUser !=null and createUser !=''">,create_user</if>
+            <if test="createDate !=null and createDate !=''">,create_date</if>
+            <if test="operUser !=null and operUser !=''">,oper_user</if>
+            <if test="operDate !=null and operDate !=''">,oper_date</if>
+        </trim>
+        ) values (
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id != ''">,#{id}</if>
+            <if test="userAccount !=null and userAccount !=''">,#{userAccount}</if>
+            <if test="userPasswd !=null and userPasswd !=''">,#{userPasswd}</if>
+            <if test="userName !=null and userName !=''">,#{userName}</if>
+            <if test="sex !=null and sex !=''">,#{sex}</if>
+            <if test="idType !=null and idType !=''">,#{isValid}</if>
+            <if test="idNumber !=null and idNumber !=''">,#{idNumber}</if>
+            <if test="supporter !=null and supporter !=''">,#{supporter}</if>
+            <if test="userType !=null and userType !=''">,#{userType}</if>
+            <if test="mobileNo !=null and mobileNo !=''">,#{mobileNo}</if>
+            <if test="companyId !=null and companyId !=''">,#{companyId}</if>
+            <if test="departmentId !=null and departmentId !=''">,#{departmentId}</if>
+            <if test="departmentName !=null and departmentName !=''">,#{departmentName}</if>
+            <if test="registType !=null and registType !=''">,#{registType}</if>
+            <if test="registDate !=null and registDate !=''">,#{registDate}</if>
+            <if test="isValid !=null and isValid !=''">,#{isValid}</if>
+            <if test="openId !=null and openId !=''">,#{openId}</if>
+            <if test="createUser !=null and createUser !=''">,#{createUser}</if>
+            <if test="createDate !=null and createDate !=''">,#{createDate}</if>
+            <if test="operUser !=null and operUser !=''">,#{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,#{operDate}</if>
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bossien.train.domain.User">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="userPasswd !=null and userPasswd !=''">,user_passwd = #{userPasswd}</if>
+            <if test="userName !=null and userName !=''">,user_name = #{userName}</if>
+            <if test="sex !=null and sex !=''">,sex = #{sex}</if>
+            <if test="idType !=null and idType !=''">,id_type = #{idType}</if>
+            <if test="idNumber !=null and idNumber !=''">,id_number = #{idNumber}</if>
+            <if test="supporter !=null and supporter !=''">,supporter = #{supporter}</if>
+            <if test="userType !=null and userType !=''">,user_type = #{userType}</if>
+            <if test="mobileNo !=null and mobileNo !=''">,mobile_no = #{mobileNo}</if>
+            <if test="isValid !=null and isValid !=''">,is_valid = #{isValid}</if>
+            <if test="registDate !=null and registDate !=''">,regist_date = #{registDate}</if>
+            <if test="departmentId !=null and departmentId !=''">,department_id = #{departmentId}</if>
+            <if test="companyId !=null and companyId !=''">,company_id = #{companyId}</if>
+            <if test="departmentName !=null and departmentName !=''">,department_name = #{departmentName}</if>
+            <if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+            <if test="createDate !=null and createDate !=''">,create_date = #{createDate}</if>
+            <if test="operUser !=null and operUser !=''">,oper_user = #{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,oper_date = #{operDate}</if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id=#{id}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="userAccount !=null and userAccount !=''">
+                and user_account = #{userAccount}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateById" parameterType="com.bossien.train.domain.User">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="userPasswd !=null and userPasswd !=''">,user_passwd = #{userPasswd}</if>
+            <if test="userName !=null and userName !=''">,user_name = #{userName}</if>
+            <if test="sex !=null and sex !=''">,sex = #{sex}</if>
+            <if test="idType !=null and idType !=''">,id_type = #{idType}</if>
+            <if test="idNumber !=null and idNumber !=''">,id_number = #{idNumber}</if>
+            <if test="supporter !=null and supporter !=''">,supporter = #{supporter}</if>
+            <if test="userType !=null and userType !=''">,user_type = #{userType}</if>
+            <if test="mobileNo !=null and mobileNo !=''">,mobile_no = #{mobileNo}</if>
+            <if test="isValid !=null and isValid !=''">,is_valid = #{isValid}</if>
+            <if test="registDate !=null and registDate !=''">,regist_date = #{registDate}</if>
+            <if test="companyId !=null and companyId !=''">,company_id = #{companyId}</if>
+            <if test="departmentId !=null and departmentId !=''">,department_id = #{departmentId}</if>
+            <if test="departmentName !=null ">,department_name = #{departmentName}</if>
+            <if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+            <if test="createDate !=null and createDate !=''">,create_date = #{createDate}</if>
+            <if test="operUser !=null and operUser !=''">,oper_user = #{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,oper_date = #{operDate}</if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id=#{id}
+            </if>
+            <if test="userAccount !=null and userAccount !=''">
+                and user_account = #{userAccount}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateDeptName" parameterType="com.bossien.train.domain.User">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="departmentName !=null and departmentName !=''">
+                department_name = #{departmentName}
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id=#{id}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="departmentId !=null and departmentId !=''">
+                and department_id = #{departmentId}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateLastLoginTime" parameterType="com.bossien.train.domain.User">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="lastLoginTime !=null and lastLoginTime !=''">
+                last_login_time = #{lastLoginTime}
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id=#{id}
+            </if>
+        </trim>
+    </update>
+
+    <update id="updateMessage" parameterType="com.bossien.train.domain.User">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="userPasswd !=null and userPasswd !=''">,user_passwd = #{userPasswd}</if>
+            <if test="userName !=null and userName !=''">,user_name = #{userName}</if>
+            <if test="sex !=null and sex !=''">,sex = #{sex}</if>
+            <if test="idType !=null and idType !=''">,id_type = #{idType}</if>
+            <if test="idNumber !=null and idNumber !=''">,id_number = #{idNumber}</if>
+            <if test="supporter !=null and supporter !=''">,supporter = #{supporter}</if>
+            <if test="userType !=null and userType !=''">,user_type = #{userType}</if>
+            <if test="mobileNo !=null and mobileNo !=''">,mobile_no = #{mobileNo}</if>
+            <if test="isValid !=null and isValid !=''">,is_valid = #{isValid}</if>
+            <if test="registDate !=null and registDate !=''">,regist_date = #{registDate}</if>
+            <if test="departmentId !=null and departmentId !=''">,department_id = #{departmentId}</if>
+            <if test="departmentName !=null and departmentName !=''">,department_name = #{departmentName}</if>
+            <if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+            <if test="createDate !=null and createDate !=''">,create_date = #{createDate}</if>
+            <if test="operUser !=null and operUser !=''">,oper_user = #{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,oper_date = #{operDate}</if>
+            <if test="companyId !=null and companyId !=''">,company_id = #{companyId}</if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            user_account = #{userAccount}
+        </trim>
+    </update>
+
+    <select id="queryAllUserList" parameterType="java.util.Map" resultMap="userMap">
+
+        SELECT
+        tu.id,
+        tu.user_account,
+        tu.user_name,
+        tu.department_name,
+        tu.regist_date,
+        tu.company_id,
+        tu.department_id,
+        tu.is_valid,
+        tu.user_type
+        FROM user tu
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userType !=null and userType !=''">
+                and tu.user_type =#{userType}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and tu.company_id = #{companyId}
+            </if>
+            <if test="userName !=null and userName !=''">
+                and tu.user_name like #{userName}
+            </if>
+            <if test="userAccount !=null and userAccount !=''">
+                and tu.user_account like #{userAccount}
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and tu.is_valid = #{isValid}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size()>0">
+                AND
+                tu.department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+        </trim>
+        order by tu.create_date,tu.user_account desc
+        <include refid="CommonMapper.mysqlPage"/>
+    </select>
+
+    <select id="queryUserInfoById" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        <include refid="baseColumn"/>
+        FROM user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <select id="queryUser" parameterType="java.util.Map" resultMap="userMap">
+        select
+        <include refid="baseColumn"/>
+        FROM user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="userIds !=null and userIds.size()>0">
+                AND id in
+                <foreach collection="userIds" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectAllUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) FROM user tu
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userType !=null and userType !=''">
+                and tu.user_type =#{userType}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="userName !=null and userName !=''">
+                and tu.user_name like #{userName}
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and tu.is_valid = #{isValid}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size()>0">
+                AND
+                tu.department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+            <if test="userIds !=null and userIds.size() > 0">
+                and user_id in
+                <foreach item="item" index="index" collection="userIds" separator="," open="(" close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="java.util.Map" resultMap="userMap">
+        select
+        <include refid="baseColumn"/>
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="user_account !=null and user_account !='' ">
+                AND user_account = #{user_account}
+            </if>
+            <if test="user_passwd !=null and user_passwd !='' ">
+                AND user_passwd = #{user_passwd}
+            </if>
+            <if test="id !=null and id !=''">
+                AND id = #{id}
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                AND is_valid=#{isValid}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                AND company_id = #{companyId}
+            </if>
+        </trim>
+        limit 1
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="userMap">
+        select
+        <include refid="baseColumn"/>
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            id = #{id} or user_account = #{varAccount}
+        </trim>
+    </select>
+
+    <!--根据账号删除和批量删除-->
+    <delete id="deleteByUser" parameterType="java.lang.String">
+        delete from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            id = #{codes}
+        </trim>
+    </delete>
+
+    <delete id="batchDeleteUser" parameterType="java.util.Map">
+        delete from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userIds !=null and userIds.size>0">
+                and id in
+                <foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+                    #{userIds}
+                </foreach>
+            </if>
+        </trim>
+    </delete>
+
+    <!--根据userAccount查询id-->
+    <select id="selectUserbyUserAccount" parameterType="java.lang.String" resultType="java.lang.String">
+        select id FROM user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            user_account = #{account}
+        </trim>
+    </select>
+    <!--查询学员数量-->
+    <select id="selectUserCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(id) from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and is_valid=#{isValid}
+            </if>
+            <if test="userType !=null and userType !=''">
+                and user_type=#{userType}
+            </if>
+            <if test="deptId != null and deptId != ''">
+                and department_id = #{deptId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like #{userName}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size()>0">
+                AND
+                department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+        </trim>
+    </select>
+    <!--查询学员id-->
+    <select id="selectUserIds" parameterType="java.util.Map" resultType="java.lang.String">
+        select id from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId !=null and companyId !=''">
+                and company_id=#{companyId}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like #{userName}
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and is_valid=#{isValid}
+            </if>
+            <if test="userType !=null and userType !=''">
+                and user_type=#{userType}
+            </if>
+            <if test="endTime !=null and endTime !=''">
+                and create_date <![CDATA[ <= ]]> #{endTime}
+            </if>
+            <if test="startTime !=null and startTime !=''">
+                and create_date <![CDATA[ >= ]]> #{startTime}
+            </if>
+            <if test="deptId != null and deptId != ''">
+                and department_id = #{deptId}
+            </if>
+            <if test="deptIds !=null and deptIds.size>0">
+                and department_id in
+                <foreach item="deptIds" index="index" collection="deptIds" open="(" separator="," close=")">
+                    #{deptIds}
+                </foreach>
+            </if>
+            <if test="companyIds !=null and companyIds.size() > 0">
+                and
+                <foreach item="item" index="index" collection="companyIds" separator="or" open="(" close=")">
+                    company_id = #{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <!--查询userAccount-->
+    <select id="selectUserAccountList" parameterType="java.util.Map" resultType="java.lang.String">
+        select user_account from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userIds !=null and userIds.size>0">
+                and id in
+                <foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+                    #{userIds}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectUserIdsByDefaultDept" resultType="java.lang.String">
+        select id from user
+        where (department_id is null or department_id = #{deptId}) and company_id = #{companyId}
+    </select>
+
+    <select id="selectExcelUser" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        u.id as userId,
+        u.user_name as userName,
+        u.department_name as deptName,
+        u.user_account as userAccount,
+        u.mobile_no as mobileNo,
+        u.sex as sex,
+        u.id_number as idNumber
+        FROM
+        user u
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="ids !=null and ids.size()>0">
+                <foreach item="ids" index="index" collection="ids" open="(" separator="or" close=")">
+                    u.id = #{ids}
+                </foreach>
+            </if>
+            <if test="userType != null and userType != ''">
+                AND u.user_type = #{userType}
+            </if>
+            <if test="companyIds !=null and companyIds.size()>0">
+                AND u.company_id in
+                <foreach item="companyId" index="index" collection="companyIds" open="(" separator="," close=")">
+                    #{companyId}
+                </foreach>
+            </if>
+
+            <if test="deptIds !=null and deptIds.size()>0">
+                AND u.department_id in
+                <foreach item="departmentId" index="index" collection="deptIds" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+            </if>
+
+            <if test="isValid != null and isValid != ''">
+                AND u.is_valid = #{isValid}
+            </if>
+            <if test="deptId != null and deptId != ''">
+                AND u.department_id = #{deptId}
+            </if>
+            <if test="type != null and type ==1">
+                AND u.company_id=u.department_id
+            </if>
+        </trim>
+        GROUP BY u.id
+    </select>
+
+    <select id="selectUserInfo" parameterType="com.bossien.train.domain.User" resultMap="userMap">
+        SELECT
+            u.id as id,
+            u.user_name as userName,
+            u.user_account as userAccount,
+            u.user_passwd as userPasswd,
+            u.department_id as departmentId,
+            u.company_id as companyId,
+            u.user_type as userType,
+            u.department_name as departmentName,
+            u.mobile_no as mobileNo,
+            u.sex as sex,
+            u.id_number as idNumber
+        FROM
+        user u
+        WHERE u.id=#{id}
+    </select>
+
+    <select id="selectList" resultMap="userMap">
+        select
+        <include refid="baseColumn"/>
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userAccount != null and userAccount != ''">
+                AND user_account = #{userAccount}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND user_type = #{userType}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                AND is_valid = #{isValid}
+            </if>
+            <if test="departmentId != null and departmentId != ''">
+                AND department_id = #{departmentId}
+            </if>
+            <if test="search != null and search != ''">
+                AND (user_account like #{search} or id like #{search} or user_name like #{search})
+            </if>
+        </trim>
+        <if test="startNum != null and pageSize != null">
+            limit #{startNum}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(id) from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userAccount != null and userAccount != ''">
+                AND user_account = #{userAccount}
+            </if>
+            <if test="userName != null and userName != ''">
+                AND user_name = #{userName}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND user_type = #{userType}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                AND is_valid = #{isValid}
+            </if>
+            <if test="search != null and search != ''">
+                AND (user_account like #{search} or id like #{search} or user_name like #{search})
+            </if>
+        </trim>
+    </select>
+
+    <!-- 根据部门Id 和 公司Id查询用户信息 -->
+    <select id="selectUserByDeptId" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        id AS userId,
+        user_name AS userName
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId != null and companyId != ''">
+                AND company_id = #{companyId}
+            </if>
+            <if test="deptId != null and deptId != ''">
+                AND department_id = #{deptId}
+            </if>
+            <if test="userType != null and userType != ''">
+                AND user_type = #{userType}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name like #{userName}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                AND is_valid = #{isValid}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size()>0">
+                AND
+                department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+        </trim>
+        <if test="startNum != null and endNum != null">
+            limit #{startNum}, #{endNum}
+        </if>
+    </select>
+
+    <!-- 根据部门Id 和 公司Id查询用户信息 -->
+    <select id="selectUserAndDeptId" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        id AS userId,
+        user_name AS userName,
+        department_id as deptId
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId != null and companyId != ''">
+                AND company_id = #{companyId}
+            </if>
+            <if test="isValid != null and isValid != ''">
+                AND is_valid = #{isValid}
+            </if>
+            <if test="deptIds != null and deptIds.size>0">
+                AND department_id IN
+                <foreach collection="deptIds" index="index" item="deptId" open="(" separator="," close=")">
+                    #{deptId}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectByDeptId" parameterType="java.lang.String" resultType="java.lang.String">
+        select id from user WHERE department_id = #{depId}
+    </select>
+
+    <select id="selectByOpenId" parameterType="java.lang.String" resultMap="userMap">
+        select
+        <include refid="baseColumn"/>
+        from user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="open_id != null and open_id != ''">
+                AND open_id = #{open_id}
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <update id="updateOpenId">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="open_id != null and open_id !='' ">,open_id = #{open_id}</if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            id=#{id}
+        </trim>
+        limit 1
+    </update>
+
+    <update id="accountUnbind">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            open_id = ''
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+        </trim>
+        limit 1
+    </update>
+
+    <update id="moveToNewCompany">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            user_name = #{user_name},company_id = #{company_id}, department_id = #{company_id}, department_name = ''
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+        </trim>
+        limit 1
+    </update>
+
+    <update id="updateUserBySso">
+        update user
+        <trim prefix="set" prefixOverrides=",">
+            <if test="user_name !=null and user_name !=''">
+                ,user_name = #{user_name}
+            </if>
+            <if test="user_passwd !=null and user_passwd !=''">
+                ,user_passwd = #{user_passwd}
+            </if>
+            <if test="mobile_no !=null and mobile_no !=''">
+                ,mobile_no = #{mobile_no}
+            </if>
+            <if test="sex !=null and sex !=''">
+                ,sex = #{sex}
+            </if>
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+        </trim>
+        limit 1
+    </update>
+
+    <!--根据集团公司id集合查询人员总数-->
+    <select id="selectUserListCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) FROM user tu
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyIds !=null and companyIds.size>0">
+                AND
+                tu.company_id in
+                <foreach collection="companyIds" item="companyId" open="(" separator="," close=")">
+                    #{companyId}
+                </foreach>
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and is_valid = #{isValid}
+            </if>
+            <if test="userName !=null and userName !=''">
+                and tu.user_name like #{userName}
+            </if>
+            <if test="userAccount !=null and userAccount !=''">
+                and tu.user_account like #{userAccount}
+            </if>
+            <if test="company_id !=null and company_id !=''">
+                and tu.company_id = #{company_id}
+            </if>
+            <if test="deptId !=null and deptId !=''">
+                and tu.department_id = #{deptId}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size>0">
+                AND
+                tu.department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+        </trim>
+    </select>
+    <!--根据集团公司id集合查询人员-->
+    <select id="selectUserList" parameterType="java.util.Map" resultMap="userMap">
+        SELECT
+        tu.id,
+        tu.user_account,
+        tu.user_name,
+        tu.department_name,
+        tu.regist_date,
+        tu.company_id,
+        tu.department_id,
+        tu.is_valid,
+        tu.user_type
+        FROM user tu
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyIds !=null and companyIds.size>0">
+                AND
+                tu.company_id in
+                <foreach collection="companyIds" item="companyId" open="(" separator="," close=")">
+                    #{companyId}
+                </foreach>
+            </if>
+            <if test="isValid !=null and isValid !=''">
+                and is_valid = #{isValid}
+            </if>
+            <if test="userName !=null and userName !=''">
+                and tu.user_name like #{userName}
+            </if>
+            <if test="company_id !=null and company_id !=''">
+                and tu.company_id = #{company_id}
+            </if>
+            <if test="deptId !=null and deptId !=''">
+                and tu.department_id = #{deptId}
+            </if>
+            <if test="userAccount !=null and userAccount !=''">
+                and tu.user_account like #{userAccount}
+            </if>
+            <if test="departmentIdList !=null and departmentIdList.size>0">
+                AND
+                tu.department_id in
+                <foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+                    #{departmentId}
+                </foreach>
+
+            </if>
+        </trim>
+        order by tu.create_date,tu.user_account desc
+        <include refid="CommonMapper.mysqlPage"/>
+    </select>
+
+</mapper>

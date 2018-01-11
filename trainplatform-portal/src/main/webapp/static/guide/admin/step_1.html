@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>引导页一</title>
+	<link rel="stylesheet" href="css/public.css">
+	<style>
+	body,.container{
+		height:3006px;
+	}
+	.bg{
+		background-image: url(images/index-1.png);
+	}
+ 	.guide .guide-area > img{
+	    top: 668px;
+		left: 78px;
+ 	}
+ 	.guide .guide-area > div{
+	 	top: 688px;
+		left: 465px;
+ 	}
+ 	.guide .guide-area > div .cursor{
+ 		left: -110px;
+		top: 130px;
+ 	}
+ 	.guide .guide-area > div .cursor .first{
+ 		left: 14px;
+		top: 12px;
+ 	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="bg">
+		</div>
+	</div>
+	<div class="guide">
+		<div class="guide-bg"></div>
+		<div class="guide-area">
+			<img src="images/step_1.png" height="190" width="365" alt="">
+			<div>
+				<div>
+					<img class="arrow" src="images/arrowhead.png" height="39" width="53" alt="">
+					选择项目类别，创建项目
+				</div>
+				<div class="cursor">
+					<img src="images/cursor.png" height="79" width="54" alt="">
+				</div>
+				<div class="btn-group" style="padding-left:45px;">
+					<a href="javascript:;" class="close" >关闭</a>
+					<a href="step_2.html" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script src="../student/js/public.js"></script>
+	<script>
+	$(function(){
+		$('html,body').animate({
+			'scrollTop' : '400px'
+		},500);
+	})
+	</script>
+</body>
+</html>

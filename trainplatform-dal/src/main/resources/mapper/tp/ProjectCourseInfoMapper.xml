@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ProjectCourseInfoMapper">
+
+
+	<!--项目课程信息表-->
+	<resultMap id="project_course_info_Map" type="com.bossien.train.domain.ProjectCourseInfo">
+		<id column="id" property="id"></id>
+		<result column="project_id" property="projectId"></result>
+		<result column="course_id" property="courseId"></result>
+		<result column="course_name" property="courseName"></result>
+		<result column="class_hour" property="classHour"></result>
+		<result column="user_id" property="userId"></result>
+		<result column="requirement_studytime" property="requirementStudyTime"></result>
+		<result column="total_studytime" property="totalStudyTime"></result>
+		<result column="answer_studytime" property="answerStudyTime"></result>
+		<result column="train_studytime" property="trainStudyTime"></result>
+		<result column="total_question" property="totalQuestion"></result>
+		<result column="yet_answered" property="yetAnswered"></result>
+		<result column="correct_answered" property="correctAnswered"></result>
+		<result column="correct_rate" property="correctRate"></result>
+		<result column="finish_status" property="finishStatus"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id, project_id, course_id, course_name, class_hour, user_id,
+		requirement_studytime, total_studytime, answer_studytime,
+		train_studytime, total_question, yet_answered, correct_answered, correct_rate,
+		finish_status, create_user, create_time, oper_user, oper_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ProjectCourseInfo">
+	insert into project_course_info	(
+	<trim prefix="" prefixOverrides=",">
+		<if test="id !=null and id != ''">,id</if>
+		<if test="projectId !=null and projectId !=''">,project_id</if>
+		<if test="courseId !=null and courseId !=''">,course_id</if>
+		<if test="courseName !=null and courseName !=''">,course_name</if>
+		<if test="classHour !=null and classHour !=''">,class_hour</if>
+		<if test="userId !=null and userId !=''">,user_id</if>
+		<if test="requirementStudyTime !=null and requirementStudyTime !=''"> ,requirement_studytime </if>
+		<if test="totalStudyTime !=null and totalStudyTime != ''">,total_studytime</if>
+		<if test="answerStudyTime !=null and answerStudyTime !=''">,answer_studytime</if>
+		<if test="trainStudyTime !=null and trainStudyTime !=''">,train_studytime</if>
+		<if test="totalQuestion !=null and totalQuestion !=''">,total_question</if>
+		<if test="yetAnswered !=null and yetAnswered !=''">,yet_answered</if>
+		<if test="correctAnswered !=null and correctAnswered !=''">,correct_answered</if>
+		<if test="correctRate !=null and correctRate !=''">,correct_rate</if>
+		<if test="finishStatus !=null and finishStatus !=''">,finish_status</if>
+		<if test="createUser !=null and createUser !=''">,create_user</if>
+		<if test="createTime !=null and createTime !=''">,create_time</if>
+		<if test="operateUser !=null and operateUser !=''"> ,oper_user </if>
+		<if test="operateTime !=null and operateTime !=''"> ,oper_time </if>
+	</trim>
+	) values (
+	<trim prefix="" prefixOverrides=",">
+		<if test="id !=null and id !=''"> ,#{id} </if>
+		<if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+		<if test="courseId !=null and courseId !=''"> ,#{courseId} </if>
+		<if test="courseName !=null and courseName !=''"> ,#{courseName} </if>
+		<if test="classHour !=null and classHour !=''"> ,#{classHour} </if>
+		<if test="userId !=null and userId !=''"> ,#{userId} </if>
+		<if test="requirementStudyTime !=null and requirementStudyTime !=''"> ,#{requirementStudyTime} </if>
+		<if test="totalStudyTime !=null and totalStudyTime !=''"> ,#{totalStudyTime} </if>
+		<if test="answerStudyTime !=null and answerStudyTime !=''"> ,#{answerStudyTime} </if>
+		<if test="trainStudyTime !=null and trainStudyTime !=''"> ,#{trainStudyTime} </if>
+		<if test="totalQuestion !=null and totalQuestion !=''"> ,#{totalQuestion} </if>
+		<if test="yetAnswered !=null and yetAnswered !=''"> ,#{yetAnswered} </if>
+		<if test="correctAnswered !=null and correctAnswered !=''"> ,#{correctAnswered} </if>
+		<if test="correctRate !=null and correctRate !=''"> ,#{correctRate} </if>
+		<if test="finishStatus !=null and finishStatus !=''"> ,#{finishStatus} </if>
+		<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+		<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+		<if test="operateUser !=null and operateUser !=''"> ,#{operateUser} </if>
+		<if test="operateTime !=null and operateTime !=''"> ,#{operateTime} </if>
+	</trim>
+	)
+</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into project_course_info (
+		id, project_id, course_id, course_name, class_hour, user_id,
+		requirement_studytime, total_studytime, answer_studytime,
+		train_studytime, total_question, yet_answered, correct_answered, correct_rate,
+		finish_status, create_user, create_time, oper_user, oper_time
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+				(
+				#{item.id}, #{item.projectId}, #{item.courseId}, #{item.courseName}, #{item.classHour}, #{item.userId},
+				#{item.requirementStudytime}, #{item.totalStudytime}, #{item.answerStudytime},
+				#{item.trainStudytime}, #{item.totalQuestion}, #{item.yetAnswered}, #{item.correctAnswered}, #{item.correctRate},
+				#{item.finishStatus}, #{item.createUser}, #{item.createTime}, #{item.operUser}, #{item.operTime}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<select id="selectList" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		from project_course_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId != null and projectId != ''">
+				AND	project_id = #{projectId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND	user_id = #{userId}
+			</if>
+			<if test="courseName != null and courseName != ''">
+				AND	course_name LIKE #{courseName}
+			</if>
+			<if test="finishStatus != null and finishStatus != ''">
+				AND	finish_status = #{finishStatus}
+			</if>
+			order by create_time desc
+			<include refid="CommonMapper.mysqlPage" />
+		</trim>
+	</select>
+
+	<!-- 获取用户在么个项目下的课程集合 -->
+	<select id="selectCourseList" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			course_id as courseId,course_name as courseName
+		from project_course_info
+		WHERE project_id = #{projectId}
+		AND	user_id = #{userId}
+		order by create_time desc
+		limit  100
+	</select>
+
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(1) from project_course_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId != null and projectId != ''">
+				AND	project_id = #{projectId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND	user_id = #{userId}
+			</if>
+			<if test="courseName != null and courseName != ''">
+				AND	course_name LIKE #{courseName}
+			</if>
+			<if test="finishStatus != null and finishStatus != ''">
+				AND	finish_status = #{finishStatus}
+			</if>
+		</trim>
+	</select>
+
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		delete FROM  project_course_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="ids != null and ids.size>0">
+				AND id IN
+				<foreach item="ids" index="index" collection="ids" open="(" separator="," close=")">
+					#{ids}
+				</foreach>
+			</if>
+			<if test="projectId != null and projectId !=''">
+			  AND project_id = #{projectId}
+			</if>
+		  <if test="courseIds != null and courseIds.size>0">
+				AND course_id IN
+				<foreach item="courseIds" index="index" collection="courseIds" open="(" separator="," close=")">
+				#{courseIds}
+				</foreach>
+			</if>
+			<if test="userIds != null and userIds.size>0">
+				AND user_id IN
+				<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+					#{userIds}
+				</foreach>
+			</if>
+		</trim>
+	</delete>
+
+	<select id="selectOne" parameterType="java.util.Map" resultMap="project_course_info_Map">
+		select
+		<include refid="baseColumn"/>
+		from project_course_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId != null and projectId != ''">
+				AND	project_id = #{projectId}
+			</if>
+			<if test="userId != null and userId != ''">
+				AND	user_id = #{userId}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND	course_id = #{courseId}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<update id="update">
+		update project_course_info
+		<set>
+			<if test="projectId != null and projectId != ''">
+				project_id = #{projectId},
+			</if>
+			<if test="courseId != null and courseId != ''">
+				course_id = #{courseId},
+			</if>
+			<if test="courseName != null and courseName != ''">
+				course_name = #{courseName},
+			</if>
+			<if test="classHour != null and classHour != ''">
+				class_hour = #{classHour},
+			</if>
+			<if test="userId != null and userId != ''">
+				user_id = #{userId},
+			</if>
+			<if test="requirementStudyTime != null and requirementStudyTime != ''">
+				requirement_studytime = #{requirementStudyTime},
+			</if>
+			<if test="totalStudyTime != null and totalStudyTime != ''">
+				total_studytime = #{totalStudyTime},
+			</if>
+			<if test="answerStudyTime != null and answerStudyTime != ''">
+				answer_studytime = #{answerStudyTime},
+			</if>
+			<if test="trainStudyTime != null and trainStudyTime != ''">
+				train_studytime = #{trainStudyTime},
+			</if>
+			<if test="totalQuestion != null ">
+				total_question = #{totalQuestion},
+			</if>
+			<if test="yetAnswered != null and yetAnswered != ''">
+				yet_answered = #{yetAnswered},
+			</if>
+			<if test="correctAnswered != null and correctAnswered != ''">
+				correct_answered = #{correctAnswered},
+			</if>
+			<if test="correctRate != null and correctRate != ''">
+				correct_rate = #{correctRate},
+			</if>
+			<if test="finishStatus != null and finishStatus != ''">
+				finish_status = #{finishStatus},
+			</if>
+			<if test="createUser != null and createUser != ''">
+				create_user = #{createUser},
+			</if>
+			<if test="createTime != null and createTime != ''">
+				create_time = #{createTime},
+			</if>
+			<if test="operUser != null and operUser != ''">
+				oper_user = #{operUser},
+			</if>
+			<if test="operTime != null and operTime != ''">
+				oper_time = #{operTime}
+			</if>
+		</set>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="id != null and id != ''">
+				AND	id = #{id}
+			</if>
+			<if test="projectId != null and projectId != ''">
+				AND	project_id = #{projectId}
+			</if>
+			<if test="courseId != null and courseId != ''">
+				AND	course_id = #{courseId}
+			</if>
+		</trim>
+	</update>
+
+	<!-- 查询课程Id集合 -->
+	<select id="selectIds" parameterType="java.util.Map" resultType="java.lang.String">
+		select course_id AS  courseId from project_course_info WHERE project_id = #{projectId} AND user_id = #{userId}
+	</select>
+
+	<!-- 查询用户Id集合 -->
+	<select id="selectUserIds" parameterType="java.util.Map" resultType="java.lang.String">
+		select user_id AS  userId from project_course_info WHERE project_id = #{projectId}
+		<if test="courseId != null and courseId != ''">
+			AND course_id = #{courseId}
+		</if>
+	</select>
+
+	<!--根据项目Id和用户Ids查询id集合-->
+	<select id="selectIdList" parameterType="java.util.Map" resultType="java.lang.String">
+		select id from project_course_info where
+		project_id= #{projectId}
+		<if test="userIds != null and userIds.size>0">
+			and user_id not in
+			<foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">
+				#{userId}
+			</foreach>
+		</if>
+	</select>
+
+	<update id="updateBatch" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" separator=";">
+			UPDATE project_course_info SET total_question = #{item.questionCount}
+			WHERE course_id = #{item.courseId} AND project_id = #{item.projectId}
+		</foreach>
+	</update>
+
+</mapper>

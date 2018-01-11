@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExamScoreMapper">
+	<resultMap id="examScoreMap" type="com.bossien.train.domain.ExamScore">
+		<id column="id" property="id"></id>
+		<result column="project_Id" property="projectId"></result>
+		<result column="exam_no" property="examNo"></result>
+		<result column="user_id" property="userId"></result>
+		<result column="exam_type" property="examType"></result>
+		<result column="score" property="score"></result>
+		<result column="exam_time" property="examTime"></result>
+		<result column="is_passed" property="isPassed"></result>
+		<result column="exam_duration" property="examDuration"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+	<sql id="getExamScore">
+		id, project_Id, exam_no, user_id, exam_type, score, exam_time, is_passed, exam_duration
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ExamScore">
+		insert into exam_score	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="projectId !=null and projectId !=''">,project_Id</if>
+			<if test="examNo !=null and examNo !=''">,exam_no</if>
+			<if test="userId !=null and userId !=''">,user_id</if>
+			<if test="examType !=null and examType !=''">,exam_type</if>
+			<if test="score !=null and score !=''">,score</if>
+			<if test="examTime !=null and examTime !=''">,exam_time</if>
+			<if test="isPassed !=null and isPassed !=''">,is_passed</if>
+			<if test="examDuration !=null and examDuration !=''">,exam_duration</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			<if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+			<if test="examNo !=null and examNo !=''"> ,#{examNo} </if>
+			<if test="userId !=null and userId !=''"> ,#{userId} </if>
+			<if test="examType !=null and examType !=''"> ,#{examType} </if>
+			<if test="score !=null and score !=''"> ,#{score} </if>
+			<if test="examTime !=null and examTime !=''"> ,#{examTime} </if>
+			<if test="isPassed !=null and isPassed !=''"> ,#{isPassed} </if>
+			<if test="examDuration !=null and examDuration !=''"> ,#{examDuration} </if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<select id="selectExamScoreList" parameterType="java.util.Map" resultMap="examScoreMap">
+		SELECT
+			<include refid="getExamScore"/>
+			FROM
+			exam_score
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId !=null and projectId  !=''">
+				AND project_id = #{projectId}
+			</if>
+			 <if test="userId !=null and userId  !=''">
+				  AND user_id = #{userId}
+			 </if>
+			 <if test="examType !=null and examType  !=''">
+				  AND exam_type = #{examType}
+			 </if>
+			 <if test="isPassed !=null and isPassed  !=''">
+				  AND is_passed = #{isPassed}
+			 </if>
+		</trim>
+		order by create_time DESC
+		<include refid="CommonMapper.mysqlPage" />
+	</select>
+
+	<select id="selectMastScoreByProjectAndUser" parameterType="java.util.Map" resultMap="examScoreMap">
+		SELECT
+		<include refid="getExamScore"/>
+		FROM (
+			select <include refid="getExamScore"/>
+			from exam_score
+			<trim prefix="WHERE" prefixOverrides="AND">
+				<if test="projectId !=null and projectId  !=''">
+					AND project_id = #{projectId}
+				</if>
+				<if test="userId !=null and userId  !=''">
+					AND user_id = #{userId}
+				</if>
+				<if test="examType !=null and examType  !=''">
+					AND exam_type = #{examType}
+				</if>
+				<if test="isPassed !=null and isPassed  !=''">
+					AND is_passed = #{isPassed}
+				</if>
+				<if test="userIds !=null and userIds.size() > 0">
+					and user_id in
+					<foreach item="item" index="index" collection="userIds" separator="," open="(" close=")">
+						#{item}
+					</foreach>
+				</if>
+			</trim>
+			order by score desc
+		) t
+		group by t.project_id,t.user_id
+	</select>
+
+	<select id="selectExamScoreCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM
+		exam_score
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId !=null and projectId  !=''">
+				AND project_id = #{projectId}
+			</if>
+			<if test="userId !=null and userId  !=''">
+				AND user_id = #{userId}
+			</if>
+			<if test="examType !=null and examType  !=''">
+				AND exam_type = #{examType}
+			</if>
+			<if test="isPassed !=null and isPassed  !=''">
+				AND is_passed = #{isPassed}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+		SELECT
+		count(DISTINCT user_id)
+		FROM
+		exam_score
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectId !=null and projectId  !=''">
+				AND project_id = #{projectId}
+			</if>
+			<if test="examType !=null and examType  !=''">
+				AND exam_type = #{examType}
+			</if>
+			<if test="isPassed !=null and isPassed  !=''">
+				AND is_passed = #{isPassed}
+			</if>
+		</trim>
+		order by score DESC
+	</select>
+
+	<!-- 根据用户Ids和项目Id删除项目用户成绩记录 -->
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		DELETE FROM exam_score WHERE project_id = #{projectId} AND user_id IN
+		<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+			#{userIds}
+		</foreach>
+	</delete>
+
+	<select id="selectByExamNo" parameterType="java.lang.String" resultMap="examScoreMap">
+		select
+		<include refid="getExamScore"/>
+		FROM exam_score where exam_no = #{examNo}
+		limit 1
+	</select>
+
+	<select id="selectCountGroupByProjectIdOrUserId" parameterType="java.util.Map" resultType="java.lang.Integer">
+		select count(id)
+		from exam_score
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectIds !=null and projectIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="projectIds" separator="or" open="(" close=")">
+					project_id = #{item}
+				</foreach>
+			</if>
+		</trim>
+		<if test="groupBy !=null and groupBy  !=''">
+			group by #{groupBy}
+		</if>
+	</select>
+
+</mapper>

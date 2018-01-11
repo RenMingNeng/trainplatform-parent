@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExerciseAnswersMapper">
+
+	<resultMap id="QuestionCollectionMap" type="com.bossien.train.domain.ExerciseAnswers">
+		<id column="id" property="id"></id>
+		<result column="project_id" property="project_id"></result>
+		<result column="question_id" property="question_id"></result>
+		<result column="course_id" property="course_id"></result>
+		<result column="user_id" property="user_id"></result>
+		<result column="answer" property="answer"></result>
+		<result column="is_correct" property="is_correct"></result>
+		<result column="score" property="score"></result>
+		<result column="create_user" property="create_user"></result>
+		<result column="create_time" property="create_time"></result>
+		<result column="oper_user" property="oper_user"></result>
+		<result column="oper_time" property="oper_time"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id,project_id,course_id,user_id,questions_id,answer,is_correct,score
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ExerciseAnswers">
+		insert into exercise_answers	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="project_id !=null and project_id !=''">,project_id</if>
+			<if test="question_id !=null and question_id !=''">,question_id</if>
+			<if test="course_id !=null and course_id != ''">,course_id</if>
+			<if test="user_id !=null and user_id !=''">,user_id</if>
+			<if test="answer !=null and answer !=''">,answer</if>
+			<if test="is_correct !=null and is_correct !=''">,is_correct</if>
+			<if test="score !=null and score !=''">,score</if>
+			<if test="create_user !=null and create_user !=''">,create_user</if>
+			<if test="create_time !=null and create_time !=''">,create_time</if>
+			<if test="oper_user !=null and oper_user !=''"> ,oper_user </if>
+			<if test="oper_time !=null and oper_time !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="project_id !=null and project_id !=''"> ,#{project_id} </if>
+			<if test="question_id !=null and question_id !=''"> ,#{question_id} </if>
+			<if test="question_id !=null and question_id !=''"> ,#{question_id} </if>
+			<if test="course_id !=null and course_id !=''"> ,#{course_id} </if>
+			<if test="user_id !=null and user_id !=''"> ,#{user_id} </if>
+			<if test="answer !=null and answer !=''"> ,#{answer} </if>
+			<if test="is_correct !=null and is_correct !=''"> ,#{is_correct} </if>
+			<if test="score !=null and score !=''"> ,#{score} </if>
+			<if test="create_user !=null and create_user !=''"> ,#{create_user} </if>
+			<if test="create_time !=null and create_time !=''"> ,#{create_time} </if>
+			<if test="oper_user !=null and oper_user !=''"> ,#{oper_user} </if>
+			<if test="oper_time !=null and oper_time !=''"> ,#{oper_time} </if>
+		</trim>
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into company_project (
+			id,project_id,course_id,user_id,
+			question_id,answer,is_correct,score,
+			create_user,create_time,oper_user,oper_time
+		)
+		values
+		<if test="list !=null and list.size() >0">
+			<foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+				#{item.id}, #{item.project_id}, #{item.course_id}, #{item.user_id},
+				#{item.question_id}, #{item.answer}, is_correct,score,
+				#{item.createUser},#{item.createTime}, #{item.operUser},#{item.operTime}
+			</foreach>
+		</if>
+	</insert>
+
+	<select id="selectList" parameterType="com.bossien.train.domain.ExerciseAnswers" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM exercise_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+		</trim>
+		<include refid="CommonMapper.mysqlPage" />
+	</select>
+
+	<select id="selectOne" parameterType="com.bossien.train.domain.ExerciseAnswers" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM exercise_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM exercise_answers
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="project_id !=null and project_id !=''">
+				and project_id = #{project_id}
+			</if>
+			<if test="user_id !=null and user_id !=''">
+				and user_id = #{user_id}
+			</if>
+		</trim>
+	</select>
+
+</mapper>

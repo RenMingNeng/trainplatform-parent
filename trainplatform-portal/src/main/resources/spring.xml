@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:context="http://www.springframework.org/schema/context"
+        xmlns:aop="http://www.springframework.org/schema/aop"
+        xmlns:tx="http://www.springframework.org/schema/tx"
+        xmlns:util="http://www.springframework.org/schema/util"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+    <context:annotation-config/>
+
+    <context:component-scan base-package="com.bossien">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice" />
+    </context:component-scan>
+
+	<util:properties id="dbConfig" location="classpath:/jdbc.properties" />
+
+    <!-- 单独拆分数据源 指向资源中心 方便上云 -->
+    <bean name="dataSource_ap" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="#{dbConfig['ap.jdbc_url']}" />
+        <property name="username" value="#{dbConfig['ap.jdbc_user']}" />
+        <property name="password" value="#{dbConfig['ap.jdbc_password']}" />
+        <property name="initialSize" value="1" />
+        <property name="maxActive" value="200" />
+        <property name="minIdle" value="1" />
+        <property name="maxWait" value="60000" />
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="true" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="1800" />
+        <property name="logAbandoned" value="true" />
+        <property name="filters" value="stat" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+
+
+
+    <!--
+    <tx:advice id="txAdvice_ap" transaction-manager="transactionManager_ap">
+        <tx:attributes>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="find*" propagation="SUPPORTS" />
+            <tx:method name="get*" propagation="SUPPORTS" />
+            <tx:method name="select*" propagation="SUPPORTS" />
+            <tx:method name="list*" propagation="SUPPORTS" />
+            <tx:method name="query*" propagation="SUPPORTS" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="interceptorPointCuts_ap"
+                      expression="execution(public * com.bossien.train.service.*.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice_ap" pointcut-ref="interceptorPointCuts_ap" />
+    </aop:config>
+    -->
+
+    <bean id="sqlSessionFactory_ap" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource_ap"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:mapper/ex/*.xml</value>
+                <value>classpath*:mapper/ap/*.xml</value>
+            </list>
+        </property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.bossien.train.domain" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.bossien.train.dao.ap,com.bossien.train.dao.ex"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_ap"/>
+    </bean>
+
+    <bean name="dataSource_tp" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="#{dbConfig['tp.jdbc_url']}" />
+        <property name="username" value="#{dbConfig['tp.jdbc_user']}" />
+        <property name="password" value="#{dbConfig['tp.jdbc_password']}" />
+        <property name="initialSize" value="1" />
+        <property name="maxActive" value="200" />
+        <property name="minIdle" value="1" />
+        <property name="maxWait" value="60000" />
+        <property name="validationQuery" value="SELECT 1" />
+        <property name="testWhileIdle" value="true" />
+        <property name="testOnBorrow" value="true" />
+        <property name="testOnReturn" value="true" />
+        <property name="timeBetweenEvictionRunsMillis" value="60000" />
+        <property name="minEvictableIdleTimeMillis" value="300000" />
+        <property name="removeAbandoned" value="true" />
+        <property name="removeAbandonedTimeout" value="1800" />
+        <property name="logAbandoned" value="true" />
+        <property name="filters" value="stat" />
+        <property name="proxyFilters">
+            <list>
+                <ref bean="wall-filter"/>
+            </list>
+        </property>
+    </bean>
+
+
+
+    <!--
+    <tx:advice id="txAdvice_tp" transaction-manager="transactionManager_tp">
+        <tx:attributes>
+            <tx:method name="delete*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="remove*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="insert*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="save*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="update*" propagation="REQUIRED" read-only="false" rollback-for="java.lang.Exception" />
+            <tx:method name="find*" propagation="SUPPORTS" />
+            <tx:method name="get*" propagation="SUPPORTS" />
+            <tx:method name="select*" propagation="SUPPORTS" />
+            <tx:method name="list*" propagation="SUPPORTS" />
+            <tx:method name="query*" propagation="SUPPORTS" />
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config proxy-target-class="true">
+        <aop:pointcut id="interceptorPointCuts_tp"
+                      expression="execution(public * com.bossien.train.service.*.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice_tp" pointcut-ref="interceptorPointCuts_tp" />
+    </aop:config>
+    -->
+
+    <bean id="sqlSessionFactory_tp" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource_tp"/>
+        <property name="mapperLocations">
+            <list>
+                <value>classpath*:mapper/tp/*.xml</value>
+            </list>
+        </property>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="typeAliasesPackage" value="com.bossien.train.domain" />
+    </bean>
+
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.bossien.train.dao.tp"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory_tp"/>
+    </bean>
+
+    <aop:aspectj-autoproxy/>
+
+    <bean id="wallConfig" class="com.alibaba.druid.wall.WallConfig">
+        <property name="multiStatementAllow" value="true"/>     <!-- 是否允许一次执行多条语句, 允许 -->
+        <property name="selectAllColumnAllow" value="false"/>   <!-- 是否允许执行select * from t 这样的语句. false 表示不允许执行 -->
+        <property name="selectUnionCheck" value="true"/>        <!-- 检测 select union 不允许union操作 -->
+        <property name="mustParameterized" value="true"/>       <!-- 不允许出现不进行参数化的sql 如： where 1=1 -->
+    </bean>
+
+    <!-- 重新定义过滤器 -->
+    <bean id="wall-filter" class="com.alibaba.druid.wall.WallFilter">
+        <property name="config" ref="wallConfig"/>
+    </bean>
+
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor"/>
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>com.bossien.*.service.*</value>
+            </list>
+        </property>
+    </bean>
+    <aop:config>
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut"/>
+    </aop:config>
+
+    <!-- 内置角色 -->
+    <bean id="super_admin" class="com.bossien.train.domain.Role">
+        <constructor-arg name="id" value="b45fb990-dd8b-4857-97bd-8ce8d60424ac"/>
+        <constructor-arg name="roleName" value="super_admin"/>
+        <constructor-arg name="roleDesc" value="超级管理员"/>
+    </bean>
+
+    <bean id="super_vise" class="com.bossien.train.domain.Role">
+        <constructor-arg name="id" value="ffefa04c-d274-4694-ba49-904f790c234b"/>
+        <constructor-arg name="roleName" value="super_vise"/>
+        <constructor-arg name="roleDesc" value="监管人员"/>
+    </bean>
+
+    <bean id="company_admin" class="com.bossien.train.domain.Role">
+        <constructor-arg name="id" value="d685f6c9-8a25-4fc1-9dbd-8b684ec70e3a"/>
+        <constructor-arg name="roleName" value="company_admin"/>
+        <constructor-arg name="roleDesc" value="单位管理员"/>
+    </bean>
+
+    <bean id="company_user" class="com.bossien.train.domain.Role">
+        <constructor-arg name="id" value="5b9e9b3e-9ca5-4dfd-91f0-de584d439121"/>
+        <constructor-arg name="roleName" value="company_user"/>
+        <constructor-arg name="roleDesc" value="学员"/>
+    </bean>
+
+    <!-- 内置超管 -->
+    <bean id="admin" class="com.bossien.train.domain.User">
+        <constructor-arg name="id" value="YKuQU123456ykdqeRD6V"/>
+        <constructor-arg name="userAccount" value="admin"/>
+        <constructor-arg name="userPasswd" value="e10adc3949ba59abbe56e057f20f883e"/>
+        <constructor-arg name="userName" value="超管"/>
+    </bean>
+
+    <!-- 默认权限 -->
+    <bean id="permissions" class="java.util.HashSet">
+        <constructor-arg index="0">
+            <set>
+                <value>admin:index</value>
+                <value>admin:user</value>
+                <value>admin:course</value>
+                <value>admin:project</value>
+                <value>admin:dossier</value>
+                <value>admin:basic</value>
+                <value>student:index</value>
+                <value>super:tj</value>
+            </set>
+        </constructor-arg>
+    </bean>
+
+    <!-- spring event listener -->
+    <bean id="eventListener" class="com.bossien.framework.event.listener.EventListener"/>
+</beans>

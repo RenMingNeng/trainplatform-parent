@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExamStrategyMapper">
+
+    <resultMap id="examStrategyMap" type="com.bossien.train.domain.ExamStrategy">
+        <id column="id" property="id"></id>
+        <result column="project_id" property="projectId"></result>
+        <result column="role_id" property="roleId"></result>
+        <result column="role_name" property="roleName"></result>
+        <result column="total_score" property="totalScore"></result>
+        <result column="necessary_hour" property="necessaryHour"></result>
+        <result column="exam_duration" property="examDuration"></result>
+        <result column="pass_score" property="passScore"></result>
+        <result column="single_count" property="singleCount"></result>
+        <result column="single_score" property="singleScore"></result>
+        <result column="single_all_count" property="singleAllCount"></result>
+        <result column="many_count" property="manyCount"></result>
+        <result column="many_score" property="manyScore"></result>
+        <result column="many_all_count" property="manyAllCount"></result>
+        <result column="judge_count" property="judgeCount"></result>
+        <result column="judge_score" property="judgeScore"></result>
+        <result column="judge_all_count" property="judgeAllCount"></result>
+        <result column="fillout_count" property="filloutCount"></result>
+        <result column="fillout_score" property="filloutScore"></result>
+        <result column="ques_ans_count" property="quesAnsCount"></result>
+        <result column="ques_ans_score" property="quesAnsScore"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="create_user" property="createUser"></result>
+        <result column="oper_time" property="operTime"></result>
+        <result column="oper_user" property="operUser"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,project_id,role_id, role_name,total_score,necessary_hour,exam_duration,pass_score,single_count,single_score,single_all_count,many_count,many_score,many_all_count,judge_count,judge_score,judge_all_count,fillout_count,fillout_score,ques_ans_count,ques_ans_score
+    </sql>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.ExamStrategy">
+        insert into exam_strategy	(
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id != ''">,id</if>
+            <if test="projectId !=null and projectId !=''">,project_id</if>
+            <if test="roleId !=null and roleId !=''">,role_id</if>
+            <if test="roleName !=null and roleName !=''">,role_name</if>
+            <if test="totalScore !=null">,total_score</if>
+            <if test="necessaryHour !=null">,necessary_hour</if>
+            <if test="examDuration !=null">,exam_duration</if>
+            <if test="passScore !=null"> ,pass_score </if>
+            <if test="singleCount !=null">,single_count</if>
+            <if test="singleScore !=null">,single_score</if>
+            <if test="singleAllCount !=null">,single_all_count</if>
+            <if test="manyCount !=null">,many_count</if>
+            <if test="manyScore !=null">,many_score</if>
+            <if test="manyAllCount !=null">,many_all_count</if>
+            <if test="judgeCount !=null">,judge_count</if>
+            <if test="judgeScore !=null">,judge_score</if>
+            <if test="judgeAllCount !=null">,judge_all_count</if>
+            <if test="filloutCount !=null">,fillout_count</if>
+            <if test="filloutScore !=null">,fillout_score</if>
+            <if test="quesAnsCount !=null">,ques_ans_count</if>
+            <if test="quesAnsScore !=null">,ques_ans_score</if>
+            <if test="createUser !=null and createUser !=''">,create_user</if>
+            <if test="createTime !=null and createTime !=''">,create_time</if>
+            <if test="operUser !=null and operUser !=''"> ,oper_user </if>
+            <if test="operTime !=null and operTime !=''"> ,oper_time </if>
+        </trim>
+        ) values (
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id !=''"> ,#{id} </if>
+            <if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+            <if test="roleId !=null and roleId !=''"> ,#{roleId} </if>
+            <if test="roleName !=null and roleName !=''"> ,#{roleName} </if>
+            <if test="totalScore !=null"> ,#{totalScore} </if>
+            <if test="necessaryHour !=null"> ,#{necessaryHour} </if>
+            <if test="examDuration !=null"> ,#{examDuration} </if>
+            <if test="passScore !=null"> ,#{passScore} </if>
+            <if test="singleCount !=null"> ,#{singleCount} </if>
+            <if test="singleScore !=null"> ,#{singleScore} </if>
+            <if test="singleAllCount !=null"> ,#{singleAllCount} </if>
+            <if test="manyCount !=null"> ,#{manyCount} </if>
+            <if test="manyScore !=null"> ,#{manyScore} </if>
+            <if test="manyAllCount !=null"> ,#{manyAllCount} </if>
+            <if test="judgeCount !=null"> ,#{judgeCount} </if>
+            <if test="judgeScore !=null"> ,#{judgeScore} </if>
+            <if test="judgeAllCount !=null"> ,#{judgeAllCount} </if>
+            <if test="filloutCount !=null"> ,#{filloutCount} </if>
+            <if test="filloutScore !=null"> ,#{filloutScore} </if>
+            <if test="quesAnsCount !=null"> ,#{quesAnsCount} </if>
+            <if test="quesAnsScore !=null"> ,#{quesAnsScore} </if>
+            <if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+            <if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+            <if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+            <if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+        </trim>
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into exam_strategy (
+        id, project_id, role_id, role_name, total_score, necessary_hour, exam_duration,
+        pass_score, single_count, single_score, single_all_count, many_count, many_score, many_all_count,
+        judge_count, judge_score, judge_all_count, fillout_count, fillout_score, ques_ans_count,
+        ques_ans_score, create_user, create_time, oper_user, oper_time
+        )
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (
+                #{item.id}, #{item.projectId}, #{item.roleId}, #{item.roleName}, #{item.totalScore}, #{item.necessaryHour}, #{item.examDuration},
+                #{item.passScore}, #{item.singleCount}, #{item.singleScore}, #{item.singleAllCount}, #{item.manyCount}, #{item.manyScore}, #{item.manyAllCount},
+                #{item.judgeCount}, #{item.judgeScore}, #{item.judgeAllCount}, #{item.filloutCount}, #{item.filloutScore}, #{item.quesAnsCount},
+                #{item.quesAnsScore}, #{item.createUser}, #{item.createTime}, #{item.operUser}, #{item.operTime}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+    <update id="update" parameterType="com.bossien.train.domain.ExamStrategy">
+        update exam_strategy
+        <trim prefix="set" prefixOverrides=",">
+            <if test="roleName !=null"> ,role_name = #{roleName} </if>
+            <if test="totalScore !=null"> ,total_score = #{totalScore} </if>
+            <if test="necessaryHour !=null"> ,necessary_hour = #{necessaryHour} </if>
+            <if test="examDuration !=null and examDuration !=''"> ,exam_duration = #{examDuration} </if>
+            <if test="passScore !=null"> ,pass_score = #{passScore} </if>
+            <if test="singleCount !=null"> ,single_count = #{singleCount} </if>
+            <if test="singleScore !=null"> ,single_score = #{singleScore} </if>
+            <if test="singleAllCount !=null"> ,single_all_count = #{singleAllCount} </if>
+            <if test="manyCount !=null"> ,many_count = #{manyCount} </if>
+            <if test="manyScore !=null"> ,many_score = #{manyScore} </if>
+            <if test="manyAllCount !=null"> ,many_all_count = #{manyAllCount} </if>
+            <if test="judgeCount !=null"> ,judge_count = #{judgeCount} </if>
+            <if test="judgeScore !=null"> ,judge_score = #{judgeScore} </if>
+            <if test="judgeAllCount !=null"> ,judge_all_count = #{judgeAllCount} </if>
+            <if test="filloutCount !=null"> ,fillout_count = #{filloutCount} </if>
+            <if test="filloutScore !=null"> ,fillout_score = #{filloutScore} </if>
+            <if test="quesAnsCount !=null"> ,ques_ans_count = #{quesAnsCount} </if>
+            <if test="quesAnsScore !=null"> ,ques_ans_score = #{quesAnsScore} </if>
+            <if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser} </if>
+            <if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime} </if>
+        </trim>
+        where project_id=#{projectId}
+        <if test="roleId!=null and roleId!=''">
+            AND  role_id  = #{roleId}
+        </if>
+    </update>
+
+    <select id="selectList" parameterType="java.util.Map" resultMap="examStrategyMap">
+        select
+        <include refid="baseColumn"/>
+        FROM exam_strategy
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="projectId !=null and projectId !='' ">
+                AND project_id= #{projectId}
+            </if>
+            <if test="roleId!=null and roleId!=''">
+                AND  role_id  = #{roleId}
+            </if>
+        </trim>
+    </select>
+
+    <!--通过projectId和roleId查询组卷策略-->
+    <select id="selectByProjectIdAndRoleId" parameterType="java.util.Map" resultMap="examStrategyMap">
+        select
+        <include refid="baseColumn"/>
+        from exam_strategy
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="projectId !=null and projectId !='' ">
+                AND project_id= #{projectId}
+            </if>
+            <if test="roleId!=null and roleId!=''">
+                AND  role_id  = #{roleId}
+            </if>
+        </trim>
+            limit 1
+    </select>
+
+    <!--通过projectId和roleId查询组卷策略(用于缓存)-->
+    <select id="selectOneByProjectIdAndRoleId"  resultMap="examStrategyMap">
+        select
+        <include refid="baseColumn"/>
+        from exam_strategy
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="projectId !=null and projectId !='' ">
+                AND project_id= #{projectId}
+            </if>
+            <if test="roleId!=null and roleId!=''">
+                AND  role_id  = #{roleId}
+            </if>
+        </trim>
+        limit 1
+    </select>
+    <!--根据projectId删除-->
+   <delete id="deleteByProjectId" parameterType="java.util.Map">
+       DELETE from exam_strategy where project_id= #{projectId}
+       <if test="roleId != null and roleId != ''">
+          AND role_id = #{roleId}
+       </if>
+       <if test="roleIds != null and roleIds.size>0">
+           AND role_id in
+           <foreach collection="roleIds" index="index" item="roleId" open="(" separator="," close=")">
+               #{roleId}
+           </foreach>
+       </if>
+   </delete>
+
+    <!--修改未发布和未开始项目时,确认角色减少时是否有相关课程的存在-->
+    <select id="selectIds" parameterType="java.util.Map" resultType="java.lang.String">
+        select id from exam_strategy where
+        project_id= #{projectId}
+        and role_id not in
+        <foreach item="roleId" index="index" collection="roleIds" open="(" separator="," close=")">
+            #{roleId}
+        </foreach>
+    </select>
+    <!--根据id删除-->
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE FROM  exam_strategy where id=#{id}
+    </delete>
+</mapper>

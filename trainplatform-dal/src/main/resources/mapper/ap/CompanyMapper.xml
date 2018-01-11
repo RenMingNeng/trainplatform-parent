@@ -1,0 +1,620 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.CompanyMapper">
+
+    <resultMap id="BaseResultMap" type="com.bossien.train.domain.Company">
+        <id column="intId" property="intId"/>
+        <result column="varCode" property="varCode"/>
+        <result column="varName" property="varName"/>
+        <result column="intTypeId" property="intTypeId"/>
+        <result column="varBusinessId" property="varBusinessId"/>
+        <result column="intCategoryId" property="intCategoryId"/>
+        <result column="intRegionId" property="intRegionId"/>
+        <result column="varSupporter" property="varSupporter"/>
+        <result column="varLegalPerson" property="varLegalPerson"/>
+        <result column="varContacter" property="varContacter"/>
+        <result column="varContactInfo" property="varContactInfo"/>
+        <result column="varPostCode" property="varPostCode"/>
+        <result column="varAddress" property="varAddress"/>
+        <result column="varBankAccount" property="varBankAccount"/>
+        <result column="chrIsRegulator" property="chrIsRegulator"/>
+        <result column="chrIsValid" property="chrIsValid"/>
+        <result column="chrIsTermination" property="chrIsTermination"/>
+        <result column="intPid" property="intPid"/>
+        <result column="intOrder" property="intOrder"/>
+        <result column="varRemark" property="varRemark"/>
+        <result column="varCreateUser" property="varCreateUser"/>
+        <result column="datOperDate" property="datOperDate"/>
+        <result column="datCreateDate" property="datCreateDate"/>
+        <result column="varOperUser" property="varOperUser"/>
+    </resultMap>
+
+    <select id="selectList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="varCTList != null and varCTList.size > 0">AND
+                <foreach item="item" index="index" collection="varCTList" open="(" separator="OR" close=")">
+                    intTypeId = #{item}
+                </foreach>
+            </if>
+            <if test="companyIds != null and companyIds.size > 0">AND
+                <foreach item="item" index="index" collection="companyIds" open="(" separator="OR" close=")">
+                    intId = #{item}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND varName LIKE #{companyName}
+            </if>
+            <if test="varBusinessId != null and varBusinessId != ''">
+                AND varBusinessId LIKE #{varBusinessId}
+            </if>
+            <if test="intCategoryId != null and intCategoryId != ''">
+                AND intCategoryId = #{intCategoryId}
+            </if>
+            <if test="intPid != null and intPid != ''">
+                AND intPid = #{intPid}
+            </if>
+            <if test="search != null and search != ''">
+                AND (intId LIKE #{search} or varName LIKE #{search})
+            </if>
+            <if test="varBusinessIds != null and varBusinessIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="varBusinessIds" open="(" separator="OR" close=")">
+                    varBusinessId = #{item}
+                </foreach>
+            </if>
+            <if test="intRegionIds != null and intRegionIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="intRegionIds" open="(" separator="OR" close=")">
+                    intRegionId = #{item}
+                </foreach>
+            </if>
+        </trim>
+        order by intOrder
+        <if test="startNum != null and endNum != null">
+            <include refid="mysqlPage"/>
+        </if>
+    </select>
+
+    <select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(intId) FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="varCTList != null and varCTList.size > 0">AND
+                <foreach item="item" index="index" collection="varCTList" open="(" separator="OR" close=")">
+                    intTypeId = #{item}
+                </foreach>
+            </if>
+            <if test="companyIds != null and companyIds.size > 0">AND
+                <foreach item="item" index="index" collection="companyIds" open="(" separator="OR" close=")">
+                    intId = #{item}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+            <if test="intPid != null and intPid != ''">
+                AND intPid = #{intPid}
+            </if>
+            <if test="companyName != null and companyName != ''">
+                AND varName LIKE #{companyName}
+            </if>
+            <if test="varBusinessId != null and varBusinessId != ''">
+                AND varBusinessId LIKE #{varBusinessId}
+            </if>
+            <if test="intCategoryId != null and intCategoryId != ''">
+                AND intCategoryId = #{intCategoryId}
+            </if>
+            <if test="search != null and search != ''">
+                AND (intId LIKE #{search} or varName LIKE #{search})
+            </if>
+            <if test="varBusinessIds != null and varBusinessIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="varBusinessIds" open="(" separator="OR" close=")">
+                    varBusinessId = #{item}
+                </foreach>
+            </if>
+            <if test="intRegionIds != null and intRegionIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="intRegionIds" open="(" separator="OR" close=")">
+                    intRegionId = #{item}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_list" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyIds != null and companyIds.size > 0">AND
+                <foreach item="item" index="index" collection="companyIds" open="(" separator="OR" close=")">
+                    intId = #{item}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+            <if test="startNum != null and endNum != null">
+                <include refid="mysqlPage"/>
+            </if>
+        </trim>
+    </select>
+
+    <select id="select_count" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(intId) FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyIds != null and companyIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="companyIds" open="(" separator="OR" close=")">
+                    intId = #{item}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="java.util.Map" resultType="com.bossien.train.domain.Company">
+        SELECT
+        intId ,varCode, varName, chrIsValid
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                AND intTypeId = #{intTypeId}
+            </if>
+            <if test="companyId != null and companyId != ''">
+                AND intId=#{companyId}
+            </if>
+            <if test="varCode != null and varCode != ''">
+                AND varCode=#{varCode}
+            </if>
+        </trim>
+        limit 1
+    </select>
+    <!--增删改-->
+    <select id="selectByOne" parameterType="java.util.Map" resultType="com.bossien.train.domain.Company">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId != null and intId != ''">
+                AND intId = #{intId}
+            </if>
+        </trim>
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultType="com.bossien.train.domain.Company">
+        SELECT
+        intId
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+    </select>
+
+    <insert id="insert" parameterType="java.util.Map">
+        insert into ap_company (intId, varCode, varName,
+        intTypeId, varBusinessId,
+        intCategoryId, intRegionId, varSupporter,
+        varLegalPerson, varContacter, varContactInfo,
+        varPostCode, varAddress, varBankAccount,
+        chrIsRegulator, chrIsValid, chrIsTermination,
+        intPid, intOrder, isPush,
+        varRemark, varCreateUser, datOperDate,
+        datCreateDate, varOperUser)
+        values (#{intId}, #{varCode}, #{varName},
+        #{intTypeId}, #{varBusinessId},
+        #{intCategoryId}, #{intRegionId}, #{varSupporter},
+        #{varLegalPerson}, #{varContacter}, #{varContactInfo},
+        #{varPostCode}, #{varAddress}, #{varBankAccount},
+        #{chrIsRegulator}, #{chrIsValid}, #{chrIsTermination},
+        #{intPid}, #{intOrder}, #{isPush,jdbcType=BIT},
+        #{varRemark}, #{varCreateUser}, #{datOperDate},
+        #{datCreateDate}, #{varOperUser})
+    </insert>
+    <insert id="insertSelective" parameterType="java.util.Map">
+        insert into ap_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId !='' ">
+                intId,
+            </if>
+            <if test="varCode != null and varCode !=''">
+                varCode,
+            </if>
+            <if test="varName != null and varName !=''">
+                varName,
+            </if>
+            <if test="intTypeId != null and intTypeId !=''">
+                intTypeId,
+            </if>
+            <if test="varBusinessId != null and varBusinessId !=''">
+                varBusinessId,
+            </if>
+            <if test="intCategoryId != null and intCategoryId !=''">
+                intCategoryId,
+            </if>
+            <if test="intRegionId != null and intRegionId !=''">
+                intRegionId,
+            </if>
+            <if test="varSupporter != null and varSupporter !=''">
+                varSupporter,
+            </if>
+            <if test="varLegalPerson != null and varLegalPerson !=''">
+                varLegalPerson,
+            </if>
+            <if test="varContacter != null and varContacter !=''">
+                varContacter,
+            </if>
+            <if test="varContactInfo != null and varContactInfo !=''">
+                varContactInfo,
+            </if>
+            <if test="varPostCode != null and varPostCode !=''">
+                varPostCode,
+            </if>
+            <if test="varAddress != null and varAddress !=''">
+                varAddress,
+            </if>
+            <if test="varBankAccount != null and varBankAccount !=''">
+                varBankAccount,
+            </if>
+            <if test="chrIsRegulator != null and chrIsRegulator !=''">
+                chrIsRegulator,
+            </if>
+            <if test="chrIsValid != null and chrIsValid !=''">
+                chrIsValid,
+            </if>
+            <if test="chrIsTermination != null and chrIsTermination !=''">
+                chrIsTermination,
+            </if>
+            <if test="intPid != null and intPid !=''">
+                intPid,
+            </if>
+            <if test="intOrder != null and intOrder !=''">
+                intOrder,
+            </if>
+            <if test="isPush != null and isPush !=''">
+                isPush,
+            </if>
+            <if test="varRemark != null and varRemark !=''">
+                varRemark,
+            </if>
+            <if test="varCreateUser != null and varCreateUser !=''">
+                varCreateUser,
+            </if>
+            <if test="datOperDate != null and datOperDate !=''">
+                datOperDate,
+            </if>
+            <if test="datCreateDate != null and datCreateDate !=''">
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null and varOperUser !=''">
+                varOperUser,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="varCode != null and varCode != ''">
+                #{varCode},
+            </if>
+            <if test="varName != null and varName != ''">
+                #{varName},
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                #{intTypeId},
+            </if>
+            <if test="varBusinessId != null and varBusinessId != ''">
+                #{varBusinessId},
+            </if>
+            <if test="intCategoryId != null and intCategoryId != ''">
+                #{intCategoryId},
+            </if>
+            <if test="intRegionId != null and intRegionId != ''">
+                #{intRegionId},
+            </if>
+            <if test="varSupporter != null and varSupporter != ''">
+                #{varSupporter},
+            </if>
+            <if test="varLegalPerson != null and varLegalPerson != ''">
+                #{varLegalPerson},
+            </if>
+            <if test="varContacter != null and varContacter != ''">
+                #{varContacter},
+            </if>
+            <if test="varContactInfo != null and varContactInfo != ''">
+                #{varContactInfo},
+            </if>
+            <if test="varPostCode != null and varPostCode != ''">
+                #{varPostCode},
+            </if>
+            <if test="varAddress != null and varAddress != ''">
+                #{varAddress},
+            </if>
+            <if test="varBankAccount != null and varBankAccount != ''">
+                #{varBankAccount},
+            </if>
+            <if test="chrIsRegulator != null and chrIsRegulator != ''">
+                #{chrIsRegulator},
+            </if>
+            <if test="chrIsValid != null and chrIsValid != ''">
+                #{chrIsValid},
+            </if>
+            <if test="chrIsTermination != null and chrIsTermination != ''">
+                #{chrIsTermination},
+            </if>
+            <if test="intPid != null and intPid != ''">
+                #{intPid},
+            </if>
+            <if test="intOrder != null and intOrder != ''">
+                #{intOrder},
+            </if>
+            <if test="isPush != null and isPush != ''">
+                #{isPush},
+            </if>
+            <if test="varRemark != null and varRemark != ''">
+                #{varRemark},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="java.util.Map">
+        update ap_company
+        <set>
+            <if test="varCode != null and intId != ''">
+                varCode = #{varCode},
+            </if>
+            <if test="varName != null and varName != ''">
+                varName = #{varName},
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                intTypeId = #{intTypeId},
+            </if>
+            <if test="varBusinessId != null and varBusinessId != ''">
+                varBusinessId = #{varBusinessId},
+            </if>
+            <if test="intCategoryId != null and intCategoryId != ''">
+                intCategoryId = #{intCategoryId},
+            </if>
+            <if test="intRegionId != null and intRegionId != ''">
+                intRegionId = #{intRegionId},
+            </if>
+            <if test="varSupporter != null and varSupporter != ''">
+                varSupporter = #{varSupporter},
+            </if>
+            <if test="varLegalPerson != null and varLegalPerson != ''">
+                varLegalPerson = #{varLegalPerson},
+            </if>
+            <if test="varContacter != null and varContacter != ''">
+                varContacter = #{varContacter},
+            </if>
+            <if test="varContactInfo != null and varContactInfo != ''">
+                varContactInfo = #{varContactInfo},
+            </if>
+            <if test="varPostCode != null and varPostCode != ''">
+                varPostCode = #{varPostCode},
+            </if>
+            <if test="varAddress != null and varAddress != ''">
+                varAddress = #{varAddress},
+            </if>
+            <if test="varBankAccount != null and varBankAccount != ''">
+                varBankAccount = #{varBankAccount},
+            </if>
+            <if test="chrIsRegulator != null and chrIsRegulator != ''">
+                chrIsRegulator = #{chrIsRegulator},
+            </if>
+            <if test="chrIsValid != null and chrIsValid != ''">
+                chrIsValid = #{chrIsValid},
+            </if>
+            <if test="chrIsTermination != null and chrIsTermination != ''">
+                chrIsTermination = #{chrIsTermination},
+            </if>
+            <if test="intPid != null and intPid != ''">
+                intPid = #{intPid},
+            </if>
+            <if test="intOrder != null and intOrder != ''">
+                intOrder = #{intOrder},
+            </if>
+            <if test="isPush != null and isPush != ''">
+                isPush = #{isPush,jdbcType=BIT},
+            </if>
+            <if test="varRemark != null and varRemark != ''">
+                varRemark = #{varRemark},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate = #{datOperDate},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser},
+            </if>
+        </set>
+        where intId = #{intId}
+    </update>
+    <!--批量更新-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ap_company
+            <set>
+                <if test="item.varCode != null and item.varCode != ''">
+                    varCode = #{item.varCode},
+                </if>
+                <if test="item.varName != null and item.varName != ''">
+                    varName = #{item.varName},
+                </if>
+                <if test="item.intTypeId != null and item.intTypeId != ''">
+                    intTypeId = #{item.intTypeId},
+                </if>
+                <if test="item.varBusinessId != null and item.varBusinessId != ''">
+                    varBusinessId = #{item.varBusinessId},
+                </if>
+                <if test="item.intCategoryId != null and item.intCategoryId != ''">
+                    intCategoryId = #{item.intCategoryId},
+                </if>
+                <if test="item.intRegionId != null and item.intRegionId != ''">
+                    intRegionId = #{item.intRegionId},
+                </if>
+                <if test="item.varSupporter != null and item.varSupporter != ''">
+                    varSupporter = #{item.varSupporter},
+                </if>
+                <if test="item.varLegalPerson != null and item.varLegalPerson != ''">
+                    varLegalPerson = #{item.varLegalPerson},
+                </if>
+                <if test="item.varContacter != null and item.varContacter != ''">
+                    varContacter = #{item.varContacter},
+                </if>
+                <if test="item.varContactInfo != null and item.varContactInfo != ''">
+                    varContactInfo = #{item.varContactInfo},
+                </if>
+                <if test="item.varPostCode != null and item.varPostCode != ''">
+                    varPostCode = #{item.varPostCode},
+                </if>
+                <if test="item.varAddress != null and item.varAddress != ''">
+                    varAddress = #{item.varAddress},
+                </if>
+                <if test="item.varBankAccount != null and item.varBankAccount != ''">
+                    varBankAccount = #{item.varBankAccount},
+                </if>
+                <if test="item.chrIsRegulator != null and item.chrIsRegulator != ''">
+                    chrIsRegulator = #{item.chrIsRegulator},
+                </if>
+                <if test="item.chrIsValid != null and item.chrIsValid != ''">
+                    chrIsValid = #{item.chrIsValid},
+                </if>
+                <if test="item.chrIsTermination != null and item.chrIsTermination != ''">
+                    chrIsTermination = #{item.chrIsTermination},
+                </if>
+                <if test="item.intPid != null and item.intPid != ''">
+                    intPid = #{item.intPid},
+                </if>
+                <if test="item.intOrder != null and item.intOrder != ''">
+                    intOrder = #{item.intOrder},
+                </if>
+                <if test="item.isPush != null and item.isPush != ''">
+                    isPush = #{item.isPush},
+                </if>
+                <if test="item.varRemark != null and item.varRemark != ''">
+                    varRemark = #{item.varRemark},
+                </if>
+                <if test="item.varCreateUser != null and item.varCreateUser != ''">
+                    varCreateUser = #{item.varCreateUser},
+                </if>
+                <if test="item.datOperDate != null and item.datOperDate != ''">
+                    datOperDate = #{item.datOperDate},
+                </if>
+                <if test="item.datCreateDate != null and item.datCreateDate != ''">
+                    datCreateDate = #{item.datCreateDate},
+                </if>
+                <if test="item.varOperUser != null and item.varOperUser != ''">
+                    varOperUser = #{item.varOperUser},
+                </if>
+            </set>
+            where intId = #{item.intId}
+        </foreach>
+    </update>
+    <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_company (intId, varCode, varName,
+        intTypeId, varBusinessId, intCategoryId,
+        intRegionId, varSupporter, varLegalPerson,
+        varContacter, varContactInfo, varPostCode,
+        varAddress, varBankAccount, chrIsRegulator,
+        chrIsValid, chrIsTermination, intPid,
+        intOrder, varRemark, varCreateUser,
+        datOperDate, datCreateDate, varOperUser,
+        fullPath)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.intId},
+                #{item.varCode},
+                #{item.varName},
+                #{item.intTypeId},
+                #{item.varBusinessId},
+                #{item.intCategoryId},
+                #{item.intRegionId},
+                #{item.varSupporter},
+                #{item.varLegalPerson},
+                #{item.varContacter},
+                #{item.varContactInfo},
+                #{item.varPostCode},
+                #{item.varAddress},
+                #{item.varBankAccount},
+                #{item.chrIsRegulator},
+                #{item.chrIsValid},
+                #{item.chrIsTermination},
+                #{item.intPid},
+                #{item.intOrder},
+                #{item.varRemark},
+                #{item.varCreateUser},
+                #{item.datOperDate},
+                #{item.datCreateDate},
+                #{item.varOperUser},
+                #{item.fullPath})
+            </foreach>
+        </if>
+    </insert>
+    <update id="updateCompanyValid" parameterType="java.util.Map">
+        update ap_company set chrIsValid = #{chrIsValid}
+        where intId=#{companyId}
+    </update>
+
+    <select id="getCompanyInfo" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT varName,intpid FROM ap_company WHERE intId = #{companyId} limit 1
+    </select>
+
+    <select id="getChildCompanyIds" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT getCChiList ( #{companyId} ) FROM DUAL
+    </select>
+
+    <select id="getChildCompanyList" parameterType="java.util.List" resultMap="BaseResultMap">
+        SELECT
+        <include refid="baseColumn"/>
+        from ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="list != null and list.size > 0">AND
+                <foreach item="item" index="index" collection="list" open="(" separator="OR" close=")">
+                    intId = #{item}
+                </foreach>
+            </if>
+        </trim>
+        order by intOrder asc
+    </select>
+
+    <!-- mysql分页查询 -->
+    <sql id="mysqlPage">
+        <![CDATA[
+		    limit #{startNum},#{endNum}
+        ]]>
+    </sql>
+
+    <sql id="baseColumn">
+        intId,varCode,varName,intTypeId,varBusinessId,
+        intCategoryId,intRegionId,varSupporter,chrIsValid,intOrder,intPid
+    </sql>
+</mapper>

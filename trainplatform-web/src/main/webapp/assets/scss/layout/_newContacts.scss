@@ -1,0 +1,105 @@
+.newContacts {
+    left: 3px;
+    .icon_zip_arrow {
+        display: inline-block;
+        background-image: url(../../img/arrow.png);
+        width: 13px;
+        height: 7px;
+        margin-left: 11px;
+        transition: 0.2s all;
+    }
+    .icon_plus {
+        display: inline-block;
+        background-image: url(../../img/icon_plus.png);
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+    .icon_del {
+        display: inline-block;
+        background-image: url(../../img/icon_del.png);
+        width: 16px;
+        height: 18px;
+        cursor: pointer;
+    }
+    .zipHeader {
+        color: #007FDA;
+        margin-top: 30px;
+        font-size: 16px;
+        cursor: pointer;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        .icon_zip_arrow {
+            transform: rotate(90deg);
+            -ms-transform: rotate(90deg);
+            /* IE 9 */
+            -moz-transform: rotate(90deg);
+            /* Firefox */
+            -webkit-transform: rotate(90deg);
+            /* Safari 和 Chrome */
+            -o-transform: rotate(90deg);
+            /* Opera */
+            vertical-align: 2px;
+        }
+        &.active {
+            .icon_zip_arrow {
+                transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                /* IE 9 */
+                -moz-transform: rotate(0deg);
+                /* Firefox */
+                -webkit-transform: rotate(0deg);
+                /* Safari 和 Chrome */
+                -o-transform: rotate(0deg);
+                /* Opera */
+            }
+        }
+    }
+    .zipContent {
+        display: none;
+    }
+    .zipHeader.active+.zipContent {
+        display: block
+    }
+    .radioBox {
+        margin-bottom: 0;
+        font-weight: normal;
+        color: #4B586A;
+    }
+    .telInputBox {
+        .telItem {
+            margin-bottom: 10px;
+            .icon_plus {
+                vertical-align: -5px;
+                margin-left: 10px;
+            }
+            .icon_del {
+                margin-left: 15px;
+                margin-top: 8px;
+            }
+            .controlBox {
+                display: none;
+            }
+            &:last-child {
+                margin-bottom: 0;
+                .controlBox {
+                    display: block;
+                }
+                .icon_del {
+                    display: block;
+                }
+            }
+            &:only-child {
+                .icon_del {
+                    display: none;
+                }
+            }
+        }
+    }
+    .new-contact-input{
+        width: 230px;
+        border-radius: 0;
+    }
+}

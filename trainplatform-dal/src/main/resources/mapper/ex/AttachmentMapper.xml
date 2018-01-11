@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.AttachmentMapper">
+
+    <resultMap id="attachmentMap" type="com.bossien.train.domain.Attachment">
+        <id column="intId" property="intId"></id>
+        <result column="varFid" property="varFid"></result>
+        <result column="varLocalName" property="varLocalName"></result>
+        <result column="varRemotePath" property="varRemotePath"></result>
+        <result column="varExt" property="varExt"></result>
+        <result column="varType" property="varType"></result>
+        <result column="intBusinessId" property="intBusinessId"></result>
+        <result column="varMd5" property="varMd5"></result>
+        <result column="chrComplete" property="chrComplete"></result>
+        <result column="varRemark" property="varRemark"></result>
+        <result column="varCreateUser" property="varCreateUser"></result>
+        <result column="datCreateDate" property="datCreateDate"></result>
+        <result column="varOperUser" property="varOperUser"></result>
+        <result column="datOperDate" property="datOperDate"></result>
+
+    </resultMap>
+
+    <sql id="baseColumn">
+        intId, varFid, varLocalName,varRemotePath, varExt, varType, intBusinessId, varMd5, chrComplete, varRemark, varCreateUser, datCreateDate, varOperUser, datOperDate
+    </sql>
+
+    <select id="selectByIds" parameterType="java.util.Map" resultMap="attachmentMap">
+        select
+        <include refid="baseColumn"/>
+        from ex_attachment
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="ids != null and ids.size() > 0">
+                and intId in
+                <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.Attachment">
+        insert into ex_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="varFid != null and varFid != ''">
+                varFid,
+            </if>
+
+            <if test="varLocalName != null and varLocalName != ''">
+                varLocalName,
+            </if>
+            <if test="varRemotePath != null and varRemotePath != ''">
+                varRemotePath,
+            </if>
+            <if test="varExt != null and varExt != ''">
+                varExt,
+            </if>
+            <if test="varType != null and varType != ''">
+                varType,
+            </if>
+            <if test="intBusinessId != null and intBusinessId != ''">
+                intBusinessId,
+            </if>
+            <if test="varMd5 != null and varMd5 != ''">
+                varMd5,
+            </if>
+            <if test="chrComplete != null and chrComplete != ''">
+                chrComplete,
+            </if>
+            <if test="varRemark != null and varRemark != ''">
+                varRemark,
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser,
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="varFid != null and varFid != ''">
+                #{varFid},
+            </if>
+
+            <if test="varLocalName != null and varLocalName != ''">
+                #{varLocalName},
+            </if>
+            <if test="varRemotePath != null and varRemotePath != ''">
+                #{varRemotePath},
+            </if>
+            <if test="varExt != null and varExt != ''">
+                #{varExt},
+            </if>
+            <if test="varType != null and varType != ''">
+                #{varType},
+            </if>
+            <if test="intBusinessId != null and intBusinessId != ''">
+                #{intBusinessId},
+            </if>
+            <if test="varMd5 != null and varMd5 != ''">
+                #{varMd5},
+            </if>
+            <if test="chrComplete != null and chrComplete != ''">
+                #{chrComplete},
+            </if>
+            <if test="varRemark != null and varRemark != ''">
+                #{varRemark},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bossien.train.domain.Attachment">
+        update ex_attachment
+        <set>
+            <if test="varFid != null and varFid != ''">
+                varFid = #{varFid,jdbcType=VARCHAR},
+            </if>
+            <if test="varLocalName != null and varLocalName != ''">
+                varLocalName = #{varLocalName,jdbcType=VARCHAR},
+            </if>
+            <if test="varRemotePath != null and varRemotePath != ''">
+                varRemotePath = #{varRemotePath,jdbcType=VARCHAR},
+            </if>
+            <if test="varExt != null and varExt != ''">
+                varExt = #{varExt,jdbcType=VARCHAR},
+            </if>
+            <if test="varType != null and varType != ''">
+                varType = #{varType,jdbcType=VARCHAR},
+            </if>
+            <if test="intBusinessId != null and intBusinessId != ''">
+                intBusinessId = #{intBusinessId,jdbcType=VARCHAR},
+            </if>
+            <if test="varMd5 != null and varMd5 != ''">
+                varMd5 = #{varMd5,jdbcType=VARCHAR},
+            </if>
+            <if test="chrComplete != null and chrComplete != ''">
+                chrComplete = #{chrComplete,jdbcType=VARCHAR},
+            </if>
+            <if test="varRemark != null and varRemark != ''">
+                varRemark = #{varRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate,jdbcType=VARCHAR},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser,jdbcType=VARCHAR},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate = #{datOperDate,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+    </update>
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ex_attachment (intId, varFid, varLocalName,
+        varRemotePath, varExt, varType,
+        intBusinessId, varMd5, chrComplete,
+        varRemark, varCreateUser, datCreateDate,
+        varOperUser, datOperDate)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.intId}, #{item.varFid}, #{item.varLocalName},
+                #{item.varRemotePath}, #{item.varExt}, #{item.varType},
+                #{item.intBusinessId}, #{item.varMd5}, #{item.chrComplete},
+                #{item.varRemark}, #{item.varCreateUser}, #{item.datCreateDate},
+                #{item.varOperUser}, #{item.datOperDate})
+            </foreach>
+        </if>
+    </insert>
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ex_attachment
+            <set>
+                <if test="item.varFid != null and item.varFid != ''">
+                    varFid = #{item.varFid,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varLocalName != null and item.varLocalName != ''">
+                    varLocalName = #{item.varLocalName,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varRemotePath != null and item.varRemotePath != ''">
+                    varRemotePath = #{item.varRemotePath,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varExt != null and item.varExt != ''">
+                    varExt = #{item.varExt,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varType != null and item.varType != ''">
+                    varType = #{item.varType,jdbcType=VARCHAR},
+                </if>
+                <if test="item.intBusinessId != null and item.intBusinessId != ''">
+                    intBusinessId = #{item.intBusinessId,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varMd5 != null and item.varMd5 != ''">
+                    varMd5 = #{item.varMd5,jdbcType=VARCHAR},
+                </if>
+                <if test="item.chrComplete != null and item.chrComplete != ''">
+                    chrComplete = #{item.chrComplete,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varRemark != null and item.varRemark != ''">
+                    varRemark = #{item.varRemark,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varCreateUser != null and item.varCreateUser != ''">
+                    varCreateUser = #{item.varCreateUser,jdbcType=VARCHAR},
+                </if>
+                <if test="item.datCreateDate != null and item.datCreateDate != ''">
+                    datCreateDate = #{item.datCreateDate,jdbcType=VARCHAR},
+                </if>
+                <if test="item.varOperUser != null and item.varOperUser != ''">
+                    varOperUser = #{item.varOperUser,jdbcType=VARCHAR},
+                </if>
+                <if test="item.datOperDate != null and item.datOperDate != ''">
+                    datOperDate = #{item.datOperDate,jdbcType=VARCHAR},
+                </if>
+            </set>
+            where intId = #{item.intId}
+        </foreach>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ex_attachment
+        where intId = #{intAttachmentId}
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteByBatch" parameterType="java.util.Map">
+        delete from ex_attachment
+        where intId in
+        <foreach item="intId" index="index" collection="attachmentId" open="(" separator="," close=")">
+            #{intId}
+        </foreach>
+    </delete>
+    <select id="selectOne" parameterType="java.util.Map" resultMap="attachmentMap">
+        select
+        <include refid="baseColumn"/>
+        from ex_attachment
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId !=null and intId !='' ">
+                intId = #{intId}
+            </if>
+        </trim>
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="attachmentMap">
+        select
+        intId
+        from ex_attachment
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId !=null and intId !='' ">
+                intId = #{intId}
+            </if>
+        </trim>
+    </select>
+</mapper>

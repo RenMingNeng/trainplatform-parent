@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.TrainRoleMapper">
+
+    <resultMap id="TrainRoleMap" type="com.bossien.train.domain.TrainRole">
+        <id column="varId" property="varId"></id>
+        <result column="varRoleName" property="roleName"></result>
+        <result column="varRoleDesc" property="roleDesc"></result>
+        <result column="chrSource" property="source"></result>
+        <result column="chrIsValid" property="isValid"></result>
+        <result column="datCreateDate" property="createDate"></result>
+        <result column="varOperUser" property="operUser"></result>
+        <result column="datOperDate" property="operDate"></result>
+        <result column="varCreateUser" property="createUser"></result>
+        <result column="varRoleCode" property="roleCode"></result>
+
+    </resultMap>
+    <sql id="baseColumn">
+		varId,varRoleCode,varRoleName,varRoleDesc,chrSource,chrIsValid, datCreateDate  ,varOperUser,datOperDate,varCreateUser
+	</sql>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.TrainRole">
+        insert into ap_train_role (
+        <trim prefix="" prefixOverrides=",">
+            <if test="varId !=null and varId != ''">,varId</if>
+            <if test="roleName !=null and roleName !=''">,varRoleName</if>
+            <if test="roleDesc !=null and roleDesc !=''">,varRoleDesc</if>
+            <if test="source !=null and source !=''">,chrSource</if>
+            <if test="isValid !=null and isValid !=''">,chrIsValid</if>
+            <if test="createDate !=null and createDate !=''">,datCreateDate</if>
+            <if test="createUser !=null and createUser !=''">,varCreateUser</if>
+            <if test="operUser !=null and operUser !=''">,varOperUser</if>
+            <if test="operDate !=null and operDate !=''">,datOperDate</if>
+            <if test="roleCode !=null and roleCode !=''">,varRoleCode</if>
+
+        </trim>
+        ) values (
+        <trim prefix="" prefixOverrides=",">
+            <if test="varId !=null and varId !=''">,#{varId}</if>
+            <if test="roleName !=null and roleName !=''">,#{roleName}</if>
+            <if test="roleDesc !=null and roleDesc !=''">,#{roleDesc}</if>
+            <if test="source !=null and source !=''">,#{source}</if>
+            <if test="isValid !=null and isValid !=''">,#{isValid}</if>
+            <if test="createDate !=null and createDate !=''">,#{createDate}</if>
+            <if test="createUser !=null and createUser !=''">,#{createUser}</if>
+            <if test="operUser !=null and operUser !=''">,#{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,#{operDate}</if>
+            <if test="roleCode !=null and roleCode !=''">,#{roleCode}</if>
+
+        </trim>
+        )
+    </insert>
+
+    <update id="update" parameterType="java.util.Map">
+        update ap_train_role
+        <trim prefix="set" prefixOverrides=",">
+            <if test="roleName !=null and roleName !=''">,varRoleName = #{roleName}</if>
+            <if test="roleDesc !=null and roleDesc !=''">,varRoleDesc = #{roleDesc}</if>
+            <if test="isValid !=null and isValid !=''">,chrIsValid = #{isValid}</if>
+            <if test="createDate !=null and createDate !=''">,datCreateDate = #{createDate}</if>
+            <if test="createUser !=null and createUser !=''">,varCreateUser = #{createUser}</if>
+            <if test="operUser !=null and operUser !=''">,varOperUser = #{operUser}</if>
+            <if test="operDate !=null and operDate !=''">,datOperDate = #{operDate}</if>
+        </trim>
+        <trim prefix="where" prefixOverrides="AND">
+            varId = #{varId}
+            <if test="chrSource !=null and chrSource !='' ">
+                and chrSource=#{chrSource}
+            </if>
+        </trim>
+    </update>
+    <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_train_role (varId, varRoleName,
+        varRoleDesc, chrSource, chrIsValid,
+        datCreateDate, varOperUser, datOperDate,
+        varCreateUser)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.varId,jdbcType=VARCHAR},
+                #{item.roleName,jdbcType=VARCHAR},
+                #{item.roleDesc,jdbcType=VARCHAR}, #{item.source,jdbcType=CHAR},
+                #{item.isValid,jdbcType=CHAR},
+                #{item.createDate,jdbcType=TIMESTAMP}, #{item.operUser,jdbcType=VARCHAR},
+                #{item.operDate,jdbcType=TIMESTAMP},
+                #{item.createUser,jdbcType=VARCHAR})
+            </foreach>
+        </if>
+
+    </insert>
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ap_train_role
+            <trim prefix="set" prefixOverrides=",">
+                <if test="item.roleName !=null and item.roleName !=''">,varRoleName = #{item.roleName}</if>
+                <if test="item.roleDesc !=null and item.roleDesc !=''">,varRoleDesc = #{item.roleDesc}</if>
+                <if test="item.isValid !=null and item.isValid !=''">,chrIsValid = #{item.isValid}</if>
+                <if test="item.createDate !=null and item.createDate !=''">,datCreateDate = #{item.createDate}</if>
+                <if test="item.createUser !=null and item.createUser !=''">,varCreateUser = #{item.createUser}</if>
+                <if test="item.operUser !=null and item.operUser !=''">,varOperUser = #{item.operUser}</if>
+                <if test="item.operDate !=null and item.operDate !=''">,datOperDate = #{item.operDate}</if>
+            </trim>
+            <trim prefix="where" prefixOverrides="AND">
+                varId = #{item.varId}
+                <if test="item.source !=null and item.source !='' ">
+                    and chrSource=#{item.source}
+                </if>
+            </trim>
+        </foreach>
+    </update>
+
+    <select id="selectList" parameterType="java.util.Map" resultMap="TrainRoleMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ap_train_role
+        <trim prefix="where" prefixOverrides="and">
+            varId IN
+            <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            <if test="roleName !=null and roleName !=''">
+                and varRoleName LIKE #{roleName}
+            </if>
+        </trim>
+        order by datOperDate desc
+        limit #{startNum},#{pageSize}
+    </select>
+    <select id="selectVerify" parameterType="java.util.Map" resultMap="TrainRoleMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ap_train_role
+        <trim prefix="where" prefixOverrides="and">
+            varId IN
+            <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            and chrSource = #{chrSource}
+        </trim>
+
+    </select>
+
+
+    <select id="selectCount" resultType="java.lang.Integer" parameterType="java.util.Map">
+        select count(varId) FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            varId IN
+            <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            <if test="IsValid !=null and IsValid !=''">
+                and chrIsValid =#{IsValid}
+            </if>
+            <if test="roleName !=null and roleName !=''">
+                and varRoleName LIKE #{roleName}
+            </if>
+        </trim>
+    </select>
+
+    <select id="selectOne" parameterType="com.bossien.train.domain.TrainRole" resultMap="TrainRoleMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+
+            <if test="roleCode !=null and roleCode !=''">
+                and varRoleCode = #{roleCode}
+            </if>
+            <if test="varId !=null and varId !=''">
+                and varId = #{varId}
+            </if>
+
+            <if test="roleName !=null and roleName !=''">
+                and varRoleName = #{roleName}
+            </if>
+        </trim>
+    </select>
+
+    <!--通过公司id和授权id查询-->
+    <select id="selectByRole" parameterType="java.util.Map" resultMap="TrainRoleMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            varId=#{varId}
+        </trim>
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="TrainRoleMap">
+        select
+        varId
+        FROM ap_train_role
+
+       where   varId=#{varId}
+
+    </select>
+    <!--通过公司id查询受训角色-->
+    <select id="selectTrainRoles" parameterType="java.util.Map" resultType="java.util.Map">
+        select varId,varRoleName FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="ids !=null ">
+                varId IN
+                <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="source !=null and source !=''">
+                and chrSource =#{source}
+            </if>
+            <if test="IsValid !=null and IsValid !=''">
+                and chrIsValid =#{IsValid}
+            </if>
+            <if test="roleName !=null and roleName !=''">
+                and varRoleName LIKE #{roleName}
+            </if>
+        </trim>
+        order by datOperDate desc
+        <include refid="BaseMapper.mysqlPage"/>
+    </select>
+
+    <select id="selectByParams" parameterType="java.util.Map" resultType="java.util.Map">
+        select
+        <include refid="baseColumn"/>
+        FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            varId IN
+            <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+            <if test="source !=null and source !=''">
+                and chrSource =#{source}
+            </if>
+            <if test="IsValid !=null and IsValid !=''">
+                and chrIsValid =#{IsValid}
+            </if>
+            <if test="roleName !=null and roleName !=''">
+                and varRoleName LIKE #{roleName}
+            </if>
+        </trim>
+        order by datOperDate desc
+    </select>
+    <!-- 删除来源为系统自带的公司主题-->
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE from ap_train_role
+        where
+        <if test="ids !=null and ids !=''">
+            varId IN
+            <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+        <if test="chrSource != null and chrSource != ''">
+            AND chrSource = #{chrSource}
+        </if>
+
+    </delete>
+
+
+    <select id="selectRoleByIds" parameterType="java.util.List" resultType="com.bossien.train.domain.TrainRole">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ap_train_role WHERE
+        <foreach item="item" index="index" collection="list" open="(" separator="OR" close=")">
+            varId = #{item}
+        </foreach>
+        order by varId asc
+    </select>
+
+    <!-- 高级设置中查询公司培训角色 -->
+    <select id="selectRoles" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        varId AS roleId,
+        varRoleName AS roleName
+        FROM ap_train_role
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="isValid !=null and isValid !=''">
+                and chrIsValid = #{isValid}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and intCompanyId = #{companyId}
+            </if>
+        </trim>
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+.lk-pannel {
+    border-radius: 3px;
+    background-color: $while;
+    @include box-shadow(0 0 6px rgba(34, 38, 65, 0.25));
+    margin: 8px;
+}
+
+.lk-pannel-title {
+    text-decoration: none;
+    line-height: 44px;
+    font-size: 16px;
+    display: block;
+    color: $main-font-color;
+}
+
+.lk-pannel-main {
+    margin: 0 27px;
+    position: absolute;
+    top: 50px;
+    left: 220px;
+    right: 0;
+    padding-top: 30px;
+}
+
+.lk-pannel-all {
+    margin: 0 auto;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+}

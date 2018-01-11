@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>引导页一</title>
+	<link rel="stylesheet" href="css/public.css">
+	<style>
+	body,.container{
+		height:1503px;
+	}
+	.bg{
+		background-image: url(images/index_1.png);
+	}
+ 	.guide .guide-area > img{
+		top: 865px;
+		left: 994px;
+ 	}
+ 	.guide .guide-area > div{
+		top: 871px;
+		left: 734px;
+ 	}
+ 	.guide .guide-area > div .cursor{
+ 		left: -110px;
+		top: 130px;
+ 	}
+ 	.guide .guide-area > div .cursor .first{
+ 		left: 14px;
+		top: 12px;
+ 	}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="bg">
+		</div>
+	</div>
+	<div class="guide">
+		<div class="guide-bg"></div>
+		<div class="guide-area">
+			<img src="images/step_1.png"  alt="">
+			<div>
+				<div>
+					点击进入培训项目
+					<img class="arrow arrow-right" src="images/arrowhead-right.png" height="39" width="53" alt="">
+
+				</div>
+				<!--<div class="cursor">
+					<img src="images/cursor.png" height="79" width="54" alt="">
+				</div>-->
+				<div class="btn-group">
+					<a href="step_2.html" class="close">关闭</a>
+					<a href="step_2.html" class="next">下一步</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/public.js"></script>
+	<script>
+	$(function(){
+		$('html,body').animate({
+			'scrollTop' : '500px'
+		},500);
+	})
+	</script>
+</body>
+</html>

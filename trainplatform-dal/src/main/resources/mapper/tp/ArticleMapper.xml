@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ArticleMapper">
+
+	<resultMap id="articleMap" type="com.bossien.train.domain.Article">
+		<id column="id" property="id"></id>
+		<result column="title" property="title"></result>
+		<result column="content" property="content"></result>
+		<result column="person_type" property="personType"></result>
+		<result column="order_nub" property="orderNub"></result>
+		<result column="is_top" property="isTop"></result>
+		<result column="author" property="author"></result>
+		<result column="status" property="status"></result>
+		<result column="create_time" property="createTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id,title,content,person_type,order_nub,is_top,author,status,create_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.Article">
+		insert into article	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="title !=null and title !=''">,title</if>
+			<if test="content !=null and content !=''">,content</if>
+			<if test="personType !=null and personType !=''">,person_type</if>
+			<if test="orderNub !=null and orderNub !=''">,order_nub</if>
+			<if test="isTop !=null and isTop !=''">,is_top</if>
+			<if test="author !=null and author !=''">,author</if>
+			<if test="status !=null and status !=''">,status</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			<if test="title !=null and title !=''"> ,#{title} </if>
+			<if test="content !=null and content !=''"> ,#{content} </if>
+			<if test="personType !=null and personType !=''"> ,#{personType} </if>
+			<if test="orderNub !=null and orderNub !=''"> ,#{orderNub} </if>
+			<if test="isTop !=null and isTop !=''"> ,#{isTop} </if>
+			<if test="author !=null and author !=''"> ,#{author} </if>
+			<if test="status !=null and status !=''"> ,#{status} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bossien.train.domain.Article">
+		update article
+		<trim prefix="set" prefixOverrides=",">
+			<if test="title !=null and title !=''"> ,title = #{title} </if>
+			<if test="content !=null and content !=''"> ,content = #{content} </if>
+			<if test="personType !=null and personType !=''"> ,person_type = #{personType} </if>
+			<if test="orderNub !=null and orderNub !=''"> ,order_nub = #{orderNub} </if>
+			<if test="isTop !=null and isTop !=''"> ,is_top = #{isTop} </if>
+			<if test="author !=null and author !=''"> ,author = #{author} </if>
+			<if test="status !=null and status !=''"> ,status = #{status} </if>
+		</trim>
+		where id=#{id}
+	</update>
+
+	<select id="selectList" parameterType="java.util.Map" resultMap="articleMap">
+		select
+		<include refid="baseColumn"/>
+		FROM article
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search !=null and search !=''">
+				and (author like #{search} or title like #{search} or content like #{search})
+			</if>
+			<if test="personType !=null and personType !=''">
+				and person_type = #{personType}
+			</if>
+		</trim>
+		order by create_time desc
+		<if test="startNum !=null and endNum != null">
+			<include refid="CommonMapper.mysqlPage" />
+		</if>
+	</select>
+
+	<select id="selectOne" parameterType="java.util.Map" resultMap="articleMap">
+		select
+		<include refid="baseColumn"/>
+		FROM article
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="title !=null and title !=''">
+				and title like #{title}
+			</if>
+			<if test="author !=null and author !=''">
+				and author like #{author}
+			</if>
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM article
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="search !=null and search !=''">
+				and (author like #{search} or title like #{search} or content like #{search})
+			</if>
+			<if test="personType !=null and personType !=''">
+				and person_type = #{personType}
+			</if>
+		</trim>
+	</select>
+
+	<delete id="delete" parameterType="java.lang.String">
+		DELETE from article where id = #{id}
+	</delete>
+
+	<select id="selectTop" parameterType="java.lang.Integer" resultMap="articleMap">
+		select
+		<include refid="baseColumn"/>
+		FROM article
+		order by order_nub
+		limit #{count}
+	</select>
+
+</mapper>

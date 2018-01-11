@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.CourseQuestionMapper">
+
+    <resultMap id="CourseQuestionMap" type="com.bossien.train.domain.CourseQuestion">
+        <id column="intId" property="intId"></id>
+        <result column="intCourseId" property="intCourseId"></result>
+        <result column="intQuestionId" property="intQuestionId"></result>
+        <result column="numberCount" property="count"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+		intId, intCourseId, intQuestionId
+	</sql>
+
+    <select id="selectQuestionIdList" parameterType="java.util.Map" resultType="java.lang.String">
+        select intQuestionId
+        FROM ex_course_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intCourseIds !=null and intCourseIds.size > 0">
+                <foreach item="intCourseIds" index="index" collection="intCourseIds" open="(" separator="OR" close=")">
+                    intCourseId = #{intCourseIds}
+                </foreach>
+            </if>
+            <if test="intCourseId !=null and intCourseId !=''">
+                and intCourseId = #{intCourseId}
+            </if>
+        </trim>
+        <if test="random !=null and random !=''">
+            limit 0,random
+        </if>
+    </select>
+
+    <select id="selectList" parameterType="java.util.Map" resultMap="CourseQuestionMap">
+        select
+        <include refid="baseColumn"/>
+        FROM ex_course_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intCourseIds !=null and intCourseIds.size > 0">
+                <foreach item="intCourseIds" index="index" collection="intCourseIds" open="(" separator="OR" close=")">
+                    intCourseId = #{intCourseIds}
+                </foreach>
+            </if>
+            <if test="intCourseId !=null and intCourseId !=''">
+                and intCourseId = #{intCourseId}
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.CourseQuestion">
+        insert into ex_course_question
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                intCourseId,
+            </if>
+            <if test="intQuestionId != null and intQuestionId != ''">
+                intQuestionId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                #{intCourseId},
+            </if>
+            <if test="intQuestionId != null and intQuestionId != ''">
+                #{intQuestionId},
+            </if>
+        </trim>
+    </insert>
+    <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ex_course_question (intId, intCourseId, intQuestionId
+        )
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.intId,jdbcType=BIGINT}, #{item.intCourseId,jdbcType=BIGINT},
+                #{item.intQuestionId,jdbcType=BIGINT}
+                )
+            </foreach>
+        </if>
+    </insert>
+    <update id="updateByQuestionId" parameterType="com.bossien.train.domain.CourseQuestion">
+        update ex_course_question
+        <set>
+            <if test="intCourseId != null and intCourseId != ''">
+                intCourseId = #{intCourseId},
+            </if>
+        </set>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ex_course_question
+        where intCourseId = #{intCourseId}  and intQuestionId = #{intQuestionId}
+    </delete>
+    <!--查询intQuestionId的数量-->
+    <select id="selectIntQuestionIdCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(intQuestionId) FROM ex_course_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intCourseId !=null and intCourseId !='' ">
+                intCourseId = #{intCourseId}
+            </if>
+        </trim>
+    </select>
+    <select id="selectOne" parameterType="java.util.Map" resultMap="CourseQuestionMap">
+        select
+        <include refid="baseColumn"/>
+        from ex_course_question
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intQuestionId !=null and intQuestionId !='' ">
+                intQuestionId = #{intQuestionId}
+            </if>
+            <if test="intCourseId !=null and intCourseId !='' ">
+                and intCourseId = #{intCourseId}
+            </if>
+        </trim>
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="CourseQuestionMap">
+        select
+        intId
+        from ex_course_question
+        where intQuestionId = #{intQuestionId} and intCourseId = #{intCourseId}
+    </select>
+    <select id="seletcQuestionCount" parameterType="java.util.Map" resultMap="CourseQuestionMap">
+     SELECT intCourseId, COUNT(intQuestionId) as  numberCount FROM `ex_course_question`  GROUP BY intCourseId;
+    </select>
+
+</mapper>

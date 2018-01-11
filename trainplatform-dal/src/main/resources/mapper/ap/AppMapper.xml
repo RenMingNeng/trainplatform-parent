@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.AppMapper">
+
+    <insert id="insert" parameterType="com.bossien.train.domain.Company">
+        insert into ap_company (
+        <trim prefix="" prefixOverrides=",">
+            <if test="intId !=null and intId != ''">,intId</if>
+            <if test="varCode !=null and varCode !=''">,varCode</if>
+            <if test="varName !=null and varName !=''">,varName</if>
+            <if test="intTypeId !=null and intTypeId !=''">,intTypeId</if>
+            <if test="varBusinessId !=null and varBusinessId !=''">,varBusinessId</if>
+            <if test="intCategoryId !=null and intCategoryId !=''">,intCategoryId</if>
+            <if test="intRegionId !=null and intRegionId !=''">,intRegionId</if>
+            <if test="varSupporter !=null and varSupporter !=''">,varSupporter</if>
+            <if test="varLegalPerson !=null and varLegalPerson !=''">,varLegalPerson</if>
+            <if test="varContacter !=null and varContacter !=''">,varContacter</if>
+            <if test="varContactInfo !=null and varContactInfo !=''">,varContactInfo</if>
+            <if test="varPostCode !=null and varPostCode !=''">,varPostCode</if>
+            <if test="varAddress !=null and varAddress !=''">,varAddress</if>
+            <if test="varBankAccount !=null and varBankAccount !=''">,varBankAccount</if>
+            <if test="chrIsRegulator !=null and chrIsRegulator !=''">,chrIsRegulator</if>
+            <if test="chrIsValid !=null and chrIsValid !=''">,chrIsValid</if>
+            <if test="chrIsTermination !=null and chrIsTermination !=''">,chrIsTermination</if>
+            <if test="intPid !=null and intPid !=''">,intPid</if>
+            <if test="intOrder !=null and intOrder !=''">,intOrder</if>
+            <if test="varRemark !=null and varRemark !=''">,varRemark</if>
+            <if test="varCreateUser !=null and varCreateUser !=''">,varCreateUser</if>
+            <if test="datOperDate !=null and datOperDate !=''">,datOperDate</if>
+            <if test="datCreateDate !=null and datCreateDate !=''">,datCreateDate</if>
+            <if test="varOperUser !=null and varOperUser !=''">,varOperUser</if>
+        </trim>
+        ) values (
+        <trim prefix="" prefixOverrides=",">
+            <if test="intId !=null and intId != ''">,#{intId}</if>
+            <if test="varCode !=null and varCode !=''">,#{varCode}</if>
+            <if test="varName !=null and varName !=''">,#{varName}</if>
+            <if test="intTypeId !=null and intTypeId !=''">,#{intTypeId}</if>
+            <if test="varBusinessId !=null and varBusinessId !=''">,#{varBusinessId}</if>
+            <if test="intCategoryId !=null and intCategoryId !=''">,#{intCategoryId}</if>
+            <if test="intRegionId !=null and intRegionId !=''">,#{intRegionId}</if>
+            <if test="varSupporter !=null and varSupporter !=''">,#{varSupporter}</if>
+            <if test="varLegalPerson !=null and varLegalPerson !=''">,#{varLegalPerson}</if>
+            <if test="varContacter !=null and varContacter !=''">,#{varContacter}</if>
+            <if test="varContactInfo !=null and varContactInfo !=''">,#{varContactInfo}</if>
+            <if test="varPostCode !=null and varPostCode !=''">,#{varPostCode}</if>
+            <if test="varAddress !=null and varAddress !=''">,#{varAddress}</if>
+            <if test="varBankAccount !=null and varBankAccount !=''">,#{varBankAccount}</if>
+            <if test="chrIsRegulator !=null and chrIsRegulator !=''">,#{chrIsRegulator}</if>
+            <if test="chrIsValid !=null and chrIsValid !=''">,#{chrIsValid}</if>
+            <if test="chrIsTermination !=null and chrIsTermination !=''">,#{chrIsTermination}</if>
+            <if test="intPid !=null and intPid !=''">,#{intPid}</if>
+            <if test="intOrder !=null and intOrder !=''">,#{intOrder}</if>
+            <if test="varRemark !=null and varRemark !=''">,#{varRemark}</if>
+            <if test="varCreateUser !=null and varCreateUser !=''">,#{varCreateUser}</if>
+            <if test="datOperDate !=null and datOperDate !=''">,#{datOperDate}</if>
+            <if test="datCreateDate !=null and datCreateDate !=''">,#{datCreateDate}</if>
+            <if test="varOperUser !=null and varOperUser !=''">,#{varOperUser}</if>
+        </trim>
+        )
+    </insert>
+
+    <select id="selectOne" resultType="com.bossien.train.domain.Company">
+        SELECT
+        intId ,varCode, varName, chrIsValid
+        FROM ap_company
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId != null and intId != ''">
+                AND intId = #{intId}
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+</mapper>

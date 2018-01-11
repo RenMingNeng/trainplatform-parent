@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.CompanySuperviseMapper">
+    
+    <resultMap id="companySuperviseMap" type="com.bossien.train.domain.CompanySupervise">
+        <result column="id" property="id"></result>
+        <result column="pid" property="pid"></result>
+        <result column="company_id" property="companyId"></result>
+        <result column="company_name" property="companyName"></result>
+        <result column="order_num" property="orderNum"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,pid,company_id,company_name,order_num
+    </sql>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.CompanySupervise">
+        insert into company_supervise	(
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id != ''">,id</if>
+            <if test="pid !=null and pid !=''">,pid</if>
+            <if test="companyId !=null and companyId !=''">,company_id</if>
+            <if test="companyName !=null and companyName !=''">,company_name</if>
+            <if test="orderNum !=null and orderNum !=''">,order_num</if>
+        </trim>
+        ) values (
+        <trim prefix="" prefixOverrides=",">
+            <if test="id !=null and id !=''"> ,#{id} </if>
+            <if test="pid !=null and pid !=''"> ,#{pid} </if>
+            <if test="companyId !=null and companyId !=''"> ,#{companyId} </if>
+            <if test="companyName !=null and companyName !=''"> ,#{companyName} </if>
+            <if test="orderNum !=null and orderNum !=''"> ,#{orderNum} </if>
+        </trim>
+        )
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into company_supervise (
+            id,pid,company_id,company_name,order_num
+        )
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (
+                #{item.id}, #{item.pid}, #{item.companyId}, #{item.companyName}, #{item.orderNum}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+    <update id="update" parameterType="com.bossien.train.domain.CompanySupervise">
+        update company_supervise
+        <trim prefix="set" prefixOverrides=",">
+            <if test="pid !=null and pid !=''"> ,pid = #{pid} </if>
+            <if test="orderNum !=null"> ,order_num = #{orderNum} </if>
+        </trim>
+        where id=#{id} and company_id = #{companyId}
+    </update>
+
+    <select id="getChildCompanyIds" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT getCSUPChiList ( #{rootId}, #{companyId} ) FROM DUAL
+    </select>
+
+    <select id="selectList" parameterType="java.util.Map" resultMap="companySuperviseMap">
+        select
+        <include refid="baseColumn"/>
+        FROM company_supervise
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyName !=null and companyName !=''">
+                and company_name like #{companyName}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="pid !=null and pid !=''">
+                and pid = #{pid}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="companyIds != null and companyIds.size > 0">
+                AND
+                <foreach item="item" index="index" collection="companyIds" open="(" separator="OR" close=")">
+                    company_id = #{item}
+                </foreach>
+            </if>
+        </trim>
+        order by order_num
+    </select>
+
+    <select id="selectOne" parameterType="java.util.Map" resultMap="companySuperviseMap">
+        select
+        <include refid="baseColumn"/>
+        FROM company_supervise
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyName !=null and companyName !=''">
+                and companyName like #{companyName}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="pid !=null and pid !=''">
+                and pid = #{pid}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+            <if test="orderNum !=null">
+                and order_num = #{orderNum}
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        select count(1) FROM company_supervise
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyName !=null and companyName !=''">
+                and companyName like #{companyName}
+            </if>
+            <if test="id !=null and id !=''">
+                and id = #{id}
+            </if>
+            <if test="pid !=null and pid !=''">
+                and pid = #{pid}
+            </if>
+            <if test="companyId !=null and companyId !=''">
+                and company_id = #{companyId}
+            </if>
+        </trim>
+    </select>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE from company_supervise where id = #{id} and company_id = #{companyId}
+    </delete>
+
+    <!--节点批量上移-->
+    <update id="upNodes" parameterType="java.util.Map">
+        update company_supervise set order_num = order_num-1
+        where company_id = #{companyId} and pid = #{pid} and order_num > #{order_num}
+    </update>
+
+    <!--节点批量下移-->
+    <update id="downNodes" parameterType="java.util.Map">
+        update company_supervise set order_num = order_num+1
+        where company_id = #{companyId} and pid = #{pid} and order_num > #{order_num}
+    </update>
+</mapper>

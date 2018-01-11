@@ -1,0 +1,399 @@
+.aia-content {
+    .aia-btn {
+        float: left;
+        width: 96px;
+        height: 32px;
+        color: $aia-color;
+        line-height: 30px;
+        background: $while;
+        border: none;
+        border: 1px solid $aia-btn-border;
+        text-decoration: none !important;
+        cursor: pointer;
+        outline: none;
+        margin-right: -1px;
+        text-align: center;
+    }
+    .aia-btn:hover {
+        background: $main-stis-border-color;
+        @include transparent(0.95);
+    }
+    .aia-btn-active {
+        background: $blue;
+        color: $while;
+    }
+    .aia-btn-active:hover {
+        background: $blue;
+        @include transparent(0.9);
+    }
+    .aia-btn-left {
+        @include border-left-radius(4px);
+    }
+    .aia-btn-right {
+        @include border-right-radius(4px);
+    }
+    .aia-items {
+        border-radius: 4px;
+        @include box-shadow(0 0 6px rgba(34, 38, 65, 0.25));
+        border: 1px solid $aia-items-border;
+        list-style: none;
+        margin: 15px 0;
+        position: relative;
+    }
+    .aia-items-title {
+        height: 32px;
+        line-height: 32px;
+        background: $aia-items-title;
+        color: $main-font-color;
+        text-indent: 20px;
+        font-weight: bold;
+    }
+    .aia-items-content {
+        min-height: 140px;
+        border-top: 1px solid $aia-items-border;
+        background: $while;
+        position: relative;
+    }
+    .aia-items-section1 p {
+        margin: 0;
+        padding: 0;
+    }
+    .aia-items-section1 {
+        width: 156px;
+        height: 100%;
+        min-height: 140px;
+        text-indent: 20px;
+        padding-top: 15px;
+        line-height: 1;
+        float: left;
+        .aia-coupon-name {
+            font-size: 14px;
+            color: $hangup-text-color;
+            margin-bottom: 8px;
+        }
+        .aia-coupon-discount {
+            font-size: 45px;
+            color: $blue;
+            margin-bottom: 7px;
+        }
+        .aia-coupon-tip {
+            font-size: 14px;
+            color: $main-font-color;
+            margin-bottom: 8px;
+        }
+        .aia-coupon-fail {
+            color: $hangup-text-color;
+        }
+        .aia-coupon-small {
+            font-size: 14px;
+        }
+    }
+    .aia-section1-border {
+        position: absolute;
+        top: 0;
+        left: 156px;
+        bottom: 0;
+        background: $aia-items-border;
+        width: 1px;
+    }
+    .aia-items-section2 {
+        padding-top: 15px;
+        text-indent: 20px;
+        float: left;
+        width: 301px;
+        height: 100%;
+        min-height: 140px;
+        .aia-section2-text {
+            font-size: 14px;
+            color: $hangup-text-color;
+            margin-bottom: 6px;
+            padding: 0;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+    }
+    .aia-section2-border {
+        position: absolute;
+        top: 0;
+        left: 457px;
+        bottom: 0;
+        background: $aia-items-border;
+        width: 1px;
+    }
+    .aia-items-section3 {
+        width: 713px;
+        height: 100%;
+        min-height: 140px;
+        float: left;
+        .aia-section3-ul {
+            list-style: none;
+            padding: 16px 0 0 20px;
+        }
+        .aia-section3-items {
+            float: left;
+            width: 188px;
+            margin-right: 40px;
+            margin-bottom: 20px;
+        }
+        .aia-store-logo {
+            width: 40px;
+            height: 40px;
+            border: 1px solid $aia-items-border;
+            border-radius: 4px;
+        }
+        .aia-store-info {
+            line-height: 1;
+            margin-left: 8px;
+            font-size: 14px;
+        }
+        .aia-store-name {
+            color: $main-font-color;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        .aia-store-namewidth {
+            max-width: 120px;
+            margin-right: 2px;
+            @include text-overflow();
+        }
+        .aia-store-custom {
+            color: $hangup-text-color;
+            margin: 0;
+            padding: 0;
+        }
+    }
+    .aia-section3-border {
+        position: absolute;
+        top: 0;
+        left: 1170px;
+        bottom: 0;
+        background: $aia-items-border;
+        width: 1px;
+    }
+    .aia-items-section4 {
+        width: 230px;
+        height: 100%;
+        min-height: 140px;
+        float: left;
+        padding-top: 17px;
+        .aia-section4-text {
+            color: $hangup-text-color;
+            font-size: 14px;
+            line-height: 1;
+            margin-bottom: 10px;
+            text-align: left;
+            padding: 0 10px;
+        }
+    }
+    .aia-section4-border {
+        position: absolute;
+        top: 0;
+        left: 1400px;
+        bottom: 0;
+        background: $aia-items-border;
+        width: 1px;
+    }
+    .aia-items-section5 {
+        width: 195px;
+        height: 100%;
+        min-height: 140px;
+        float: left;
+        padding-top: 15px;
+        .aia-section5-link {
+            color: $aia-items-link;
+            margin-left: 15px;
+            text-decoration: underline;
+        }
+        .aia-section5-link:hover {
+            text-decoration: none;
+            line-height: 1;
+        }
+    }
+}
+
+.aia-modal-content {
+    padding: 10px 15px;
+    .aia-input-group {
+        width: 415px;
+    }
+    .aia-modal-table {
+        margin-top: 15px;
+        max-height: 512px;
+        overflow-y: auto;
+    }
+    .aia-modal-tbody {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+}
+
+.aia-new {
+    .aia-new-title {
+        font-size: 20px;
+        color: $main-font-color;
+        padding-top: 26px;
+        padding-left: 27px;
+        padding-bottom: 20px;
+        line-height: 1.2;
+        background: #f6f8fd;
+        border-bottom: 1px solid $aia-items-border;
+        margin: 0;
+    }
+    .aia-new-pannel {
+        padding: 12px 0 12px 48px;
+        background: $while;
+    }
+    .aia-tip-title {
+        color: $main-font-color;
+        font-size: 14px;
+        margin: 0 0 5px;
+    }
+    .aia-tip-content {
+        color: $hangup-text-color;
+        font-size: 14px;
+        text-indent: 31px;
+        margin: 0 0 5px;
+    }
+    .aia-preview {
+        background: url(../../img/coupon_bg.png) no-repeat;
+        background-size: 100%;
+        background-color: #752cc7;
+        width: 425px;
+        position: relative;
+        height: 1107px;
+        overflow: hidden;
+        .aia-preview-coupon {
+            font-size: 24px;
+            color: #fcf085;
+            width: 226px;
+            text-align: center;
+            margin-top: 320px;
+            margin-left: 44px;
+            margin-bottom: 90px;
+        }
+        .aia-act-ul {
+            list-style: none;
+            padding: 0 12px;
+            .aia-act-items {
+                width: 190px;
+                border-radius: 8px;
+                float: left;
+                background: $while;
+                margin-bottom: 8px;
+            }
+            .aia-act-items:nth-child(n+1) {
+                margin-left: 8px;
+            }
+            .act-store-logo {
+                margin: 10px;
+                width: 170px;
+                height: 170px;
+            }
+            .act-store-name {
+                font-size: 14px;
+                text-align: center;
+                color: $nav-logo-bg;
+                margin-bottom: 8px;
+            }
+        }
+    }
+    .aia-main {
+        padding: 20px 48px 40px 48px;
+        background: $while;
+        min-width: 1680px;
+    }
+    .aia-new-setting {
+        background: $while;
+        width: 1360px;
+        margin-left: 20px;
+        padding: 20px;
+        border: 1px solid #e8e7ec;
+    }
+    .aia-bg {
+        background: $main-bg;
+    }
+    .aia-new-row {
+        margin-bottom: 20px;
+        font-size: 14px;
+        color: $c32373d;
+        line-height: 34px;
+        font-weight: 500;
+        label {
+            margin: 0;
+            font-weight: 500;
+        }
+    }
+    .aia-new-left-title {
+        width: 100px;
+    }
+    .aia-new-lable {
+        font-size: 14px;
+        color: $c32373d;
+        font-weight: 500;
+    }
+    .aia-textarea-tip {
+        margin-left: 100px;
+        font-size: 14px;
+        color: $c939aa2;
+    }
+    .aia-btn-bar {
+        margin-left: 100px;
+        width: 90px;
+    }
+    .aia-store-ul {
+        list-style: none;
+        font-size: 14px;
+        width: 300px;
+        height: 500px;
+        overflow-y: auto;
+        float: left;
+        .aia-store-item {
+            border: 1px solid $main-stis-border-color;
+            // margin-top: -1px;
+            padding: 10px 10px 0;
+            color: $c939aa2;
+            position: relative;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .aia-select-true {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: $while;
+            text-align: center;
+            line-height: 126px;
+        }
+        .aia-store-item:not(:first-child) {
+            margin-top: -1px;
+        }
+        .aia-store-logo {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+            float: left;
+            border: 1px solid #e7e6eb;
+        }
+        .aia-ul-store-info {
+            width: 170px;
+            float: left;
+            font-size: 12px;
+            line-height: 22px;
+            margin-top: -6px;
+            .store-name {
+                color: $blue;
+                font-size: 14px;
+            }
+            .store-info {
+                color: $main-aside-color
+            }
+            p {
+                margin: 0;
+            }
+        }
+    }
+}

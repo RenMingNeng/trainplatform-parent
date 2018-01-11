@@ -1,0 +1,16 @@
+.lk-checkbox{
+  width: 16px;
+  height:16px;
+  display: inline-block;
+  background: url("#{$imgPath}icon_checkbox.png") center no-repeat;
+  background-size: contain;
+  margin-right: 6px;
+}
+
+.lk-checkbox-active{
+  width: 16px;
+  height:16px;
+  display: inline-block;
+  background: url("#{$imgPath}icon_checkbox_active.png") center no-repeat;
+  background-size: contain;
+}

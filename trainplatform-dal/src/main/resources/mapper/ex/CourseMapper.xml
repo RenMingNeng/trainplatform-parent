@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ex.CourseMapper">
+
+    <resultMap id="courseMap" type="com.bossien.train.domain.Course">
+        <id column="intId" property="intId"></id>
+        <result column="intTypeId" property="intTypeId"></result>
+        <result column="varCode" property="varCode"></result>
+        <result column="varName" property="varName"></result>
+        <result column="varDesc" property="varDesc"></result>
+        <result column="intClassHour" property="intClassHour"></result>
+        <result column="chrType" property="chrType"></result>
+        <result column="varCoverInfo" property="varCoverInfo"></result>
+        <result column="chrPlatformType" property="chrPlatformType"></result>
+        <result column="chrStatus" property="chrStatus"></result>
+        <result column="varCreateUser" property="varCreateUser"></result>
+        <result column="datCreateDate" property="datCreateDate"></result>
+        <result column="varOperUser" property="varOperUser"></result>
+        <result column="datOperDate" property="datOperDate"></result>
+        <result column="varCoverInfo" property="varCoverInfo"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        intId, intTypeId, varCode, varName, varDesc,varCoverInfo,intClassHour, chrType, chrPlatformType, chrStatus, varCreateUser, datCreateDate, varOperUser, datOperDate
+    </sql>
+
+    <select id="selectOne" parameterType="java.util.Map" resultMap="courseMap">
+        select
+        <include refid="baseColumn"/>
+        from ex_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+        limit 1
+    </select>
+    <select id="selectId" parameterType="java.util.Map" resultMap="courseMap">
+        select
+        intId
+        from ex_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+
+    </select>
+
+    <select id="selectList" parameterType="java.util.Map" resultType="com.bossien.train.domain.Course">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ex_course
+        <where>
+            <if test="intIds !=null  and intIds.size >0">
+                intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+        </where>
+        <include refid="mysqlPage"></include>
+    </select>
+    <select id="selectAll" parameterType="java.util.Map" resultType="com.bossien.train.domain.Course">
+        SELECT
+        <include refid="baseColumn"/>
+        FROM ex_course
+        <where>
+            <if test="intIds !=null  and intIds.size >0">
+                intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(intId) FROM ex_course
+        <where>
+            <if test="intIds !=null  and intIds.size >0">
+                intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE #{varName}
+            </if>
+        </where>
+    </select>
+
+    <!--根据intTypeId或者courseName查询课程-->
+    <select id="selectCourseList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+        intId,varCode,intTypeId,varName
+        FROM ex_course
+        <where>
+            <if test="intIds !=null  and intIds.size >0">
+                and intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+
+                AND find_in_set(intTypeId, getAPCTypeChiList(#{intTypeId},#{intCompanyId}))
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE '%${varName}%'
+            </if>
+        </where>
+        order by datCreateDate DESC
+        <include refid="mysqlPage"></include>
+    </select>
+
+    <!--根据intTypeId或者courseName查询课程总条数-->
+    <select id="selectCourseCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+        count(intId)
+        FROM ex_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intIds !=null  and intIds.size >0">
+                and intId in
+                <foreach item="intIds" index="index" collection="intIds" open="(" separator="," close=")">
+                    #{intIds}
+                </foreach>
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                AND find_in_set(intTypeId, getAPCTypeChiList(#{intTypeId},#{intCompanyId}))
+            </if>
+            <if test="varName != null and varName != ''">
+                AND varName LIKE '%${varName}%'
+            </if>
+        </trim>
+    </select>
+    <!--通过主键id查询单条信息-->
+    <select id="selectById" parameterType="java.lang.String" resultMap="courseMap">
+        select
+        <include refid="baseColumn"/>
+        from ex_course
+        WHERE intId=#{intId}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.Course">
+        insert into ex_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                intTypeId,
+            </if>
+            <if test="varCode != null and varCode != ''">
+                varCode,
+            </if>
+            <if test="chrSource != null and chrSource != ''">
+                chrSource,
+            </if>
+            <if test="varName != null and varName != ''">
+                varName,
+            </if>
+            <if test="varCoverInfo != null and varCoverInfo != ''">
+                varCoverInfo,
+            </if>
+            <if test="varDesc != null and varDesc != ''">
+                varDesc,
+            </if>
+            <if test="intClassHour != null and intClassHour != ''">
+                intClassHour,
+            </if>
+            <if test="chrType != null and chrType != ''">
+                chrType,
+            </if>
+            <if test="chrPlatformType != null and chrPlatformType != ''">
+                chrPlatformType,
+            </if>
+            <if test="chrStatus != null and chrStatus != ''">
+                chrStatus,
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser,
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="intTypeId != null and intTypeId != ''">
+                #{intTypeId},
+            </if>
+            <if test="varCode != null and varCode != ''">
+                #{varCode},
+            </if>
+            <if test="chrSource != null and chrSource != ''">
+                #{chrSource},
+            </if>
+            <if test="varName != null and varName != ''">
+                #{varName},
+            </if>
+            <if test="varCoverInfo != null and varCoverInfo != ''">
+                #{varCoverInfo},
+            </if>
+            <if test="varDesc != null and varDesc != ''">
+                #{varDesc},
+            </if>
+            <if test="intClassHour != null and intClassHour != ''">
+                #{intClassHour},
+            </if>
+            <if test="chrType != null and chrType != ''">
+                #{chrType},
+            </if>
+            <if test="chrPlatformType != null and chrPlatformType != ''">
+                #{chrPlatformType},
+            </if>
+            <if test="chrStatus != null and chrStatus != ''">
+                #{chrStatus},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+        </trim>
+    </insert>
+    <!--批量插入-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ex_course (intId, intTypeId, varCode,
+        varName, varDesc, varCoverInfo,
+        intClassHour, chrType, chrPlatformType,
+        chrStatus, varCreateUser, datCreateDate,
+        varOperUser, datOperDate, chrSource
+        )
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+             (#{item.intId,jdbcType=BIGINT}, #{item.intTypeId,jdbcType=INTEGER},
+                #{item.varCode,jdbcType=VARCHAR},
+                #{item.varName,jdbcType=VARCHAR}, #{item.varDesc,jdbcType=VARCHAR},
+                #{item.varCoverInfo,jdbcType=VARCHAR},
+                #{item.intClassHour,jdbcType=INTEGER}, #{item.chrType,jdbcType=CHAR},
+                #{item.chrPlatformType,jdbcType=CHAR},
+                #{item.chrStatus,jdbcType=CHAR},
+                #{item.varCreateUser,jdbcType=VARCHAR},
+                #{item.datCreateDate,jdbcType=TIMESTAMP},
+                #{item.varOperUser,jdbcType=VARCHAR},
+                #{item.datOperDate,jdbcType=TIMESTAMP},
+                #{item.chrSource,jdbcType=CHAR}
+                )
+            </foreach>
+        </if>
+    </insert>
+    <!--批量更新-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ex_course
+            <set>
+                <if test="item.intTypeId != null and item.intTypeId != '' ">
+                    intTypeId = #{item.intTypeId},
+                </if>
+                <if test="item.varName != null and item.varName != ''">
+                    varName = #{item.varName},
+                </if>
+                <if test="item.varDesc != null and item.varDesc != ''">
+                    varDesc = #{item.varDesc},
+                </if>
+                <if test="item.varCoverInfo != null and item.varCoverInfo != ''">
+                    varCoverInfo = #{item.varCoverInfo},
+                </if>
+                <if test="item.intClassHour != null and item.intClassHour != ''">
+                    intClassHour = #{item.intClassHour},
+                </if>
+                <if test="item.chrType != null and item.chrType != ''">
+                    chrType = #{item.chrType},
+                </if>
+                <if test="item.chrPlatformType != null and item.chrPlatformType != ''">
+                    chrPlatformType = #{item.chrPlatformType},
+                </if>
+                <if test="item.chrStatus != null and item.chrStatus != ''">
+                    chrStatus = #{item.chrStatus},
+                </if>
+                <if test="item.varCreateUser != null and item.varCreateUser != ''">
+                    varCreateUser = #{item.varCreateUser},
+                </if>
+                <if test="item.datCreateDate != null and item.datCreateDate != ''">
+                    datCreateDate = #{item.datCreateDate},
+                </if>
+                <if test="item.varOperUser != null and item.varOperUser != ''">
+                    varOperUser = #{item.varOperUser},
+                </if>
+                <if test="item.datOperDate != null and item.datOperDate != ''">
+                    datOperDate = #{item.datOperDate},
+                </if>
+                <if test="item.varCode != null and item.varCode != ''">
+                    varCode = #{item.varCode}
+                </if>
+            </set>
+            where intId = #{item.intId}
+        </foreach>
+    </update>
+    <!--根据课程编号更新-->
+    <update id="updateByVarCodeSelective" parameterType="com.bossien.train.domain.Course">
+        update ex_course
+        <set>
+            <if test="intTypeId != null and intTypeId != '' ">
+                intTypeId = #{intTypeId},
+            </if>
+
+            <if test="varName != null and varName != ''">
+                varName = #{varName},
+            </if>
+            <if test="varDesc != null and varDesc != ''">
+                varDesc = #{varDesc},
+            </if>
+            <if test="varCoverInfo != null and varCoverInfo != ''">
+                varCoverInfo = #{varCoverInfo},
+            </if>
+            <if test="intClassHour != null and intClassHour != ''">
+                intClassHour = #{intClassHour},
+            </if>
+            <if test="chrType != null and chrType != ''">
+                chrType = #{chrType},
+            </if>
+            <if test="chrPlatformType != null and chrPlatformType != ''">
+                chrPlatformType = #{chrPlatformType},
+            </if>
+            <if test="chrStatus != null and chrStatus != ''">
+                chrStatus = #{chrStatus},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate = #{datOperDate},
+            </if>
+            <if test="varCode != null and varCode != ''">
+                varCode = #{varCode}
+            </if>
+        </set>
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId}
+        </trim>
+    </update>
+
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ex_course
+        where intId= #{intCourseId}
+    </delete>
+    <!--批量删除-->
+    <delete id="deleteByKey" parameterType="java.util.Map">
+        delete from ex_course
+        where intId in
+        <foreach item="intId" index="index" collection="courseId" open="(" separator="," close=")">
+            #{intId}
+        </foreach>
+    </delete>
+
+    <!-- mysql分页查询 -->
+    <sql id="mysqlPage">
+        <![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		    limit #{startNum},#{endNum}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        ]]>
+    </sql>
+
+</mapper>

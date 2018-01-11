@@ -1,0 +1,8 @@
+[
+  {"text": "首页", "id": "admin:index"},
+  {"text": "人员管理", "id": "admin:user"},
+  {"text": "课程管理", "id": "admin:course"},
+  {"text": "项目管理", "id": "admin:project"},
+  {"text": "档案管理", "id": "admin:dossier"},
+  {"text": "基本信息", "id": "admin:basic"}
+]

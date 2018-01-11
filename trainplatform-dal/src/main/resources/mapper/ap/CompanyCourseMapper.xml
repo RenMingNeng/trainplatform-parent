@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.CompanyCourseMapper">
+    <resultMap id="BaseResultMap" type="com.bossien.train.domain.CompanyCourse">
+        <id column="varId" property="varId" jdbcType="VARCHAR"/>
+        <result column="intCompanyId" property="intCompanyId" jdbcType="VARCHAR"/>
+        <result column="intCompanyCourseTypeId" property="intCompanyCourseTypeId" jdbcType="VARCHAR"/>
+        <result column="intCourseId" property="intCourseId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        varId, intCompanyId, intCompanyCourseTypeId, intCourseId
+    </sql>
+    <select id="selectByCompanyId" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT intCourseId FROM ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="courseId != null and courseId != ''">
+                AND intCourseId = #{courseId}
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                AND intCompanyId = #{intCompanyId}
+            </if>
+            <if test="courseTypeIds != null and courseTypeIds != ''">
+                AND find_in_set(intCompanyCourseTypeId, #{courseTypeIds})
+            </if>
+        </trim>
+    </select>
+
+    <!-- 根据公司Id和课程Ids查询课课程Id -->
+    <select id="selectCourseIds" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT
+        intCourseId
+        FROM
+        ap_company_course
+        WHERE
+        intCompanyId = #{companyId}
+        <if test="courseIds != null and courseIds.size>0">
+            AND intCourseId IN
+            <foreach collection="courseIds" index="index" item="courseId" open="(" separator="," close=")">
+                #{courseId}
+            </foreach>
+        </if>
+    </select>
+
+    <!--统计公司下的课程数量-->
+    <select id="selectCompanyCourseCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT IFNULL(COUNT(intCourseId),0) FROM ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="companyId != null ">
+                AND intCompanyId = #{companyId,jdbcType=INTEGER}
+            </if>
+            <if test="courseIds != null and courseIds.size>0">
+                AND intCourseId IN
+                <foreach collection="courseIds" index="index" item="courseId" open="(" separator="," close=")">
+                    #{courseId}
+                </foreach>
+            </if>
+        </trim>
+    </select>
+    <!--统计公司下的课程数量-->
+    <select id="selectIntCourseIdCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT COUNT(intCourseId) FROM ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intCourseId != null and intCourseId != ''">
+                AND intCourseId = #{intCourseId}
+            </if>
+        </trim>
+    </select>
+
+
+    <insert id="insertSelective" parameterType="java.util.Map">
+        insert into ap_company_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="varId != null and varId != ''">
+                varId,
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId,
+            </if>
+            <if test="intCompanyCourseTypeId != null and intCompanyCourseTypeId != ''">
+                intCompanyCourseTypeId,
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                intCourseId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="varId != null and intId != ''">
+                #{varId,jdbcType=VARCHAR},
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                #{intCompanyId,jdbcType=INTEGER},
+            </if>
+            <if test="intCompanyCourseTypeId != null and intCompanyCourseTypeId != ''">
+                #{intCompanyCourseTypeId,jdbcType=INTEGER},
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                #{intCourseId,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_company_course (varId, intCompanyId, intCompanyCourseTypeId,
+        intCourseId)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (
+                #{item.varId}, #{item.intCompanyId}, #{item.intCompanyCourseTypeId},
+                #{item.intCourseId}
+                )
+            </foreach>
+        </if>
+    </insert>
+
+
+    <update id="updateByCourseId" parameterType="java.util.Map">
+        update ap_company_course
+        <set>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId = #{intCompanyId},
+            </if>
+            <if test="intCompanyCourseTypeId != null and intCompanyCourseTypeId != ''">
+                intCompanyCourseTypeId = #{intCompanyCourseTypeId},
+            </if>
+        </set>
+        where intCourseId = #{intCourseId}
+    </update>
+    <select id="selectOne" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intCourseId != null and intCourseId != ''">
+                and intCourseId = #{intCourseId}
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                and intCompanyId = #{intCompanyId}
+            </if>
+            <if test="intCompanyCourseTypeId != null and intCompanyCourseTypeId != ''">
+                and intCompanyCourseTypeId = #{intCompanyCourseTypeId}
+            </if>
+        </trim>
+        limit 1
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        varId
+        from ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intCourseId = #{intCourseId}
+            and intCompanyId = #{intCompanyId}
+            and intCompanyCourseTypeId = #{intCompanyCourseTypeId}
+        </trim>
+
+    </select>
+
+    <select id="selectRefByCompanyId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        intCourseId, intCompanyCourseTypeId
+        from ap_company_course
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intCompanyId = #{intCompanyId}
+        </trim>
+    </select>
+
+    <!--删除-->
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ap_company_course
+        where intCourseId = #{intCourseId}
+        and intCompanyId = #{intCompanyId}
+
+    </delete>
+
+
+    <!-- mysql分页查询 -->
+    <sql id="mysqlPage">
+        <![CDATA[
+
+
+
+
+
+
+
+
+
+		    limit #{startNum},#{endNum}
+
+
+
+
+
+
+
+
+
+        ]]>
+    </sql>
+</mapper>

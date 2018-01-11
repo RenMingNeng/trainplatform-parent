@@ -1,0 +1,1 @@
+sass --watch scss\style-index.scss:css\style-index.css

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.VideoPositionMapper">
+    <resultMap id="VideoPositionMap" type="com.bossien.train.domain.VideoPosition">
+        <id column="id" property="id"></id>
+        <result column="course_id" property="courseId"></result>
+        <result column="user_id" property="userId"></result>
+        <result column="video_id" property="videoId"></result>
+        <result column="last_position" property="lastPosition"></result>
+        <result column="create_time" property="createTime"></result>
+        <result column="oper_time" property="operTime"></result>
+    </resultMap>
+
+    <sql id="baseColumn">
+        id,course_id,user_id,video_id,last_position,create_time,oper_time
+    </sql>
+
+    <!--插入-->
+    <insert id="insert" parameterType="java.util.Map">
+        insert into video_position
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                id,
+            </if>
+            <if test="userId != null and userId != ''">
+                user_id,
+            </if>
+            <if test="courseId != null and courseId != ''">
+                course_id,
+            </if>
+            <if test="videoId != null and videoId != ''">
+                video_id,
+            </if>
+            <if test="lastPosition != null ">
+                last_position,
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time,
+            </if>
+            <if test="operTime != null and operTime != ''">
+                oper_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">
+                #{id},
+            </if>
+            <if test="userId != null and userId != ''">
+                #{userId},
+            </if>
+            <if test="courseId != null and courseId != ''">
+                #{courseId},
+            </if>
+            <if test="videoId != null and videoId != ''">
+                #{videoId},
+            </if>
+            <if test="lastPosition != null ">
+                #{lastPosition},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                #{createTime},
+            </if>
+            <if test="operTime != null and operTime != ''">
+                #{operTime},
+            </if>
+        </trim>
+    </insert>
+    <!--根据courseId、userId、videoId查询记录条数-->
+    <select id="selectCount" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select IFNULL(count(user_id),0) from video_position
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userId !=null  and userId !='' ">
+              and user_id = #{userId}
+            </if>
+            <if test="courseId !=null  and courseId !='' ">
+                and course_id = #{courseId}
+            </if>
+            <if test="videoId !=null  and videoId !='' ">
+                and video_id = #{videoId}
+            </if>
+        </trim>
+    </select>
+    <!--删除最早的一条数据-->
+    <delete id="delete" parameterType="java.util.Map">
+        DELETE from video_position
+        WHERE user_id = #{userId}
+        and course_id = #{courseId}
+        and video_id = #{videoId}
+        order by oper_time asc
+        limit 1
+    </delete>
+    <!--查询最新一条记录-->
+    <select id="selectOne" parameterType="java.util.Map" resultType="java.lang.Integer">
+       SELECT
+        last_position
+        from video_position
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="userId !=null  and userId !='' ">
+                and user_id = #{userId}
+            </if>
+            <if test="courseId !=null  and courseId !='' ">
+                and course_id = #{courseId}
+            </if>
+            <if test="videoId !=null  and videoId !='' ">
+                and video_id = #{videoId}
+            </if>
+        </trim>
+        order by oper_time desc
+        limit 1
+    </select>
+</mapper>

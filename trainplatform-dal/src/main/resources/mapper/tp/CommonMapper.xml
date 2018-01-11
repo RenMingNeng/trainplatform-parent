@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommonMapper">
+	<!-- oracle分页查询 -->
+	<sql id="oraclePageStart">
+		<![CDATA[
+			SELECT * FROM (SELECT ROWNUM AS RNUM, T.* FROM ( 
+		]]>
+	</sql>
+	<sql id="oraclePageEnd">
+		<![CDATA[
+			) T WHERE ROWNUM <= #{curPage}*#{numPerPage}) WHERE RNUM > (#{curPage}-1)*#{numPerPage}
+		]]>
+	</sql>
+	
+	<!-- mysql分页查询 -->
+
+	<sql id="mysqlPage">
+		<![CDATA[
+		    limit #{startNum},#{endNum}
+		]]>
+	</sql>
+</mapper>

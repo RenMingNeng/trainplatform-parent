@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bossien.train.dao.ap.SubjectCourseMapper">
+    <resultMap id="BaseResultMap" type="com.bossien.train.domain.SubjectCourse">
+        <id column="intId" property="intId"/>
+        <result column="intTrainSubjectId" property="intTrainSubjectId"/>
+        <result column="intCourseId" property="intCourseId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    intId, intTrainSubjectId, intCourseId
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_train_subject_course
+        where intId = #{intId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ap_train_subject_course
+    where intId = #{intId}
+  </delete>
+    <delete id="deleteByTrainSubjectId" parameterType="java.lang.String">
+    delete from ap_train_subject_course
+    where intTrainSubjectId = #{intTrainSubjectId}
+  </delete>
+    <!--更具课程和主题删除-->
+    <delete id="deleteByCourseId" parameterType="java.util.Map">
+        delete from ap_train_subject_course
+        where intCourseId IN
+        <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        and intTrainSubjectId= #{intTrainSubjectId}
+    </delete>
+    <insert id="insert" parameterType="com.bossien.train.domain.SubjectCourse">
+    insert into ap_train_subject_course (intId, intTrainSubjectId, intCourseId
+      )
+    values (#{intId}, #{intTrainSubjectId}, #{intCourseId}
+      )
+  </insert>
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_train_subject_course (intId, intTrainSubjectId, intCourseId
+        )
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.intId}, #{item.intTrainSubjectId}, #{item.intCourseId}
+                )
+            </foreach>
+        </if>
+
+    </insert>
+
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.SubjectCourse">
+        insert into ap_train_subject_course
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="intTrainSubjectId != null and intTrainSubjectId != ''">
+                intTrainSubjectId,
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                intCourseId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="intTrainSubjectId != null and intTrainSubjectId != ''">
+                #{intTrainSubjectId},
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                #{intCourseId},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bossien.train.domain.SubjectCourse">
+        update ap_train_subject_course
+        <set>
+            <if test="intTrainSubjectId != null and intTrainSubjectId != ''">
+                intTrainSubjectId = #{intTrainSubjectId},
+            </if>
+            <if test="intCourseId != null and intCourseId != ''">
+                intCourseId = #{intCourseId},
+            </if>
+        </set>
+        where intId = #{intId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bossien.train.domain.SubjectCourse">
+    update ap_train_subject_course
+    set intTrainSubjectId = #{intTrainSubjectId},
+      intCourseId = #{intCourseId}
+    where intId = #{intId}
+  </update>
+
+    <!-- 根据主题Id拿到课程Id集合 -->
+    <select id="selectCourseIds" resultType="java.lang.String" parameterType="java.lang.String">
+    select
+    intCourseId
+    from ap_train_subject_course
+    where intTrainSubjectId = #{subjectId}
+  </select>
+</mapper>

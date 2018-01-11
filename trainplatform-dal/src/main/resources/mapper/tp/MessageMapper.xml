@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.MessageMapper">
+
+	<resultMap id="messageMap" type="com.bossien.train.domain.Message">
+		<id column="id" property="id"></id>
+		<result column="user_id" property="userId"></result>
+		<result column="company_id" property="companyId"></result>
+		<result column="message_title" property="messageTitle"></result>
+		<result column="message_content" property="messageContent"></result>
+		<result column="message_status" property="messageStatus"></result>
+		<result column="send_id" property="sendId"></result>
+		<result column="send_name" property="sendName"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+	</resultMap>
+
+	<insert id="insert" parameterType="java.util.Map">
+		insert into message	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			,user_id
+			,company_id
+			<if test="messageTitle !=null and messageTitle !=''">,message_title</if>
+			<if test="messageContent !=null and messageContent !=''">,message_content</if>
+			<if test="messageStatus !=null and messageStatus !=''">,message_status</if>
+			<if test="sendId !=null and sendId !=''">,send_id</if>
+			<if test="sendName !=null and sendName !=''">,send_name</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			,#{userId}
+			,#{companyId}
+			<if test="messageTitle !=null and messageTitle !=''"> ,#{messageTitle} </if>
+			<if test="messageContent !=null and messageContent !=''"> ,#{messageContent} </if>
+			<if test="messageStatus !=null and messageStatus !=''"> ,#{messageStatus} </if>
+			<if test="sendId !=null and sendId !=''"> ,#{sendId} </if>
+			<if test="sendName !=null and sendName !=''"> ,#{sendName} </if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<delete id="deleteBatch" parameterType="java.util.List">
+		DELETE FROM message WHERE id in
+		<foreach collection="id" index="index" item="ids" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+	<sql id="baseColumn">
+		id,user_id,company_id,message_title,message_content,message_status,send_id,send_name,create_time,create_user
+	</sql>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into message (
+			id,user_id,company_id,message_title,
+			message_content,send_id,send_name,
+			create_time,create_user
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+				(
+				#{item.id},#{item.userId}, #{item.companyId}, #{item.messageTitle},
+				#{item.messageContent}, #{item.sendId},#{item.sendName},
+				#{item.createTime},#{item.createUser}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<update id="update" parameterType="java.util.Map">
+		update message
+		<trim prefix="set" prefixOverrides=",">
+			<if test="messageStatus !=null"> ,message_status = #{messageStatus} </if>
+			<if test="messageContent !=null"> ,message_content = #{messageContent} </if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<select id="selectList" parameterType="java.util.Map" resultMap="messageMap">
+		select
+		<include refid="baseColumn"/>
+		FROM message
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="messageStatus !=null and messageStatus !=''">
+				and message_status = #{messageStatus}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and (user_id = #{userId}
+				<if test="companyId !=null and companyId !=''">
+					or company_id = #{companyId}
+				</if>)
+			</if>
+		</trim>
+		order by create_time desc
+		<include refid="CommonMapper.mysqlPage" />
+	</select>
+
+	<select id="selectOne" parameterType="java.util.Map" resultMap="messageMap">
+		select
+		<include refid="baseColumn"/>
+		FROM message
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="messageStatus !=null and messageStatus !=''">
+				and message_status = #{messageStatus}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM message
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="messageStatus !=null and messageStatus !=''">
+				and message_status = #{messageStatus}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and (user_id = #{userId}
+				<if test="companyId !=null and companyId !=''">
+					or company_id = #{companyId}
+				</if>)
+			</if>
+		</trim>
+	</select>
+</mapper>

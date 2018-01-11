@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExamPaperInfoMapper">
+
+	<resultMap id="examPaperInfoMap" type="com.bossien.train.domain.ExamPaperInfo">
+		<id column="exam_no" property="examNo"></id>
+		<result column="user_id" property="userId"></result>
+		<result column="project_id" property="projectId"></result>
+		<result column="role_id" property="roleId"></result>
+		<result column="exam_type" property="examType"></result>
+		<result column="single_score" property="singleScore"></result>
+		<result column="many_score" property="manyScore"></result>
+		<result column="judge_score" property="judgeScore"></result>
+		<result column="fillout_score" property="filloutScore"></result>
+		<result column="ques_ans_score" property="quesAnsScore"></result>
+		<result column="pass_score" property="passScore"></result>
+		<result column="total_score" property="totalScore"></result>
+		<result column="necessary_hour" property="necessaryHour"></result>
+		<result column="exam_duration" property="examDuration"></result>
+		<result column="exam_status" property="examStatus"></result>
+		<result column="create_time" property="createTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		exam_no,user_id,project_id,role_id,exam_type,single_score,many_score,judge_score,fillout_score,ques_ans_score,pass_score,total_score,necessary_hour,exam_duration,exam_status,create_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ExamPaperInfo">
+		insert into exam_paper_info	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="examNo !=null and examNo != ''">,exam_no</if>
+			<if test="userId !=null and userId !=''">,user_id</if>
+			<if test="projectId !=null and projectId !=''">,project_id</if>
+			<if test="roleId !=null and roleId != ''">,role_id</if>
+			<if test="examType !=null and examType !=''">,exam_type</if>
+			<if test="singleScore !=null and singleScore !=''">,single_score</if>
+			<if test="manyScore !=null and manyScore !=''">,many_score</if>
+			<if test="judgeScore !=null and judgeScore !=''">,judge_score</if>
+			<if test="filloutScore !=null and filloutScore !=''">,fillout_score</if>
+			<if test="quesAnsScore !=null and quesAnsScore !=''">,ques_ans_score</if>
+			<if test="passScore !=null and passScore !=''"> ,pass_score </if>
+			<if test="totalScore !=null and totalScore !=''"> ,total_score </if>
+			<if test="necessaryHour !=null and necessaryHour !=''"> ,necessary_hour </if>
+			<if test="examDuration !=null and examDuration !=''"> ,exam_duration </if>
+			<if test="examStatus !=null and examStatus !=''"> ,exam_status </if>
+			<if test="createTime !=null and createTime !=''"> ,create_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="examNo !=null and examNo !=''"> ,#{examNo} </if>
+			<if test="userId !=null and userId !=''"> ,#{userId} </if>
+			<if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+			<if test="roleId !=null and roleId !=''"> ,#{roleId} </if>
+			<if test="examType !=null and examType !=''"> ,#{examType} </if>
+			<if test="singleScore !=null and singleScore !=''"> ,#{singleScore} </if>
+			<if test="manyScore !=null and manyScore !=''"> ,#{manyScore} </if>
+			<if test="judgeScore !=null and judgeScore !=''"> ,#{judgeScore} </if>
+			<if test="filloutScore !=null and filloutScore !=''"> ,#{filloutScore} </if>
+			<if test="quesAnsScore !=null and quesAnsScore !=''"> ,#{quesAnsScore} </if>
+			<if test="passScore !=null and passScore !=''"> ,#{passScore} </if>
+			<if test="totalScore !=null and totalScore !=''"> ,#{totalScore} </if>
+			<if test="necessaryHour !=null and necessaryHour !=''"> ,#{necessaryHour} </if>
+			<if test="examDuration !=null and examDuration !=''"> ,#{examDuration} </if>
+			<if test="examStatus !=null and examStatus !=''"> ,#{examStatus} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<update id="update" parameterType="string">
+		update exam_paper_info set exam_status = '2' where exam_no=#{examNo}
+	</update>
+
+	<select id="selectList" parameterType="com.bossien.train.domain.ExamPaperInfo" resultMap="examPaperInfoMap">
+		select
+		<include refid="baseColumn"/>
+		FROM exam_paper_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+			<if test="examStatus !=null and examStatus !=''">
+				and exam_status = #{examStatus}
+			</if>
+			<if test="examType !=null and examType !=''">
+				and exam_type = #{examType}
+			</if>
+		</trim>
+		<include refid="CommonMapper.mysqlPage" />
+	</select>
+
+	<select id="selectOne" parameterType="com.bossien.train.domain.ExamPaperInfo" resultMap="examPaperInfoMap">
+		select
+		<include refid="baseColumn"/>
+		FROM exam_paper_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+			<if test="examStatus !=null and examStatus !=''">
+				and exam_status = #{examStatus}
+			</if>
+			<if test="examType !=null and examType !=''">
+				and exam_type = #{examType}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM exam_paper_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+			<if test="examStatus !=null and examStatus !=''">
+				and exam_status = #{examStatus}
+			</if>
+			<if test="examType !=null and examType !=''">
+				and exam_type = #{examType}
+			</if>
+		</trim>
+	</select>
+
+	<!-- 根据用户Ids和项目Id删除项目用户组卷记录 -->
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		DELETE FROM exam_paper_info WHERE project_id = #{projectId} AND user_id IN
+		<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+			#{userIds}
+		</foreach>
+	</delete>
+
+</mapper>

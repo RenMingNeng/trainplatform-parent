@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bossien.train.dao.ap.CompanyUserMapper">
+    <resultMap id="BaseResultMap" type="com.bossien.train.domain.CompanyUser">
+        <id column="intId" property="intId" jdbcType="VARCHAR"/>
+        <result column="varAccount" property="varAccount" jdbcType="VARCHAR"/>
+        <result column="varPasswd" property="varPasswd" jdbcType="VARCHAR"/>
+        <result column="varName" property="varName" jdbcType="VARCHAR"/>
+        <result column="chrSex" property="chrSex" jdbcType="VARCHAR"/>
+        <result column="chrIdType" property="chrIdType" jdbcType="VARCHAR"/>
+        <result column="varIdNumber" property="varIdNumber" jdbcType="VARCHAR"/>
+        <result column="chrSupporter" property="chrSupporter" jdbcType="VARCHAR"/>
+        <result column="chrUserType" property="chrUserType" jdbcType="VARCHAR"/>
+        <result column="varMobileNo" property="varMobileNo" jdbcType="VARCHAR"/>
+        <result column="intCompanyId" property="intCompanyId" jdbcType="VARCHAR"/>
+        <result column="varDepartmentId" property="varDepartmentId" jdbcType="VARCHAR"/>
+        <result column="chrRegistType" property="chrRegistType" jdbcType="VARCHAR"/>
+        <result column="datRegistDate" property="datRegistDate" jdbcType="TIMESTAMP"/>
+        <result column="chrIsValid" property="chrIsValid" jdbcType="VARCHAR"/>
+        <result column="varOpenId" property="varOpenId" jdbcType="VARCHAR"/>
+        <result column="varCreateUser" property="varCreateUser" jdbcType="VARCHAR"/>
+        <result column="datCreateDate" property="datCreateDate" jdbcType="VARCHAR"/>
+        <result column="varOperUser" property="varOperUser" jdbcType="VARCHAR"/>
+        <result column="datOperDate" property="datOperDate" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    intId, varAccount, varPasswd, varName, chrSex, chrIdType, varIdNumber, chrSupporter, 
+    chrUserType, varMobileNo, intCompanyId, varDepartmentId, chrRegistType, datRegistDate, 
+    chrIsValid, varOpenId, varCreateUser, datCreateDate, varOperUser, datOperDate
+  </sql>
+    <!--查询一条数据-->
+    <select id="selectByOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="intId !=null and intId !='' ">
+                AND intId = #{intId}
+            </if>
+        </trim>
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        intId
+        from ap_company_user
+        <trim prefix="WHERE" prefixOverrides="AND">
+            intId = #{intId} or varAccount=#{varAccount}
+        </trim>
+    </select>
+
+    <!--根据账号删除和批量删除-->
+    <delete id="deleteByPrimaryKey">
+        delete from ap_company_user
+        where intId IN
+        <foreach item="intId" index="index" collection="codes" open="(" separator="," close=")">
+            #{intId}
+        </foreach>
+        and intCompanyId=#{intCompanyId}
+        and varAccount=#{varAccount}
+    </delete>
+
+    <insert id="insert" parameterType="com.bossien.train.domain.CompanyUser">
+    insert into ap_company_user (intId, varAccount, varPasswd,
+    varName, chrSex, chrIdType,
+    varIdNumber, chrSupporter, chrUserType,
+    varMobileNo, intCompanyId, varDepartmentId,
+    chrRegistType, datRegistDate, chrIsValid,
+    varOpenId, varCreateUser, datCreateDate,
+    varOperUser, datOperDate)
+    values (#{intId,jdbcType=INTEGER}, #{account,jdbcType=VARCHAR}, #{passwd,jdbcType=VARCHAR},
+    #{name,jdbcType=VARCHAR}, #{sex,jdbcType=CHAR}, #{chrIdType,jdbcType=CHAR},
+    #{varIdNumber,jdbcType=VARCHAR}, #{supporter,jdbcType=CHAR}, #{chrUserType,jdbcType=CHAR},
+    #{mobileNo,jdbcType=VARCHAR}, #{intCompanyId,jdbcType=INTEGER}, #{varDepartmentId,jdbcType=VARCHAR},
+    #{chrRegistType,jdbcType=CHAR}, #{datRegistDate,jdbcType=TIMESTAMP}, #{isValid,jdbcType=CHAR},
+    #{varOpenId,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=VARCHAR},
+    #{operUser,jdbcType=VARCHAR}, #{operDate,jdbcType=VARCHAR})
+  </insert>
+
+    <!--插入数据-->
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.CompanyUser">
+        insert into ap_company_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="varAccount != null  and varAccount != ''">
+                varAccount,
+            </if>
+            <if test="varPasswd != null and varPasswd != ''">
+                varPasswd,
+            </if>
+            <if test="varName != null  and varName != ''">
+                varName,
+            </if>
+            <if test="chrSex != null and chrSex != ''">
+                chrSex,
+            </if>
+            <if test="chrIdType != null  and chrIdType != ''">
+                chrIdType,
+            </if>
+            <if test="varIdNumber != null and varIdNumber != ''">
+                varIdNumber,
+            </if>
+            <if test="chrSupporter != null  and chrSupporter != ''">
+                chrSupporter,
+            </if>
+            <if test="chrUserType != null  and chrUserType != ''">
+                chrUserType,
+            </if>
+            <if test="varMobileNo != null and varMobileNo != ''">
+                varMobileNo,
+            </if>
+            <if test="intCompanyId != null and intCompanyId != '' ">
+                intCompanyId,
+            </if>
+            <if test="varDepartmentId != null  and varDepartmentId != '' ">
+                varDepartmentId,
+            </if>
+            <if test="chrRegistType != null   and chrRegistType != ''">
+                chrRegistType,
+            </if>
+            <if test="datRegistDate != null   and datRegistDate != ''">
+                datRegistDate,
+            </if>
+            <if test="chrIsValid != null   and chrIsValid != ''">
+                chrIsValid,
+            </if>
+            <if test="varOpenId != null   and varOpenId != ''">
+                varOpenId,
+            </if>
+            <if test="varCreateUser != null  and varCreateUser != ''">
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null  and datCreateDate != ''">
+                datCreateDate,
+            </if>
+            <if test="varOperUser != null   and varOperUser != ''">
+                varOperUser,
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != '' ">
+                #{intId},
+            </if>
+            <if test="varAccount != null and varAccount != ''">
+                #{varAccount},
+            </if>
+            <if test="varPasswd != null and varPasswd != ''">
+                #{varPasswd},
+            </if>
+            <if test="varName != null and varName != '' ">
+                #{varName},
+            </if>
+            <if test="chrSex != null and chrSex != '' ">
+                #{chrSex},
+            </if>
+            <if test="chrIdType != null and chrIdType != ''">
+                #{chrIdType},
+            </if>
+            <if test="varIdNumber != null and varIdNumber != '' ">
+                #{varIdNumber},
+            </if>
+            <if test="chrSupporter != null and chrSupporter != ''">
+                #{chrSupporter},
+            </if>
+            <if test="chrUserType != null and chrUserType != '' ">
+                #{chrUserType},
+            </if>
+            <if test="varMobileNo != null and varMobileNo != '' ">
+                #{varMobileNo},
+            </if>
+            <if test="intCompanyId != null and intCompanyId != '' ">
+                #{intCompanyId},
+            </if>
+            <if test="varDepartmentId != null and varDepartmentId != ''">
+                #{varDepartmentId},
+            </if>
+            <if test="chrRegistType != null and chrRegistType != '' ">
+                #{chrRegistType},
+            </if>
+            <if test="datRegistDate != null and datRegistDate != ''">
+                #{datRegistDate},
+            </if>
+            <if test="chrIsValid != null and chrIsValid != ''">
+                #{chrIsValid},
+            </if>
+            <if test="varOpenId != null and varOpenId != ''">
+                #{varOpenId},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != '' ">
+                #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.bossien.train.domain.CompanyUser">
+        update ap_company_user
+        <set>
+            <if test="varAccount != null and varAccount != ''">
+                varAccount = #{varAccount},
+            </if>
+            <if test="varPasswd != null and varPasswd != ''">
+                varPasswd = #{varPasswd},
+            </if>
+            <if test="varName != null and varName != ''">
+                varName = #{varName},
+            </if>
+            <if test="chrSex != null and chrSex != ''">
+                chrSex = #{chrSex},
+            </if>
+            <if test="chrIdType != null and chrIdType != ''">
+                chrIdType = #{chrIdType},
+            </if>
+            <if test="varIdNumber != null and varIdNumber != ''">
+                varIdNumber = #{varIdNumber},
+            </if>
+            <if test="chrSupporter != null and chrSupporter != ''">
+                chrSupporter = #{chrSupporter},
+            </if>
+            <if test="chrUserType != null and chrUserType != ''">
+                chrUserType = #{chrUserType},
+            </if>
+            <if test="varMobileNo != null and varMobileNo != ''">
+                varMobileNo = #{varMobileNo},
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId = #{intCompanyId},
+            </if>
+            <if test="varDepartmentId != null and varDepartmentId != ''">
+                varDepartmentId = #{varDepartmentId},
+            </if>
+            <if test="chrRegistType != null and chrRegistType != ''">
+                chrRegistType = #{chrRegistType},
+            </if>
+            <if test="datRegistDate != null and datRegistDate != ''">
+                datRegistDate = #{datRegistDate},
+            </if>
+            <if test="chrIsValid != null and chrIsValid != ''">
+                chrIsValid = #{chrIsValid},
+            </if>
+            <if test="varOpenId != null and varOpenId != ''">
+                varOpenId = #{varOpenId},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != '' ">
+                datOperDate = #{datOperDate},
+            </if>
+        </set>
+        <trim prefix="where" suffixOverrides="and">
+            intId = #{intId}
+        </trim>
+
+    </update>
+
+    <!--根据id 查询账号-->
+    <select id="selectAccount" parameterType="java.lang.String" resultType="java.lang.String">
+        select varAccount FROM ap_company_user
+        <where>
+            <if test="codes!=null and codes.length>0">
+                intId IN
+                <foreach item="intId" index="index" collection="codes" open="(" separator="," close=")">
+                    #{intId}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

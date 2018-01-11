@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.ap.CompanyTypeMapper">
+    <sql id="Base_Column_List">
+        intId, varName, intPid, intOrder, varOperUser, datOperDate, varCreateUser, datCreateDate
+    </sql>
+    <select id="selectAllType" resultType="com.bossien.train.domain.CompanyType">
+        SELECT intId,varName,intPid,intOrder FROM ap_company_type
+    </select>
+
+    <select id="getCTChiList" parameterType="java.util.Map" resultType="java.lang.String">
+        SELECT getCTChiList ( #{intTypeId} ) FROM DUAL
+    </select>
+
+    <select id="selectByPrimaryKey" parameterType="java.util.Map" resultType="com.bossien.train.domain.CompanyType">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_type
+        where intId = #{intId}
+    </select>
+    <select id="selectById" parameterType="java.util.Map" resultType="com.bossien.train.domain.CompanyType">
+        select
+        intId
+        from ap_company_type
+        where intId = #{intId}
+    </select>
+    <!--增删改-->
+    <insert id="insertSelective" parameterType="java.util.Map">
+        insert into ap_company_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+            <if test="varName != null and varName != ''">
+                varName,
+            </if>
+            <if test="intPid != null">
+                intPid,
+            </if>
+            <if test="intOrder != null and intOrder != ''">
+                intOrder,
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser,
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate,
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser,
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+            <if test="varName != null and varName != ''">
+                #{varName},
+            </if>
+            <if test="intPid != null">
+                #{intPid},
+            </if>
+            <if test="intOrder != null and intOrder != ''">
+                #{intOrder},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                #{datOperDate},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                #{datCreateDate},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="java.util.Map">
+        update ap_company_type
+        <set>
+            <if test="varName != null and varName != ''">
+                varName = #{varName},
+            </if>
+            <if test="intPid != null and intPid != ''">
+                intPid = #{intPid},
+            </if>
+            <if test="intOrder != null and intOrder != ''">
+                intOrder = #{intOrder},
+            </if>
+            <if test="varOperUser != null and varOperUser != ''">
+                varOperUser = #{varOperUser},
+            </if>
+            <if test="datOperDate != null and datOperDate != ''">
+                datOperDate = #{datOperDate},
+            </if>
+            <if test="varCreateUser != null and varCreateUser != ''">
+                varCreateUser = #{varCreateUser},
+            </if>
+            <if test="datCreateDate != null and datCreateDate != ''">
+                datCreateDate = #{datCreateDate},
+            </if>
+        </set>
+        where intId = #{intId}
+    </update>
+
+    <!--批量更新-->
+    <update id="updateBatch" parameterType="java.util.List">
+        <foreach item="item" index="index" collection="list" separator=";">
+            update ap_company_type
+            <set>
+                <if test="item.varName != null and item.varName != ''">
+                    varName = #{item.varName},
+                </if>
+                <if test="item.intPid != null and item.intPid != ''">
+                    intPid = #{item.intPid},
+                </if>
+                <if test="item.intOrder != null and item.intOrder != ''">
+                    intOrder = #{item.intOrder},
+                </if>
+                <if test="item.varOperUser != null and item.varOperUser != ''">
+                    varOperUser = #{item.varOperUser},
+                </if>
+                <if test="item.datOperDate != null and item.datOperDate != ''">
+                    datOperDate = #{item.datOperDate},
+                </if>
+                <if test="item.varCreateUser != null and item.varCreateUser != ''">
+                    varCreateUser = #{item.varCreateUser},
+                </if>
+                <if test="item.datCreateDate != null and item.datCreateDate != ''">
+                    datCreateDate = #{item.datCreateDate},
+                </if>
+            </set>
+            where intId = #{item.intId}
+        </foreach>
+    </update>
+    <!--批量更新-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_company_type (intId, varName, intPid,
+        intOrder, varOperUser, datOperDate,
+        varCreateUser, datCreateDate)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+               (#{item.intId,jdbcType=INTEGER}, #{item.varName,jdbcType=VARCHAR},
+                #{item.intPid,jdbcType=INTEGER},
+                #{item.intOrder,jdbcType=INTEGER}, #{item.varOperUser,jdbcType=VARCHAR},
+                #{item.datOperDate,jdbcType=TIMESTAMP},
+                #{item.varCreateUser,jdbcType=VARCHAR}, #{item.datCreateDate,jdbcType=TIMESTAMP})
+            </foreach>
+        </if>
+    </insert>
+    <delete id="deleteByPrimaryKey" parameterType="java.util.Map">
+        delete from ap_company_type
+        where intId = #{intId}
+    </delete>
+
+</mapper>

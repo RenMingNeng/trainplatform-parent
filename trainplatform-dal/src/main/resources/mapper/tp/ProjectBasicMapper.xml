@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ProjectBasicMapper">
+
+	<resultMap id="projectBasicMap" type="com.bossien.train.domain.ProjectBasic">
+		<id column="id" property="id"></id>
+		<result column="project_name" property="projectName"></result>
+		<result column="subject_id" property="subjectId"></result>
+		<result column="project_type" property="projectType"></result>
+		<result column="train_period" property="trainPeriod"></result>
+		<result column="project_mode" property="projectMode"></result>
+		<result column="project_status" property="projectStatus"></result>
+		<result column="project_train_info" property="projectTrainInfo"></result>
+		<result column="project_exercise_info" property="projectExerciseInfo"></result>
+		<result column="project_exam_info" property="projectExamInfo"></result>
+		<result column="project_open" property="projectOpen"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id, project_name, subject_id, project_type, train_period,project_mode, project_status,
+		project_train_info, project_exercise_info, project_exam_info, project_open,create_user,
+		create_time,oper_user, oper_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ProjectBasic">
+		insert into project_basic	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="projectName !=null and projectName !=''">,project_name</if>
+			<if test="subjectId !=null and subjectId !=''">,subject_id</if>
+			<if test="projectType !=null and projectType !=''">,project_type</if>
+			<if test="trainPeriod !=null ">,train_period</if>
+			<if test="projectMode !=null and projectMode !=''">,project_mode</if>
+			<if test="projectStatus !=null and projectStatus !=''"> ,project_status </if>
+			<if test="projectTrainInfo !=null and projectTrainInfo != ''">,project_train_info</if>
+			<if test="projectExerciseInfo !=null and projectExerciseInfo !=''">,project_exercise_info</if>
+			<if test="projectExamInfo !=null and projectExamInfo !=''">,project_exam_info</if>
+			<if test="projectOpen !=null and projectOpen !=''">,project_open</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			<if test="projectName !=null and projectName !=''"> ,#{projectName} </if>
+			<if test="subjectId !=null and subjectId !=''"> ,#{subjectId} </if>
+			<if test="projectType !=null and projectType !=''"> ,#{projectType} </if>
+			<if test="trainPeriod !=null "> ,#{trainPeriod} </if>
+			<if test="projectMode !=null and projectMode !=''"> ,#{projectMode} </if>
+			<if test="projectStatus !=null and projectStatus !=''"> ,#{projectStatus} </if>
+			<if test="projectTrainInfo !=null and projectTrainInfo !=''"> ,#{projectTrainInfo} </if>
+			<if test="projectExerciseInfo !=null and projectExerciseInfo !=''"> ,#{projectExerciseInfo} </if>
+			<if test="projectExamInfo !=null and projectExamInfo !=''"> ,#{projectExamInfo} </if>
+			<if test="projectOpen !=null and projectOpen !=''"> ,#{projectOpen} </if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<update id="update" parameterType="java.util.Map">
+		UPDATE project_basic SET
+		<trim prefix="" prefixOverrides=",">
+			<if test="projectName !=null and projectName !=''">,project_name = #{projectName}</if>
+			<if test="subjectId !=null and subjectId !=''">,subject_id = #{subjectId}</if>
+			<if test="projectType !=null and projectType !=''">,project_type = #{projectType}</if>
+			<if test="trainPeriod !=null and trainPeriod !=''">,train_period = #{trainPeriod}</if>
+			<if test="projectMode !=null and projectMode !=''">,project_mode = #{projectMode}</if>
+			<if test="projectStatus !=null and projectStatus !=''"> ,project_status = #{projectStatus}</if>
+			<if test="projectTrainInfo !=null and projectTrainInfo != ''">,project_train_info = #{projectTrainInfo}</if>
+			<if test="projectExerciseInfo !=null and projectExerciseInfo !=''">,project_exercise_info = #{projectExerciseInfo}</if>
+			<if test="projectExamInfo !=null and projectExamInfo !=''">,project_exam_info = #{projectExamInfo}</if>
+			<if test="projectOpen !=null and projectOpen !=''">,project_open = #{projectOpen}</if>
+			<if test="createUser !=null and createUser !=''">,create_user = #{createUser}</if>
+			<if test="createTime !=null and createTime !=''">,create_time = #{createTime}</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser}</if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime}</if>
+		</trim>
+		WHERE id = #{projectId}
+	</update>
+
+	<update id="updateProjectStatus">
+		UPDATE project_basic
+		<set>
+			<if test="projectStatus != '' and projectStatus != null">
+				project_status  = #{projectStatus},
+			</if>
+		</set>
+		<where>
+			<if test="projectId != '' and projectId != null">
+				id  = #{projectId}
+			</if>
+		</where>
+		limit 1
+	</update>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="projectBasicMap">
+		SELECT
+		<include refid="baseColumn"/>
+		FROM project_basic pb WHERE pb.id = #{id}
+	</select>
+
+	<!--通过项目id获取所有对应的主题id-->
+	<select id="selectSubjectIdByProjectId" parameterType="java.util.List" resultType="java.lang.String">
+		SELECT subject_id,COUNT(subject_id) cnt FROM project_basic
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="list != null and list.size > 0">id IN
+				<foreach collection="list" index="index" item="project_id" open="(" separator="," close=")">
+					#{project_id}
+				</foreach>
+				group by subject_id
+				order by cnt desc
+			</if>
+		</trim>
+	</select>
+
+	<!--通过id删除项目-->
+	<delete id="delete" parameterType="java.util.Map">
+		DELETE  from project_basic where id=#{projectId}
+	</delete>
+
+	<!--查询项目状态-->
+	<select id="selectProjectStatus" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT pb.project_status FROM project_basic pb WHERE pb.id = #{id}
+	</select>
+
+	<update id="checkProjectStatus" parameterType="java.util.Map">
+		UPDATE project_basic
+		<set>
+			<if test="projectStatus != '' and projectStatus != null">
+				project_status  = #{projectStatus},
+			</if>
+		</set>
+		<where>
+			id IN
+			<foreach item="item" index="index" collection="projectIds" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</where>
+	</update>
+
+	<select id="selectPublicProject" parameterType="java.util.Map" resultMap="projectBasicMap">
+        select <include refid="baseColumn"/> from project_basic
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projectStatus != '' and projectStatus != null">
+				AND project_status=#{projectStatus}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectProjectIdsByStatus" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT id FROM project_basic
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="projects != null and projects.size > 0">
+				id IN
+				<foreach collection="projects" index="index" item="id" open="(" separator="," close=")">
+					#{id}
+				</foreach>
+			</if>
+			<if test="projectMode != '' and projectMode != null">
+				AND project_mode = #{projectMode}
+			</if>
+			<if test="projectStatus != '' and projectStatus != null">
+				AND project_status = #{projectStatus}
+			</if>
+			<if test="projectStatusList != null and projectStatusList.size > 0">
+				And project_status IN
+				<foreach collection="projectStatusList" index="index" item="item" open="(" separator="," close=")">
+					#{item}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+</mapper>

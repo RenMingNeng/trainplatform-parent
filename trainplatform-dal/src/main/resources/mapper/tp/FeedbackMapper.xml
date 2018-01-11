@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.FeedbackMapper">
+
+	<resultMap id="feedbackMap" type="com.bossien.train.domain.Feedback">
+		<id column="id" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="problem_type" property="problemType"/>
+		<result column="content" property="content"/>
+		<result column="contact_way" property="contactWay"/>
+		<result column="attchments" property="attchments"/>
+		<result column="problem_status" property="problemStatus"/>
+		<result column="create_user" property="createUser"/>
+		<result column="create_time" property="createTime"/>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id, user_id, user_name, problem_type, content, contact_way, attchments, problem_status, create_user, create_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.Feedback">
+		insert into feedback (
+			id, user_id, user_name, problem_type, content, contact_way, attchments, create_user, create_time
+		) values (
+			#{id}, #{userId}, #{userName}, #{problemType}, #{content}, #{contactWay}, #{attchments}, #{createUser}, #{createTime}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.bossien.train.domain.Feedback">
+		update feedback set problem_status = #{problemStatus} where id = #{id}
+	</update>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(user_id) from feedback
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userId != null and userId != ''">
+				AND user_id = #{userId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND create_time &lt;= #{endTime}
+			</if>
+			<if test="problemType != null and problemType != ''">
+				AND problem_type = #{problemType}
+			</if>
+			<if test="problemStatus != null and problemStatus != ''">
+				AND problem_status = #{problemStatus}
+			</if>
+			<if test="search != null and search != ''">
+				AND (content = #{search} or create_user = #{search})
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectList" parameterType="java.util.Map" resultMap="feedbackMap">
+		select
+		<include refid="baseColumn"/>
+		from feedback
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userId != null and userId != ''">
+				AND user_id = #{userId}
+			</if>
+			<if test="startTime != null and startTime != ''">
+				AND create_time &gt;= #{startTime}
+			</if>
+			<if test="endTime != null and endTime != ''">
+				AND create_time &lt;= #{endTime}
+			</if>
+			<if test="problemType != null and problemType != ''">
+				AND problem_type = #{problemType}
+			</if>
+			<if test="problemStatus != null and problemStatus != ''">
+				AND problem_status = #{problemStatus}
+			</if>
+			<if test="search != null and search != ''">
+				AND (content like #{search} or create_user like #{search})
+			</if>
+		</trim>
+		order by create_time desc
+		limit #{startNum}, #{pageSize}
+	</select>
+		
+
+</mapper>

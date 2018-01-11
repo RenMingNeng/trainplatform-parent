@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.ExamQuestionMapper">
+
+	<resultMap id="examQuestionMap" type="com.bossien.train.domain.ExamQuestion">
+		<id column="exam_no" property="examNo"></id>
+		<result column="project_id" property="projectId"></result>
+		<result column="user_id" property="userId"></result>
+		<result column="questions_id" property="questionsId"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id,project_id,exam_no,exam_type,user_id,questions_id
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.ExamQuestion">
+		insert into exam_question	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="projectId !=null and projectId !=''">,project_id</if>
+			<if test="examNo !=null and examNo != ''">,exam_no</if>
+			<if test="userId !=null and userId !=''">,user_id</if>
+			<if test="questionsId !=null and questionsId !=''">,questions_id</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+			<if test="operUser !=null and operUser !=''">,oper_user</if>
+			<if test="operTime !=null and operTime !=''">,oper_time</if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="projectId !=null and projectId !=''"> ,#{projectId} </if>
+			<if test="examNo !=null and examNo !=''"> ,#{examNo} </if>
+			<if test="userId !=null and userId !=''"> ,#{userId} </if>
+			<if test="questionsId !=null and questionsId !=''"> ,#{questionsId} </if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into exam_question (
+			project_id,exam_no,user_id,questions_id,
+			create_user,create_time,oper_user,oper_time
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+			  (
+				#{item.projectId}, #{item.examNo}, #{item.userId}, #{item.questionsId},
+				#{item.createUser}, #{item.createTime},#{item.operUser},#{item.operTime}
+			  )
+			</foreach>
+		</if>
+	</insert>
+
+	<select id="selectList" parameterType="com.bossien.train.domain.ExamQuestion" resultType="java.lang.String">
+		select questions_id
+		FROM exam_question
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectOne" parameterType="com.bossien.train.domain.ExamQuestion" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM exam_question
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+		</trim>
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM exam_question
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="examNo !=null and examNo !=''">
+				and exam_no = #{examNo}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="projectId !=null and projectId !=''">
+				and project_id = #{projectId}
+			</if>
+		</trim>
+	</select>
+
+	<!-- 根据用户Ids和项目Id删除项目用户试题记录 -->
+	<delete id="deleteBatch" parameterType="java.util.Map">
+		DELETE FROM exam_question WHERE project_id = #{projectId}
+		<if test="userIds != null and userIds.size>0">
+			AND user_id IN
+			<foreach item="userIds" index="index" collection="userIds" open="(" separator="," close=")">
+				#{userIds}
+			</foreach>
+		</if>
+	</delete>
+
+</mapper>

@@ -1,0 +1,29 @@
+*{ padding:0px; margin:0px;}
+/**/
+
+#tbox{position: fixed;top:50%;right:0;margin-top:-183px;z-index:100000;}
+#tbox > div{background:#fff; position: relative;border:1px solid #eee;margin-top:-1px;font-size:14px;}
+
+#tbox > div > div{color:#fff;border-radius:3px 0 0 3px;display:none;position: absolute; right:100px;width:88px;top:10px;min-height:40px;padding:7px;line-height: 26px;text-align: center;background:#333; }
+#tbox > div > div > span{ position: absolute;border-width:5px;border-style:solid;border-color:transparent transparent transparent #333;
+    position: absolute;right:-10px;top:15px;}
+#tbox > div a{display: block;height:60px;width:60px;text-align: center;line-height: 60px;}
+#tbox > div.hover a{background: #3498db;}
+#tbox > div.hover i{color:#fff;}
+#tbox > div i{font-size:30px;color:#cccccc;
+    vertical-align: middle;}
+#tbox .shadow_1{border:1px solid #eee;}
+#tbox .index{    height: 8px;
+    width: 8px;
+    text-align: center;
+    line-height: 20px;
+    position: absolute;
+    background: red;
+    top: 7px;
+    right: 25px;
+    color: #fff;
+    border-radius: 50%;}
+#gotop{display: none;}
+
+
+

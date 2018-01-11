@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bossien.train.dao.ap.CompanyTrainRoleMapper">
+    <resultMap id="BaseResultMap" type="com.bossien.train.domain.CompanyTrainRole">
+        <id column="intId" property="intId" jdbcType="VARCHAR"/>
+        <result column="intTrainRoleId" property="intTrainRoleId" jdbcType="VARCHAR"/>
+        <result column="intCompanyId" property="intCompanyId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    intId, intTrainRoleId, intCompanyId
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_train_role
+        where intId = #{intId}
+    </select>
+
+    <select id="selectByCompanyId" resultType="java.lang.String" parameterType="java.lang.String">
+        select
+      intTrainRoleId
+        from ap_company_train_role
+        where intCompanyId = #{intCompanyId}
+    </select>
+    <select id="selectByTrainRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_train_role
+        where intTrainRoleId = #{intTrainRoleId}
+    </select>
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+            intId
+        from ap_company_train_role
+        where intTrainRoleId = #{intTrainRoleId} and intCompanyId=#{intCompanyId}
+    </select>
+    <select id="selectByOne" resultMap="BaseResultMap" parameterType="java.util.Map">
+        select
+        <include refid="Base_Column_List"/>
+        from ap_company_train_role
+        where intTrainRoleId = #{intTrainRoleId} and intCompanyId=#{intCompanyId}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ap_company_train_role
+    where intId = #{intId}
+  </delete>
+    <delete id="deleteByAllId" parameterType="java.util.Map">
+        delete from ap_company_train_role
+        where intTrainRoleId in
+        <foreach item="intTrainRoleId" index="index" collection="ids" open="(" separator="," close=")">
+            #{intTrainRoleId}
+        </foreach>
+        and intCompanyId = #{intCompanyId}
+    </delete>
+
+    <!--批量删除-->
+    <delete id="deleteByTrainRoleId" parameterType="ArrayList">
+        delete from ap_company_train_role
+        <trim prefix="where">
+            intTrainRoleId IN
+            <foreach collection="array" index="index" item="intTrainRoleId" open="(" close=")" separator=",">
+                #{intTrainRoleId}
+            </foreach>
+        </trim>
+    </delete>
+    <insert id="insert" parameterType="com.bossien.train.domain.CompanyTrainRole">
+    insert into ap_company_train_role (intId,  intTrainRoleId,
+      intCompanyId)
+    values (#{intId}, #{intTrainRoleId},
+      #{intCompanyId})
+  </insert>
+    <!--批量添加-->
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into ap_company_train_role (intId, intTrainRoleId,
+        intCompanyId)
+        values
+        <if test="list !=null and list.size >0">
+            <foreach item="item" index="index" collection="list" separator=",">
+                (#{item.intId}, #{item.intTrainRoleId},
+                #{item.intCompanyId})
+            </foreach>
+        </if>
+    </insert>
+    <insert id="insertSelective" parameterType="com.bossien.train.domain.CompanyTrainRole">
+        insert into ap_company_train_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                intId,
+            </if>
+
+            <if test="intTrainRoleId != null and intTrainRoleId != ''">
+                intTrainRoleId,
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="intId != null and intId != ''">
+                #{intId},
+            </if>
+
+            <if test="intTrainRoleId != null and intTrainRoleId != ''">
+                #{intTrainRoleId},
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                #{intCompanyId},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.bossien.train.domain.CompanyTrainRole">
+        update ap_company_train_role
+        <set>
+            <if test="intTrainRoleId != null and intTrainRoleId != ''">
+                intTrainRoleId = #{intTrainRoleId},
+            </if>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId = #{intCompanyId},
+            </if>
+        </set>
+        where intId = #{intId}
+    </update>
+    <update id="updateByTrainRoleId" parameterType="com.bossien.train.domain.CompanyTrainRole">
+        update ap_company_train_role
+        <set>
+            <if test="intCompanyId != null and intCompanyId != ''">
+                intCompanyId = #{intCompanyId},
+            </if>
+        </set>
+        where intTrainRoleId = #{intTrainRoleId}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.bossien.train.domain.CompanyTrainRole">
+    update ap_company_train_role
+    set
+      intTrainRoleId = #{intTrainRoleId},
+      intCompanyId = #{intCompanyId}
+    where intId = #{intId}
+  </update>
+</mapper>

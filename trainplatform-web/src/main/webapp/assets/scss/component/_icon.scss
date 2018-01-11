@@ -1,0 +1,108 @@
+.lkicon-group1 {
+    display: block;
+    float: left;
+    @include square(22px);
+    background: url($imgPath + 'icon_group_1.png') no-repeat;
+    margin-right: 4px;
+}
+
+.lkicon-group1-location {
+    background-position: 0 0;
+}
+
+.lkicon-group1-phone {
+    background-position: -22px 0;
+}
+
+.lkicon-group2 {
+    display: block;
+    float: left;
+    @include square(30px);
+    background: url($imgPath + 'icon_group_2.png') no-repeat;
+    margin: 7px 7px 0 0;
+}
+
+.lkicon-group2-doc {
+    background-position: 0 0;
+}
+
+.lkicon-group2-wechat {
+    background-position: -30px 0;
+}
+
+.lkicon-group2-phone {
+    background-position: -60px 0;
+}
+
+.lkicon-group2-promotion {
+    background-position: -90px 0;
+}
+
+.lk-icon-service {
+    display: block;
+    @include square(28px);
+    background: url($imgPath + 'icon_service_1.png') no-repeat;
+    cursor: pointer;
+    margin-top: 11px;
+}
+
+.lkicon-aia-group1 {
+    display: block;
+    @include square(16px);
+    background: url($imgPath + 'icon_aia_group1.png') no-repeat;
+    cursor: pointer;
+    margin-left: 6px;
+}
+
+.lkicon-aia-success {
+    background-position: 0 0;
+}
+
+.lkicon-aia-fail {
+    background-position: 0 -16px;
+}
+
+.lkicon-aia-wait {
+    background-position: 0 -32px;
+}
+
+.lkicon-aia-time {
+    background-position: 0 -48px;
+    margin-left: 20px;
+    margin-right: 2px;
+}
+
+.lkicon_aia_status {
+    display: block;
+    @include square(55px);
+    background: url($imgPath + 'icon_aia_status.png') no-repeat;
+    cursor: pointer;
+    position: absolute;
+    top: -3px;
+    right: -3px;
+}
+
+.lkicon-status-wait {
+    background-position: 0 0;
+}
+
+.lkicon-status-fail {
+    background-position: 0 -55px;
+}
+
+.lkicon-status-success {
+    background-position: 0 -110px;
+}
+
+.lkicon-tip {
+    display: inline-block;
+    @include square(23px);
+    background-color: $c03b5fb;
+    border-radius: 4px;
+    color: $while;
+    margin-right: 8px;
+    text-align: center;
+    line-height: 23px;
+    font-size: 16px;
+    font-weight: 600;
+}

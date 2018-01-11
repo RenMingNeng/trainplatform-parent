@@ -1,0 +1,97 @@
+@charset "utf-8";
+body{
+    background:#eee;
+    padding-top:30px;
+}
+input{outline: none;}
+.container{
+    width:1000px;
+    margin:0 auto;
+}
+.logo{
+    padding:40px 10px;
+}
+.logo .text{
+    font-size:20px;
+    margin-left:20px;
+    padding-left:20px;
+    line-height: 22px;
+    border-left:1px solid #ccc;
+    color:#444;
+}
+.main{
+    padding:40px;
+    background:#fff;
+}
+.main>h2{font-size:32px;font-weight:normal;position: relative;border-bottom:1px solid #dde6ea;width:592px;margin:0 auto;color:#000;margin-bottom:60px;}
+.main>h2>span{position: absolute;width:226px;height:32px;line-height: 32px;background:#fff;left:50%;top:50%;margin-left:-113px;margin-top:-16px;text-align: center;}
+.head{
+    line-height: 26px;
+    font-size:14px;
+    color:#444;
+}
+.item{
+    color:#666;
+    margin-top:30px;
+}
+.item em{
+    color:#cc3333;
+    font-weight:bold;
+    margin-right:5px;
+}
+.item label{
+    margin-right:20px;
+    cursor: pointer;
+}
+.item label input[type="checkbox"]{
+    vertical-align:middle;
+    margin-top: -1px;
+}
+.item  .label{
+    margin-bottom:8px;font-size:14px;
+}
+.item  textarea{
+    border: 1px solid #ccc;
+    padding:5px;
+    outline: none;
+    height:125px;
+    background:#f3f3f3;
+    border-width:2px;
+    border-style:solid;
+    border-color:#e4e9ed transparent transparent #e4e9ed;
+}
+#contact_way{
+    background:#f3f3f3;
+    border-width:2px;
+    border-style:solid;
+    border-color:#e4e9ed transparent transparent #e4e9ed;
+    width:365px;
+    height:40px;
+}
+.item  textarea:focus{
+    border:1px solid #31b0d5;
+}
+.item input[type="text"]{
+    width:300px;
+}
+.uplaod{
+    color:#00b8c7;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+}
+.uplaod input[type="file"]{
+    position: absolute;
+    top:0;
+    right:0;
+    z-index:10;
+    opacity:0;
+    filter:alpha(opacity=0);
+    cursor: pointer;
+}
+#footer{
+    text-align:center;background:#fff;
+}
+#btn-submit{width: 90px;line-height:32px;background:#00b8c7;height:32px;display: inline-block;color:#fff;text-align: center;font-family: '微软雅黑'}
+#btn-close{width: 90px;line-height:32px;background:#a5b0b1;height:32px;display: inline-block;color:#fff;text-align: center;font-family: '微软雅黑'}
+.file_input{width: 180px}

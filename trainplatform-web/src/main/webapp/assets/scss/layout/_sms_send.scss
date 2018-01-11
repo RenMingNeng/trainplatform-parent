@@ -1,0 +1,97 @@
+  .sms-send-blue {
+    color: #007fda;
+  }
+  .sms-send-content{
+    min-width: 1300px - 220px - 220px - 54px + 220px;
+    left:0;
+    //background: red;
+    padding-top: 0;
+    .sms-send-content-title{
+      font-size: 20px;
+      color: #344257;
+      line-height:76px;
+    }
+    .send-tel{
+      font-size: 14px;
+      color: #4b586a;
+      line-height: 37px;
+      margin-top: -10px;
+      margin-left: 20px;
+      span{
+        margin-left: 23px;
+      }
+    }
+    .grp01{
+      margin-left: 20px;
+      div.row01{
+        line-height:37px;
+        color: #4b586a;
+        font-size: 14px;
+      }
+      i.import{
+        width: 18px;
+        height:19px;
+        background: url("#{$imgPath}icon_sms_send01.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+      i.choose{
+        width: 19px;
+        height:20px;
+        background: url("#{$imgPath}icon_sms_send02.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+    }
+    .grp02{
+      i.common{
+        width: 12px;
+        height:16px;
+        background: url("#{$imgPath}icon_sms_send03.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+      i.hot{
+        width: 16px;
+        height:18px;
+        background: url("#{$imgPath}icon_sms_send04.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+      i.guide{
+        width: 18px;
+        height:18px;
+        background: url("#{$imgPath}icon_sms_send05.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+      i.store{
+        width: 19px;
+        height:16px;
+        background: url("#{$imgPath}icon_sms_send06.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+      i.user{
+        width: 18px;
+        height:18px;
+        background: url("#{$imgPath}icon_sms_send07.png") center no-repeat;
+        background-size: contain;
+        display: inline-block;
+        vertical-align: -4px;
+        margin-right: 10px;
+      }
+    }
+  }

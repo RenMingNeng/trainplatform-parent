@@ -1,0 +1,103 @@
+*{
+	margin:0;
+	padding:0;
+}
+.container{
+	position: absolute;
+	min-height: 1080px;
+ 	width:100%;
+ 	top:0;left:0;
+}
+ .bg{
+ 	background-position: center top;
+ 	background-repeat: no-repeat;
+ 	height:100%;
+ 	width:100%;
+ }
+ img{
+ 	display:block;
+ }
+ .guide{
+	position: relative;
+	height:100%;
+	top:0;left:0;bottom:0;right:0;
+ }
+ .guide .guide-bg{
+ 	height:100%;
+ 	width:100%;
+ 	background:#000;
+	opacity:0.6;
+	filter:alpha( opacity = 60 );
+	position: absolute;
+ }
+ .guide .guide-area{
+ 	width:1200px;
+ 	margin:0 auto;
+ 	height:100%;
+ 	position: relative;
+ 	z-index:10;
+ 	color:#fff;
+ 	font-size:20px;
+ }
+ .guide .guide-area .arrow{
+ 	display:inline-block;
+ 	vertical-align:middle;
+ }
+ .guide .guide-area .arrow.arrow-top{
+ 	vertical-align:bottom;
+ }
+ .guide .guide-area > img{
+ 	position: absolute;
+ 	z-index:10000;
+	border:1px dashed #ccc;
+ }
+ .guide .guide-area > div{
+ 	position: absolute;
+ 	z-index:10000;
+ }
+ .guide .guide-area > div a{
+ 	display:inline-block;
+ 	width:80px;
+ 	height:30px;
+ 	background-image: url(../images/btn-bg.png);
+ 	background-repeat:no-repeat;
+ 	text-indent : -2000em;
+ 	overflow:hidden;
+ 	margin-right:20px;
+ 	margin-top:20px;
+
+ }
+ .guide .guide-area > div .cursor{
+ 	position: absolute; 	
+ }
+ .guide .guide-area > div .cursor .first{
+ 	position: absolute;
+ 	
+ }
+ .guide .guide-area > div a.prev{
+ 	background-position:0 0;
+ }
+ .guide .guide-area > div a.prev:hover{
+ 	background-position:-80px 0;
+ }
+ .guide .guide-area > div a.next{
+ 	background-position:0 -30px;
+ }
+ .guide .guide-area > div a.next:hover{
+ 	background-position:-80px -30px;
+ }
+ .guide .guide-area > div a.finish{
+ 	background-position:0 -90px;
+ }
+ .guide .guide-area > div a.finish:hover{
+ 	background-position:-80px -90px;
+ }
+.guide .guide-area > div a.close{
+	background-position:0 -150px;
+}
+.guide .guide-area > div a.close:hover{
+	background-position:-80px -150px;
+}
+ .guide .guide-area .btn-group{
+ 	text-align:center;
+ }

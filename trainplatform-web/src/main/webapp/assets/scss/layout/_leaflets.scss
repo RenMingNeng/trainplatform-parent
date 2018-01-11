@@ -1,0 +1,121 @@
+.spread-nav-ul{
+  i.nav01{
+    width: 33px;
+    height:30px;
+    display: inline-block;
+    background: url("../../img/icon_spread_nav01.png") 0px center no-repeat;
+    background-size: 20px 17px;
+    vertical-align: -9px;
+  }
+  i.nav02{
+    width: 33px;
+    height:30px;
+    display: inline-block;
+    background: url("../../img/icon_spread_nav02.png") 0px center no-repeat;
+    background-size: 18px 20px;
+    vertical-align: -9px;
+  }
+  i.nav03{
+    width: 33px;
+    height:30px;
+    display: inline-block;
+    background: url("../../img/icon_spread_nav03.png") 0px center no-repeat;
+    background-size: 17px 18px;
+    vertical-align: -9px;
+  }
+  i.nav04{
+    width: 33px;
+    height:30px;
+    display: inline-block;
+    background: url("../../img/icon_spread_nav04.png") 0px center no-repeat;
+    background-size: 22px 19px;
+    vertical-align: -9px;
+  }
+  i.nav05{
+    width: 33px;
+    height:30px;
+    display: inline-block;
+    background: url("../../img/icon_spread_nav05.png") 0px center no-repeat;
+    background-size: 17px 18px;
+    vertical-align: -9px;
+  }
+}
+.leaflets-content{
+  min-width: 1300px - 220px - 220px - 54px + 220px;
+  margin-right: 27px;
+  .new-material{
+    box-sizing: content-box!important;
+    padding:0 20px!important;
+    width: auto!important;
+  }
+  .leaflets-list{
+    margin-top:25px;
+    .item{
+      float: left;
+      margin-bottom: 20px;
+      width: 380px;
+      -webkit-box-shadow: 0 0px 6px rgba(34, 38, 65, 0.25);
+      box-shadow: 0 0px 6px rgba(34, 38, 65, 0.25);
+      border-radius: 3px;
+      margin-right: 20px;
+      .title{
+        font-size: 16px;
+        color: #56606c;
+        line-height: 53px;
+        margin: 0 20px;
+      }
+      .img{
+        width: 339px;
+        height: 216px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        margin:0 auto;
+      }
+      .footer{
+        height: 63px;
+        margin: 0 20px;
+        .delete{
+          height: 63px;
+          display: inline-block;
+          float: right;
+          width: 16px;
+          background: url("../../img/icon_del.png") center no-repeat;
+          background-size: 16px 18px;
+          margin-left: 20px;
+          cursor: pointer;
+        }
+        .edit{
+          height: 63px;
+          display: inline-block;
+          float: right;
+          width: 19px;
+          background: url("../../img/icon_edit.png") center no-repeat;
+          background-size: 19px 21px;
+          margin-left: 20px;
+          cursor: pointer;
+        }
+        .sms{
+          height: 63px;
+          display: inline-block;
+          float: right;
+          width: 17px;
+          background: url("../../img/icon_sms.png") center no-repeat;
+          background-size: 17px 16px;
+          margin-left: 20px;
+          cursor: pointer;
+        }
+        .code{
+          height: 63px;
+          display: inline-block;
+          float: right;
+          width: 17px;
+          background: url("../../img/icon_QR_code.png") center no-repeat;
+          background-size: 17px 17px;
+          margin-left: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

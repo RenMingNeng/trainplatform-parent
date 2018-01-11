@@ -1,0 +1,98 @@
+
+
+.bellows__item:not(.bellows--is-open) > .bellows__content { display: none; }
+
+.bellows__item.bellows--is-open > .bellows__content-wrapper, .bellows__item.bellows--is-closing > .bellows__content-wrapper { display: block; }
+
+.bellows__content-wrapper { display: none; }
+
+.bellows__item { margin-bottom: 35px; }
+.bellows {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+
+.bellows__header {
+	position: relative;
+	padding: 0px 20px;
+	height:60px;
+	line-height:60px;
+	border: 1px solid  #C9C9C9;
+	border-width: 1px 1px 1px 0;
+	color: #3E3E3E;
+	-webkit-tap-highlight-color: transparent;
+	letter-spacing:0.1em;
+	cursor:pointer;
+}
+
+
+.bellows__header::before, .bellows__header::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	right: 20px;
+	z-index: 2;
+	display: block;
+	width: 16px;
+	height: 4px;
+	margin-top: -2px;
+	background:#009B4D;
+	pointer-events: none;
+	-webkit-transition: -webkit-transform 0.25s ease-in-out;
+	transition: transform 0.25s ease-in-out;
+}
+
+.bellows__header::before {
+	content: '';
+	-webkit-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+
+.bellows__header::after {
+	-webkit-transform: rotate(90deg);
+	-ms-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.bellows__item.bellows--is-open > .bellows__header::before, .bellows__item.bellows--is-opening > .bellows__header::before {
+	-webkit-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+
+.bellows__item.bellows--is-open > .bellows__header::after, .bellows__item.bellows--is-opening > .bellows__header::after {
+	-webkit-transform: rotate(360deg);
+	-ms-transform: rotate(360deg);
+	transform: rotate(360deg);
+}
+
+.bellows__header h1,  .bellows__header h2,  .bellows__header h3,  .bellows__header h4 { margin: 0; }
+
+.bellows__content {
+	padding: 20px;
+	border-left: 1px solid  #C9C9C9 ;
+	border-bottom: 1px solid  #C9C9C9 ;
+	border-right: 1px solid  #C9C9C9 ;
+}
+.bellows__content p{
+	font-family:"寰蒋闆呴粦";
+	font-size:11pt;
+	line-height:35px;
+	letter-spacing:0.1px;
+	text-align:left;
+}
+
+.bellows__content .bellows { margin-top: 20px; }
+
+.bellows p {
+    margin: 0;
+}
+.bellows__header p{
+	width:220px;
+	height:60px;
+	float:right;
+	padding-right:20px;
+}

@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bossien.train.dao.tp.PersonDossierMapper">
+
+	<resultMap id="personDossierMap" type="com.bossien.train.domain.PersonDossier">
+		<id column="id" property="id"></id>
+		<result column="user_id" property="userId"></result>
+		<result column="user_name" property="userName"></result>
+		<result column="role_id" property="userId"></result>
+		<result column="dept_id" property="deptId"></result>
+		<result column="role_name" property="roleName"></result>
+		<result column="company_id" property="companyId"></result>
+		<result column="company_name" property="companyName"></result>
+		<result column="year_studytime" property="yearStudytime"></result>
+		<result column="total_studytime" property="totalStudytime"></result>
+		<result column="year_study_self" property="yearStudySelf"></result>
+		<result column="total_study_self" property="totalStudySelf"></result>
+		<result column="train_count" property="trainCount"></result>
+		<result column="create_user" property="createUser"></result>
+		<result column="create_time" property="createTime"></result>
+		<result column="oper_user" property="operUser"></result>
+		<result column="oper_time" property="operTime"></result>
+	</resultMap>
+
+	<sql id="baseColumn">
+		id,user_id,user_name,role_id,role_name,company_id,company_name,dept_name,year_studytime,total_studytime,year_study_self,total_study_self,train_count,create_user,create_time,oper_user,oper_time
+	</sql>
+
+	<insert id="insert" parameterType="com.bossien.train.domain.PersonDossier">
+		insert into person_dossier_info	(
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id != ''">,id</if>
+			<if test="userId !=null and userId !=''">,user_id</if>
+			<if test="userName !=null and userName !=''">,user_name</if>
+			<if test="roleId !=null and roleId !=''">,role_id</if>
+			<if test="roleName !=null and roleName !=''">,role_name</if>
+			<if test="companyId !=null and companyId !=''">,company_id</if>
+			<if test="companyName !=null and companyName !=''">,company_name</if>
+			<if test="deptId !=null and deptId !=''">,dept_id</if>
+			<if test="deptName !=null ">,dept_name</if>
+			<if test="yearStudytime !=null ">,year_studytime</if>
+			<if test="totalStudytime !=null ">,total_studytime</if>
+			<if test="trainCount !=null and trainCount !=''">,train_count</if>
+			<if test="createUser !=null and createUser !=''">,create_user</if>
+			<if test="createTime !=null and createTime !=''">,create_time</if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time </if>
+		</trim>
+		) values (
+		<trim prefix="" prefixOverrides=",">
+			<if test="id !=null and id !=''"> ,#{id} </if>
+			<if test="userId !=null and userId !=''"> ,#{userId} </if>
+			<if test="userName !=null and userName !=''"> ,#{userName} </if>
+			<if test="roleId !=null and roleId !=''"> ,#{roleId} </if>
+			<if test="roleName !=null and roleName !=''"> ,#{roleName} </if>
+			<if test="companyId !=null and companyId !=''"> ,#{companyId} </if>
+			<if test="companyName !=null and companyName !=''"> ,#{companyName} </if>
+			<if test="deptId !=null and deptId !=''">,#{deptId}</if>
+			<if test="deptName !=null ">,#{deptName}</if>
+			<if test="yearStudytime !=null "> ,#{yearStudytime} </if>
+			<if test="totalStudytime !=null "> ,#{totalStudytime} </if>
+			<if test="trainCount !=null and trainCount !=''"> ,#{trainCount} </if>
+			<if test="createUser !=null and createUser !=''"> ,#{createUser} </if>
+			<if test="createTime !=null and createTime !=''"> ,#{createTime} </if>
+			<if test="operUser !=null and operUser !=''"> ,#{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,#{operTime} </if>
+		</trim>
+		)
+	</insert>
+
+	<insert id="insertBatch" parameterType="java.util.List">
+		insert into person_dossier_info (
+			id,user_id,user_name,role_id,role_name,company_id,
+			company_name,dept_id,dept_name,year_studytime,total_studytime,train_count,
+			create_user,create_time,oper_user,oper_time
+		)
+		values
+		<if test="list !=null and list.size >0">
+			<foreach item="item" index="index" collection="list" separator=",">
+				(
+				#{item.id},#{item.userId}, #{item.userName}, #{item.roleId},#{item.roleName},#{item.companyId},
+				#{item.companyName},#{item.deptId},#{item.deptName},#{item.yearStudytime},#{item.totalStudytime},#{item.trainCount},
+				#{item.createUser},#{item.createTime}, #{item.operUser},#{item.operTime}
+				)
+			</foreach>
+		</if>
+	</insert>
+
+	<update id="update" parameterType="com.bossien.train.domain.PersonDossier">
+		update person_dossier_info
+		<trim prefix="set" prefixOverrides=",">
+			<if test="companyId !=null and companyId !=''"> ,company_id = #{companyId} </if>
+			<if test="deptId !=null and deptId !=''"> ,dept_id = #{deptId} </if>
+			<if test="deptName !=null and deptName !=''"> ,dept_name = #{deptName} </if>
+			<if test="userName !=null and userName !=''"> ,user_name = #{userName} </if>
+			<if test="roleId !=null and roleId !=''"> ,role_id = #{roleId} </if>
+			<if test="roleName !=null and roleName !=''"> ,role_name = #{roleName} </if>
+			<if test="companyName !=null and companyName !=''"> ,company_name = #{companyName} </if>
+			<if test="yearStudytime !=null and yearStudytime !=''"> ,year_studytime = #{yearStudytime} </if>
+			<if test="totalStudytime !=null and totalStudytime !=''"> ,total_studytime = #{totalStudytime} </if>
+			<if test="yearStudySelf !=null and yearStudySelf !=''"> ,year_study_self = #{yearStudySelf} </if>
+			<if test="totalStudySelf !=null and totalStudySelf !=''"> ,total_study_self = #{totalStudySelf} </if>
+			<if test="trainCount !=null and trainCount !=''"> ,train_count = #{trainCount} </if>
+			<if test="operUser !=null and operUser !=''"> ,oper_user = #{operUser} </if>
+			<if test="operTime !=null and operTime !=''"> ,oper_time = #{operTime} </if>
+		</trim>
+		where user_id=#{userId}
+	</update>
+
+	<select id="selectList" parameterType="com.bossien.train.domain.PersonDossier" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM person_dossier_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="userName !=null and userName !=''">
+				and user_name like #{userName}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+			<if test="deptId !=null and deptId !=''">
+				and dept_id like #{deptId}
+			</if>
+			<if test="userIds !=null and userIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="userIds" separator="or" open="(" close=")">
+					user_id = #{item}
+				</foreach>
+			</if>
+
+			<if test="companyIds !=null and companyIds.size>0">
+				AND
+				company_id in
+				<foreach collection="companyIds" item="companyId" open="(" separator="," close=")">
+					#{companyId}
+				</foreach>
+			</if>
+
+			<if test="departmentIdList !=null and departmentIdList.size>0">
+				AND
+				dept_id in
+				<foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+					#{departmentId}
+				</foreach>
+			</if>
+		</trim>
+		order by year_studytime desc
+		<if test="startNum !=null and endNum != null">
+			<include refid="CommonMapper.mysqlPage" />
+		</if>
+	</select>
+
+	<select id="selectOne" parameterType="com.bossien.train.domain.PersonDossier" resultType="java.util.Map">
+		select
+		<include refid="baseColumn"/>
+		FROM person_dossier_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+
+		</trim>
+		limit 1
+	</select>
+
+	<!-- 查询学员自学学时 -->
+	<select id="selectStudySelf" parameterType="java.util.Map" resultMap="personDossierMap">
+		select IFNUll(year_study_self,0) AS yearStudySelf,IFNULL(total_study_self,0) AS totalStudySelf
+		FROM person_dossier_info
+		WHERE user_id = #{userId} AND company_id = #{companyId}
+		limit 1
+	</select>
+
+	<select id="selectCount" resultType="java.lang.Integer">
+		select count(1) FROM person_dossier_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyId !=null and companyId !=''">
+				and company_id = #{companyId}
+			</if>
+			<if test="id !=null and id !=''">
+				and id = #{id}
+			</if>
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="userName !=null and userName !=''">
+				and user_name like #{userName}
+			</if>
+			<if test="roleId !=null and roleId !=''">
+				and role_id = #{roleId}
+			</if>
+			<if test="roleName !=null and roleName !=''">
+				and role_name like #{roleName}
+			</if>
+			<if test="userIds !=null and userIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="userIds" separator="or" open="(" close=")">
+					user_id = #{item}
+				</foreach>
+			</if>
+			<if test="companyIds !=null and companyIds.size>0">
+				AND
+				company_id in
+				<foreach collection="companyIds" item="companyId" open="(" separator="," close=")">
+					#{companyId}
+				</foreach>
+			</if>
+
+			<if test="departmentIdList !=null and departmentIdList.size>0">
+				AND
+				dept_id in
+				<foreach collection="departmentIdList" item="departmentId" open="(" separator="," close=")">
+					#{departmentId}
+				</foreach>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 查询用户排名 -->
+	<select id="selectRank" parameterType="java.util.Map" resultType="java.util.Map">
+		select
+			p.rownum,
+			p.company_name,
+			p.year_studytime,
+			p.total_studytime,
+		    p.train_count
+		FROM
+			(select
+				@rownum := @rownum + 1 AS rownum,
+				IFNULL(u.year_studytime,0) AS year_studytime,
+				u.user_id,
+				u.company_name,
+				IFNULL(u.total_studytime,0) AS total_studytime,
+				IFNULL(u.train_count,0) AS train_count
+			from
+				person_dossier_info u,
+				(SELECT @rownum := 0) r
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="companyIds != null and companyIds.size>0">
+				AND u.company_id in
+				<foreach collection="companyIds" index="index" item="companyId" open="(" separator="," close=")">
+					#{companyId}
+				</foreach>
+			</if>
+			<if test="companyId != null and companyId != ''">
+				AND u.company_id = #{companyId}
+			</if>
+		</trim>
+		order by u.year_studytime DESC) p
+		WHERE p.user_id = #{userId}
+
+	<!--	SELECT
+			p.rownum,
+			p.company_name,
+			p.train_count,
+			p.year_study_times,
+			p.total_study_times
+		FROM
+		(SELECT
+			@rownum := @rownum + 1 AS rownum,
+			u.user_id,
+			u.company_name,
+			(IFNULL(u.year_studytime, 0) + IFNULL(u.year_study_self, 0)) AS year_study_times,
+			(IFNULL(u.total_studytime, 0) + IFNULL(u.total_study_self, 0)) AS total_study_times,
+			IFNULL(u.train_count, 0) AS train_count
+		FROM
+			person_dossier_info u,
+		(SELECT
+			@rownum := 0) r
+			<trim prefix="WHERE" prefixOverrides="AND">
+				<if test="companyIds != null and companyIds.size>0">
+					AND u.company_id in
+					<foreach collection="companyIds" index="index" item="companyId" open="(" separator="," close=")">
+						#{companyId}
+					</foreach>
+				</if>
+				<if test="companyId != null and companyId != ''">
+					AND u.company_id = #{companyId}
+				</if>
+			</trim>
+		ORDER BY year_study_times DESC) AS p
+		WHERE p.user_id = #{userId}-->
+	</select>
+
+	<update id="updateByUserIds" parameterType="java.util.Map">
+       update person_dossier_info
+		<trim prefix="set" prefixOverrides=",">
+			<if test="deptId !=null ">
+				,dept_id = #{deptId}
+			</if>
+			<if test="deptName !=null ">
+				 ,dept_name = #{deptName}
+			</if>
+			<if test="companyId !=null and companyId !=''">
+				 ,company_id = #{companyId}
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				,company_name = #{companyName}
+			</if>
+		</trim>
+		<where>
+
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+			<if test="userIds !=null and userIds.size() > 0">
+				and
+				<foreach item="item" index="index" collection="userIds" separator="or" open="(" close=")">
+					user_id = #{item}
+				</foreach>
+			</if>
+
+		</where>
+	</update>
+
+	<update id="updateCompanyId" parameterType="java.util.Map">
+		update person_dossier_info
+		<trim prefix="set"  suffixOverrides="," >
+			<if test="companyId !=null ">
+				company_id = #{companyId},
+			</if>
+			<if test="companyName !=null ">
+				company_name = #{companyName},
+			</if>
+			<if test="deptId !=null ">
+				dept_id = #{deptId},
+			</if>
+			<if test="deptName !=null ">
+				dept_name = #{deptName},
+			</if>
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userId !=null and userId !=''">
+				and user_id = #{userId}
+			</if>
+		</trim>
+		limit 1
+	</update>
+
+	<delete id="batchDelete" parameterType="java.util.Map">
+		delete from person_dossier_info
+		<trim prefix="WHERE" prefixOverrides="AND">
+			<if test="userIds !=null and userIds.size>0">
+				and user_id in
+				<foreach item="userId" index="index" collection="userIds" open="(" separator="," close=")">
+					#{userId}
+				</foreach>
+			</if>
+		</trim>
+	</delete>
+
+	<delete id="delete" parameterType="java.lang.String">
+		delete from person_dossier_info WHERE user_id = #{userId}
+	</delete>
+
+</mapper>
